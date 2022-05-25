@@ -1,7 +1,7 @@
 const { Router } = require("express");
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
-const { Artwork, Category } = require("../db.js");
+const { Artwork, Category, Profile } = require("../db.js");
 
 const router = Router();
 
@@ -49,7 +49,7 @@ router.get("/arte", async (req, res) => {
 // ------------------------------- POST -------------------------------
 const postArtWork = async (req, res) => {
   try {
-    const { title, content, category, price, img } = req.body;
+    const { title, content, category, price, img ,id} = req.body;
     let artWorkCreate = await Artwork.create({
       title,
       content,
@@ -62,6 +62,9 @@ const postArtWork = async (req, res) => {
     // console.log(Artwork)
     await artWorkCreate.addCategories(categoryMatch);
 
+    let profileMatch = await Profile.findByPk(id)
+
+    await artWorkCreate.addProfile(profileMatch)
     res.status(200).json(artWorkCreate);
   } catch (error) {
     console.log(error);
@@ -82,6 +85,47 @@ const postCategory = async (req, res) => {
     res.status(404).send("Cannot create the category!.");
   }
 };
+
+const postProfile = async (req, res) => {
+  try {
+    const {
+      name,
+      lastName,
+      userName,
+      email,
+      password,
+      day_of_birth,
+      gender,
+      img,
+      phone,
+      public_email,
+      description,
+      country,
+    } = req.body;
+    let profileCreate = await Profile.create({
+      name,
+      lastName,
+      userName,
+      email,
+      password,
+      day_of_birth,
+      gender,
+      img,
+      phone,
+      public_email,
+      description,
+      country,
+    });
+
+    res.status(200).json(profileCreate);
+  } catch (error) {
+    console.log(error);
+    res.status(404).send("Cannot create the profile!.");
+  }
+};
+router.post("/profile", postProfile);
+
+// router.post("/user", postUser);
 
 router.post("/art", postArtWork);
 
@@ -124,6 +168,40 @@ const putArtWork = async (req, res) => {
     res.status(400).send(error);
   }
 };
+
+const putProfile = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {
+      day_of_birth,
+      gender,
+      img,
+      phone,
+      public_email,
+      description,
+      country,
+    } = req.body;
+    let updatedProfile = await Profile.findOne({
+      where: {
+        id: id,
+      },
+    });
+    await updatedProfile.update({
+      day_of_birth,
+      gender,
+      img,
+      phone,
+      public_email,
+      description,
+      country,
+    });
+    res.status(201).json(updatedProfile);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+};
+
+router.put("/profile/:id", putProfile);
 
 router.put("/art/:id", putArtWork);
 
@@ -223,4 +301,23 @@ router.get("/filter/antiquity", async (req, res) => {
     res.status(200).json(ordered);
   }
 });
+
+router.get("/filter/country", async (req, res) => {
+  const { country } = req.query;
+  let filtered = await Artwork.findAll({
+    include: {
+      model: Profile,
+      attributes: ["country"],
+      through: {
+        attributes: [],
+      },
+      where: {
+        country: country,
+      },
+    },
+  });
+  res.status(200).json(filtered);
+});
+
+
 module.exports = router;
