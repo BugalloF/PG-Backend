@@ -12,32 +12,52 @@ module.exports = (sequelize) => {
         allowNull: false,
         primaryKey: true,
       },
-      day_of_birth: {
+      name: {
         type: DataTypes.STRING,
         allowNull: false,
+      },
+      lastName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      userName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      }, // obligatory fields |||||
+      is_Admin: {
+        type: DataTypes.BOOLEAN,
+      },
+      day_of_birth: {
+        type: DataTypes.STRING,
       },
       gender: {
         type: DataTypes.STRING,
-        allowNull: false,
       },
       img: {
         type: DataTypes.STRING,
-        allowNull: false,
       },
       phone: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        
       },
       public_email: {
         type: DataTypes.STRING,
-        allowNull: false,
+        
       },
       description: {
         type: DataTypes.STRING
       },
       country:{
           type:DataTypes.STRING,
-          allowNull:false
+          
       }
     },
     { timestamps: false }

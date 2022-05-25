@@ -41,7 +41,8 @@ const { Artwork, Profile, User, Category } = sequelize.models;
 
 // Aca vendrian las relaciones
 // Product.hasMany(Reviews);
-User.hasOne(Profile);
+// User.hasOne(Profile);
+// Profile.belongsTo(User)
 Profile.hasMany(Profile);
 Profile.belongsTo(Profile, { as: "following"});
 Profile.belongsToMany(Artwork, { through: "profiles_artworks" });
