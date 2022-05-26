@@ -2,6 +2,7 @@ require("dotenv").config();
 const { Sequelize } = require("sequelize");
 const fs = require("fs");
 const path = require("path");
+// const { DB_USER, DB_PASSWORD, DB_HOST } = process.env;
 const { DATABASE_URL } = process.env;
 
 const sequelize = new Sequelize(
@@ -19,6 +20,13 @@ const sequelize = new Sequelize(
     },
   },
 );
+// const sequelize = new Sequelize(
+//   `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/artpage`,
+//   {
+//     logging: false, // set to console.log to see the raw SQL queries
+//     native: false, // lets Sequelize know we can use pg-native for ~30% more speed
+//   }
+// );
 const basename = path.basename(__filename);
 
 const modelDefiners = [];
@@ -52,7 +60,7 @@ const { Artwork, Profile, Category } = sequelize.models;
 // User.hasOne(Profile);
 // Profile.belongsTo(User)
 Profile.hasMany(Profile);
-Profile.belongsTo(Profile, { as: "following"});
+Profile.belongsTo(Profile, { as: "following" });
 Profile.belongsToMany(Artwork, { through: "profiles_artworks" });
 Artwork.belongsToMany(Profile, { through: "profiles_artworks" });
 Artwork.belongsToMany(Category, { through: "artworks_categorys" });

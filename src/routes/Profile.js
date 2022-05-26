@@ -58,6 +58,7 @@ const putProfile = async (req, res) => {
       public_email,
       description,
       country,
+      
     } = req.body;
     let updatedProfile = await Profile.findOne({
       where: {
@@ -76,11 +77,12 @@ const putProfile = async (req, res) => {
       phone,
       public_email,
       description,
-      country,
+      country
+      
     });
     res.status(201).json(updatedProfile);
   } catch (error) {
-    res.status(400).send(error);
+    console.log(error)
   }
 };
 
