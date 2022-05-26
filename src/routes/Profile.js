@@ -12,7 +12,7 @@ const postProfile = async (req, res) => {
       password,
       day_of_birth,
       gender,
-      img, 
+      img,
       phone,
       public_email,
       description,
