@@ -46,6 +46,11 @@ const putProfile = async (req, res) => {
   try {
     const { id } = req.params;
     const {
+      name,
+      lastName,
+      userName,
+      email,
+      password,
       day_of_birth,
       gender,
       img,
@@ -53,6 +58,9 @@ const putProfile = async (req, res) => {
       public_email,
       description,
       country,
+      is_Admin,
+      profileId,
+      followingId
     } = req.body;
     let updatedProfile = await Profile.findOne({
       where: {
@@ -60,6 +68,11 @@ const putProfile = async (req, res) => {
       },
     });
     await updatedProfile.update({
+      name,
+      lastName,
+      userName,
+      email,
+      password,
       day_of_birth,
       gender,
       img,
@@ -67,6 +80,9 @@ const putProfile = async (req, res) => {
       public_email,
       description,
       country,
+      is_Admin,
+      profileId,
+      followingId
     });
     res.status(201).json(updatedProfile);
   } catch (error) {
