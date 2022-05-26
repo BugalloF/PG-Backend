@@ -18,6 +18,7 @@ const getArtWorks = async () => {
         return {
           id: e.id,
           img: e.img,
+          imgCompress:e.imgCompress,
           title: e.title,
           content: e.content,
           category: e.categories[0].title,
@@ -88,12 +89,13 @@ router.get("/", async (req, res) =>{
   // ------------------------------- POST -------------------------------
 const postArtWork = async (req, res) => {
     try {
-      const { title, content, category, price, img ,id} = req.body;
+      const { title, content, category, price, img, imgCompress ,id} = req.body;
       let artWorkCreate = await Artwork.create({
         title,
         content,
         price,
         img,
+        imgCompress
       });
       let categoryMatch = await Category.findAll({
         where: { title: category },
