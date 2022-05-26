@@ -13,7 +13,6 @@ const getArtWorks = async () => {
           },
         },
       });
-  
       return artWorks.map((e) => {
         // console.log(artWorks)
         return {

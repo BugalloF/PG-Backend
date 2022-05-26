@@ -12,7 +12,7 @@ const postProfile = async (req, res) => {
       password,
       day_of_birth,
       gender,
-      img,
+      img, 
       phone,
       public_email,
       description,
@@ -46,6 +46,11 @@ const putProfile = async (req, res) => {
   try {
     const { id } = req.params;
     const {
+      name,
+      lastName,
+      userName,
+      email,
+      password,
       day_of_birth,
       gender,
       img,
@@ -60,6 +65,11 @@ const putProfile = async (req, res) => {
       },
     });
     await updatedProfile.update({
+      name,
+      lastName,
+      userName,
+      email,
+      password,
       day_of_birth,
       gender,
       img,
