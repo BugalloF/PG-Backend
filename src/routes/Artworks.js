@@ -30,7 +30,52 @@ const getArtWorks = async () => {
       console.log(error);
     }
   };
+  //------- PAGINADO --------
+  // function  paginado(){
+
+  //   const from = Number(req.query.from) || 0;
+  //   const registerpp = 5;
+    
+  //   const [users, total] = await Promise.all([
+  //     Usuario.find({}, "title").skip(from).limit(registerpp),
+  //     Usuario.countDocuments()
+  //   ])
+    
+  //   res.json({
+  //     ok: true,
+  //     msg: "getArtWorks",
+  //     users,
+  //     page: {
+  //       from,
+  //       registerpp,
+  //       total
+  //     }
+  //   })
+  // }
+router.get("/", async (req, res) =>{
+
   
+  const from = Number(req.query.from) || 0;
+    const registerpp = 6;
+    
+    const [obras, total] = await Promise.all([
+      Artwork.findAll({limit:registerpp,offset:from * registerpp}),
+      Artwork.count()
+    ])
+    // const obras = await  Artwork.findAll({limit:3,skip:0})
+    // const total = await Artwork.count()
+    
+    res.json({
+      ok: true,
+      msg: "getArtWorks",
+      obras,
+      page: {
+        from,
+        registerpp,
+        total
+      }
+    })
+})
   // ------------------------------- GET CONTROLLERS -------------------------------
   router.get("/", async (req, res) => {
     try {

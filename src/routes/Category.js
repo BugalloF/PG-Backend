@@ -2,6 +2,26 @@ const { Router } = require("express");
 const router = Router();
 const { Category } = require("../db.js");
 
+
+const getCategories = async (req,res) => {
+  try {
+    let categories = await Category.findAll()
+
+     categories.map((e) => {
+      // console.log(artWorks)
+      return {
+        id: e.id,
+        title: e.title,
+      };
+    });
+    res.status(200).json(categories)
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+router.get("/", getCategories);
+
 const postCategory = async (req, res) => {
     try {
       const { category } = req.body;
