@@ -1,18 +1,18 @@
 const { Router } = require("express");
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
-const artRouter = require("./Artworks.js")
-const profileRouter = require("./Profile.js")
-const filtersRouter = require("./Filters.js")
-const categoryRouter = require("./Category.js")
+const artRouter = require("./Artworks.js");
+const profileRouter = require("./Profile.js");
+const filtersRouter = require("./Filters.js");
+const categoryRouter = require("./Category.js");
 const router = Router();
 
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
-router.use('/art', artRouter)
-router.use('/filter',filtersRouter)
-router.use("/profile",profileRouter)
-router.use("/categories", categoryRouter)
+router.use("/art", artRouter);
+router.use("/filter", filtersRouter);
+router.use("/profile", profileRouter);
+router.use("/categories", categoryRouter);
 module.exports = router;
 
 // ------------------------------- GET UTILS -------------------------------
@@ -133,13 +133,11 @@ module.exports = router;
 // };
 // router.post("/profile", postProfile);
 
-
 // router.post("/user", postUser);
 
 // router.post("/art", postArtWork);
 
 // router.post("/categories", postCategory);
-
 
 // ------------------------------- DELETE -------------------------------
 // const deleteArtWork = async (req, res) => {
@@ -164,7 +162,7 @@ module.exports = router;
 //         id: id,
 //       },
 //     });
-//     await updatedArtWork.update({ 
+//     await updatedArtWork.update({
 //       title,
 //       content,
 //       price,
@@ -329,4 +327,3 @@ Por Tiempo Publicado*/
 //   });
 //   res.status(200).json(filtered);
 // });
-

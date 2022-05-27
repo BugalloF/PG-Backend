@@ -125,4 +125,15 @@ const getProfiles = async (req, res) => {
 };
 
 router.get("/", getProfiles);
+
+router.get("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    let found = Profile.findByPk(id);
+    if (found) res.status(200).json(found);
+    else res.status(404).send("Profile not found");
+  } catch (error) {
+    console.log(error);
+  }
+});
 module.exports = router;
