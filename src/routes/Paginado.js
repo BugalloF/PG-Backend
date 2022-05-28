@@ -8,7 +8,7 @@ module.exports= paginado = async function (modelo,query = 0){
     // const obras = await  Artwork.findAll({limit:3,skip:0})
     // const total = await Artwork.count()
   
-    return res.json({
+    return {
       ok: true,
       msg: "Pag",
       obras,
@@ -17,5 +17,5 @@ module.exports= paginado = async function (modelo,query = 0){
         registerpp,
         total,
       },
-    });
+    };
 }
