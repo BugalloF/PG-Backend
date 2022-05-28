@@ -13,7 +13,7 @@ module.exports= paginado = async function (modelo,query = 0){
       msg: "Pag",
       obras,
       page: {
-        from,
+        query,
         registerpp,
         total,
       },
