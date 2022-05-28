@@ -30,7 +30,7 @@ const getArtWorks = async (req, res) => {
       };
     });
     if (!name) {
-      return artWorks;
+      res.status(200).json(artWorks);
     } else {
       //  return artWorks.filter(e=> e.title.toLowerCase() === name.toLowerCase())
       let found = await Artwork.findAll({
@@ -71,31 +71,33 @@ const getArtWorks = async (req, res) => {
 //     }
 //   })
 // }
-router.get("/", async (req, res) => {
-  const from = Number(req.query.from) || 0;
-  const registerpp = 6;
+// router.get("/", async (req, res) => {
+//   const from = Number(req.query.from) || 0;
+//   const registerpp = 6;
 
-  const [obras, total] = await Promise.all([
-    Artwork.findAll({ limit: registerpp, offset: from * registerpp }),
-    Artwork.count(),
-  ]);
-  // const obras = await  Artwork.findAll({limit:3,skip:0})
-  // const total = await Artwork.count()
+//   const [obras, total] = await Promise.all([
+//     Artwork.findAll({ limit: registerpp, offset: from * registerpp }),
+//     Artwork.count(),
+//   ]);
+//   // const obras = await  Artwork.findAll({limit:3,skip:0})
+//   // const total = await Artwork.count()
 
-  res.json({
-    ok: true,
-    msg: "getArtWorks",
-    obras,
-    page: {
-      from,
-      registerpp,
-      total,
-    },
-  });
-  // console.log(await paginado(Artwork,from))
-  res.json(await paginado(Artwork, from));
-});
+//   res.json({
+//     ok: true,
+//     msg: "getArtWorks",
+//     obras,
+//     page: {
+//       from,
+//       registerpp,
+//       total,
+//     },
+//   });
+//   console.log(await paginado(Artwork,from))
+//   res.json(await paginado(Artwork, from));
 
+// });
+
+  router.get("/",getArtWorks)
 // ruta de detalle
 router.get("/:id", async (req, res) => {
   try {
