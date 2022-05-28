@@ -6,18 +6,7 @@ router.get("/country", async (req, res) => {
   const { country } = req.query;
   try {
     console.log(country)
-    let filtered = await Artwork.findAll({
-      include: {
-        model: Profile,
-        attributes: ["country"],
-        through: {
-          attributes: [],
-        },
-        where: {
-          country: country,
-        },
-      },
-    });
+    let filtered = await Artwork.findAll();
     console.log(filtered)
   
     res.status(200).json(filtered);
