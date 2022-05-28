@@ -13,7 +13,7 @@ router.get("/country", async (req, res) => {
         
       },
     });
-    console.log(filtered)
+    // console.log(filtered)
   
     res.status(200).json(filtered);
     

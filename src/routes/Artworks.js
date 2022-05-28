@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const router = Router();
 const { Artwork, Category, Profile } = require("../db.js");
+const paginado = require("./Paginado.js");
 
 const getArtWorks = async (req, res) => {
   try {
@@ -62,26 +63,29 @@ const getArtWorks = async (req, res) => {
 //   })
 // }
 router.get("/", async (req, res) => {
-  const from = Number(req.query.from) || 0;
-  const registerpp = 6;
+  // const from = Number(req.query.from) || 0;
+  // const registerpp = 6;
 
-  const [obras, total] = await Promise.all([
-    Artwork.findAll({ limit: registerpp, offset: from * registerpp }),
-    Artwork.count(),
-  ]);
-  // const obras = await  Artwork.findAll({limit:3,skip:0})
-  // const total = await Artwork.count()
+  // const [obras, total] = await Promise.all([
+  //   Artwork.findAll({ limit: registerpp, offset: from * registerpp }),
+  //   Artwork.count(),
+  // ]);
+  // // const obras = await  Artwork.findAll({limit:3,skip:0})
+  // // const total = await Artwork.count()
 
-  res.json({
-    ok: true,
-    msg: "getArtWorks",
-    obras,
-    page: {
-      from,
-      registerpp,
-      total,
-    },
-  });
+  // res.json({
+  //   ok: true,
+  //   msg: "getArtWorks",
+  //   obras,
+  //   page: {
+  //     from,
+  //     registerpp,
+  //     total,
+  //   },
+  // });
+  const {from} = Number(req.query)
+  
+  paginado(Artwork,from)
 });
 
 // ruta de detalle
