@@ -55,7 +55,7 @@ router.get("/category", async (req, res) => {
 });
 // -------------------------------- ORDENAMIENTOS --------------------
 router.get("/likes", async (req, res) => {
-  const { likes } = req.query;
+  const { likes,from } = req.query;
   // console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',likes)
   // let allArtWorks = await getArtWorks();
   // if (likes === "Asc") {
@@ -70,13 +70,17 @@ router.get("/likes", async (req, res) => {
   //Ahora como se debe
 
   if (likes === "ASC" || likes === "DESC") {
-    let ordered = await Artwork.findAll({ order: [["likes", likes]] });
+    let ordered = await Artwork.findAll({
+      order: [["likes", likes]],
+      limit: 12,
+      offset: from * 12,
+    });
     res.status(200).json(ordered);
   }
 });
 
 router.get("/price", async (req, res) => {
-  const { price } = req.query;
+  const { price,from } = req.query;
   // console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',likes)
   // let allArtWorks = await getArtWorks();
   // if (price === "Asc") {
@@ -100,7 +104,7 @@ router.get("/price", async (req, res) => {
 });
 
 router.get("/antiquity", async (req, res) => {
-  const { antiquity } = req.query;
+  const { antiquity,from } = req.query;
   // console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',likes)
   // let allArtWorks = await getArtWorks();
   // if (antiquity === "Recently") res.status(200).json(allArtWorks.reverse());
