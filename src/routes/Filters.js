@@ -6,25 +6,24 @@ router.get("/country", async (req, res) => {
   const { country, from } = req.query;
   try {
     // console.log(country)
-    let filtered =  await Artwork.findAll({
+    let filtered = await Artwork.findAll({
       include: {
         model: Profile,
-        where:{country:country},
-        
-      }, limit: 6, offset: from * 6  
+        where: { country: country },
+      },
+      limit: 12,
+      offset: from * 12,
     });
     // console.log(filtered)
-  
+
     res.status(200).json(filtered);
-    
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 });
 
-
 router.get("/category", async (req, res) => {
-  const { category } = req.query;
+  const { category, from } = req.query;
   // // console.log(category)
   // try {
   //   let allArtWorks = await getArtWorks();
@@ -35,19 +34,21 @@ router.get("/category", async (req, res) => {
   //     res.status(200).json(filteredArtWoks);
   //   }
   // } catch (error) {
-    //   console.log(error);
-    // }
-    // Ahora lo hacemos como se tinee que hacer :
-    let filtered = await Artwork.findAll({
-      include: {
-        model: Category,
-        attributes: ["title"],
-        through: {
-          attributes: [],
-        },
-        where: {
+  //   console.log(error);
+  // }
+  // Ahora lo hacemos como se tinee que hacer :
+  let filtered = await Artwork.findAll({
+    include: {
+      model: Category,
+      attributes: ["title"],
+      through: {
+        attributes: [],
+      },
+      where: {
         title: category,
       },
+      limit: 12,
+      offset: from * 12,
     },
   });
   res.status(200).json(filtered);
@@ -88,8 +89,13 @@ router.get("/price", async (req, res) => {
   //   });
   // }
   if (price === "ASC" || price === "DESC") {
-    let ordered = await Artwork.findAll({ order: [["price", price]] });
-    res.status(200).json(ordered);
+    let ordered = await Artwork.findAll({
+      order: [["price", price]],
+      limit: 12,
+      offset: from * 12,
+    });
+    let counter = await Artwork.count();
+    res.status(200).json({ ordered, counter });
   }
 });
 
@@ -109,10 +115,12 @@ router.get("/antiquity", async (req, res) => {
           attributes: [],
         },
       },
+      limit: 12,
+      offset: from * 12,
     });
-    res.status(200).json(ordered);
+    let counter = await Artwork.count();
+    res.status(200).json({ ordered, counter });
   }
 });
-
 
 module.exports = router;

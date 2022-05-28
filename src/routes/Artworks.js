@@ -6,7 +6,7 @@ const { Artwork, Category, Profile } = require("../db.js");
 const getArtWorks = async (req, res) => {
   try {
     const { name, from } = req.query;
-
+    
     if (!name) {
       let artWorks = await Artwork.findAll({
         include: {
@@ -32,7 +32,9 @@ const getArtWorks = async (req, res) => {
           price: e.price,
         };
       });
-      res.status(200).json(artWorks);
+      let counter = await Artwork.count()
+
+      res.status(200).json({artWorks,counter});
     } else {
       //  return artWorks.filter(e=> e.title.toLowerCase() === name.toLowerCase())
       let found = await Artwork.findAll({
@@ -53,6 +55,9 @@ const getArtWorks = async (req, res) => {
     console.log(error);
   }
 };
+
+//#region 
+
 //------- PAGINADO --------
 // function  paginado(){
 
@@ -100,6 +105,8 @@ const getArtWorks = async (req, res) => {
 //   res.json(await paginado(Artwork, from));
 
 // });
+//#endregion
+
 
 router.get("/", getArtWorks);
 // ruta de detalle
