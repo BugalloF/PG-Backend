@@ -2,6 +2,32 @@ const { Router } = require("express");
 const router = Router();
 const { Artwork, Category, Profile } = require("../db.js");
 
+router.get("/country", async (req, res) => {
+  const { country } = req.query;
+  try {
+    let filtered = await Artwork.findAll({
+      include: {
+        model: Profile,
+        attributes: ["country"],
+        through: {
+          attributes: [],
+        },
+        where: {
+          country: country,
+        },
+      },
+    });
+    console.log(country)
+    console.log(filtered)
+  
+    res.status(200).json(filtered);
+    
+  } catch (error) {
+    console.log(error)
+  }
+});
+
+
 router.get("/category", async (req, res) => {
   const { category } = req.query;
   // // console.log(category)
@@ -14,24 +40,24 @@ router.get("/category", async (req, res) => {
   //     res.status(200).json(filteredArtWoks);
   //   }
   // } catch (error) {
-  //   console.log(error);
-  // }
-  // Ahora lo hacemos como se tinee que hacer :
-  let filtered = await Artwork.findAll({
-    include: {
-      model: Category,
-      attributes: ["title"],
-      through: {
-        attributes: [],
-      },
-      where: {
+    //   console.log(error);
+    // }
+    // Ahora lo hacemos como se tinee que hacer :
+    let filtered = await Artwork.findAll({
+      include: {
+        model: Category,
+        attributes: ["title"],
+        through: {
+          attributes: [],
+        },
+        where: {
         title: category,
       },
     },
   });
   res.status(200).json(filtered);
 });
-
+// -------------------------------- ORDENAMIENTOS --------------------
 router.get("/likes", async (req, res) => {
   const { likes } = req.query;
   // console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',likes)
@@ -93,21 +119,5 @@ router.get("/antiquity", async (req, res) => {
   }
 });
 
-router.get("/country", async (req, res) => {
-  const { country } = req.query;
-  let filtered = await Artwork.findAll({
-    include: {
-      model: Profile,
-      attributes: ["country"],
-      through: {
-        attributes: [],
-      },
-      where: {
-        country: country,
-      },
-    },
-  });
-  res.status(200).json(filtered);
-});
 
 module.exports = router;
