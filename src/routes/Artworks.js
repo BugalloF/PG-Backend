@@ -5,31 +5,33 @@ const { Artwork, Category, Profile } = require("../db.js");
 
 const getArtWorks = async (req, res) => {
   try {
-    const { name,from } = req.query;
+    const { name, from } = req.query;
 
-    let artWorks = await Artwork.findAll({
-      include: {
-        model: Category,
-        attributes: ["title"],
-        through: {
-          attributes: [],
-        },
-      },limit: 12, offset: from * 12 
-    });
-    artWorks.map((e) => {
-      // console.log(artWorks)
-      return {
-        id: e.id,
-        img: e.img,
-        imgCompress: e.imgCompress,
-        title: e.title,
-        content: e.content,
-        category: e.categories[0].title,
-        likes: e.likes,
-        price: e.price,
-      };
-    });
     if (!name) {
+      let artWorks = await Artwork.findAll({
+        include: {
+          model: Category,
+          attributes: ["title"],
+          through: {
+            attributes: [],
+          },
+        },
+        limit: 12,
+        offset: from * 12,
+      });
+      artWorks.map((e) => {
+        // console.log(artWorks)
+        return {
+          id: e.id,
+          img: e.img,
+          imgCompress: e.imgCompress,
+          title: e.title,
+          content: e.content,
+          category: e.categories[0].title,
+          likes: e.likes,
+          price: e.price,
+        };
+      });
       res.status(200).json(artWorks);
     } else {
       //  return artWorks.filter(e=> e.title.toLowerCase() === name.toLowerCase())
@@ -41,7 +43,9 @@ const getArtWorks = async (req, res) => {
           through: {
             attributes: [],
           },
-        },limit: 12, offset: from * 12 
+        },
+        limit: 12,
+        offset: from * 12,
       });
       res.json(found);
     }
@@ -97,7 +101,7 @@ const getArtWorks = async (req, res) => {
 
 // });
 
-  router.get("/",getArtWorks)
+router.get("/", getArtWorks);
 // ruta de detalle
 router.get("/:id", async (req, res) => {
   try {
