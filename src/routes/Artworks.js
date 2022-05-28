@@ -6,7 +6,7 @@ const { Artwork, Category, Profile } = require("../db.js");
 const getArtWorks = async (req, res) => {
   try {
     const { name, from=0 } = req.query;
-    
+     
     if (!name) {
       let artWorks = await Artwork.findAll({
         include: {
