@@ -5,6 +5,7 @@ const { Artwork, Category, Profile } = require("../db.js");
 router.get("/country", async (req, res) => {
   const { country } = req.query;
   try {
+    console.log(country)
     let filtered = await Artwork.findAll({
       include: {
         model: Profile,
@@ -17,7 +18,6 @@ router.get("/country", async (req, res) => {
         },
       },
     });
-    console.log(country)
     console.log(filtered)
   
     res.status(200).json(filtered);
