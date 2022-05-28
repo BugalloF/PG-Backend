@@ -137,6 +137,7 @@ router.get("/:id", async (req, res) => {
     else res.status(404).send("Profile not found");
   } catch (error) {
     console.log(error);
+    res.status(404).send("Profile not found");
   }
 });
 module.exports = router;
