@@ -1,4 +1,4 @@
-function paginado (modelo,query){
+module.exports= paginado = function (modelo,query){
     const registerpp = 6;
   
     const [obras, total] = await Promise.all([
@@ -19,4 +19,3 @@ function paginado (modelo,query){
       },
     });
 }
-module.exports= paginado
