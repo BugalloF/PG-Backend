@@ -105,29 +105,32 @@ router.get("/:id", async (req, res) => {
 });
 // ------------------------------- POST -------------------------------
 const postArtWork = async (req, res) => {
-  try {
-    const { title, content, category, price, img, imgCompress, id } = req.body;
-    let artWorkCreate = await Artwork.create({
-      title,
-      content,
-      price,
-      img,
-      imgCompress,
-    });
-    let categoryMatch = await Category.findAll({
-      where: { title: category },
-    });
-    // console.log(Artwork)
-    await artWorkCreate.addCategories(categoryMatch);
-
-    let profileMatch = await Profile.findByPk(id);
-
-    await artWorkCreate.addProfile(profileMatch);
-    res.status(200).json(artWorkCreate);
-  } catch (error) {
+  const { title, content, category, price, img, imgCompress, id } = req.body;
+  if( id && category){
+      try {
+      let artWorkCreate = await Artwork.create({
+        title,
+        content,
+        price,
+        img,
+        imgCompress,
+      });
+      let categoryMatch = await Category.findAll({
+        where: { title: category },
+      });
+      // console.log(Artwork)
+      await artWorkCreate.setCategories(categoryMatch);
+  
+      let profileMatch = await Profile.findByPk(id);
+  
+      await profileMatch.addArtwork(artWorkCreate);
+      res.status(200).json(artWorkCreate);
+    }
+   catch (error) {
     console.log(error);
     res.status(404).send("Cannot create the Artwork!.");
   }
+} else res.status(404).send('No se puedo postear la obra!')
 };
 router.post("/", postArtWork);
 
