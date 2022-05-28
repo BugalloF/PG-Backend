@@ -1,6 +1,6 @@
 module.exports= paginado = async function (modelo,query){
     const registerpp = 6;
-  
+    query = parseInt(query)
     const [obras, total] = await Promise.all([
       modelo.findAll({ limit: registerpp, offset: query * registerpp }),
       modelo.count(),

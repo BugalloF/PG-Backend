@@ -83,8 +83,8 @@ router.get("/", async (req, res) => {
   //     total,
   //   },
   // });
-  const {from} = Number(req.query)
-  
+  const {from} = req.query
+  console.log(from)
   paginado(Artwork,from)
 });
 
