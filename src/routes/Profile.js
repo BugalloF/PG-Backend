@@ -1,13 +1,13 @@
 const { Router } = require("express");
 const router = Router();
-const { Profile } = require("../db.js");
+const { Profile,Artwork } = require("../db.js");
 
 const getProfiles = async (req, res) => {
   try {
     const { name } = req.query;
 
     if (!name) {
-      let profiles = await Profile.findAll();
+      let profiles = await Profile.findAll({include:{model:Artwork}});
 
       profiles.map((e) => {
         // console.log(artWorks)

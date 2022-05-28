@@ -2,8 +2,28 @@ const { Router } = require("express");
 const router = Router();
 const { Artwork, Category, Profile } = require("../db.js");
 
+router.get("/country", async (req, res) => {
+  const { country, from =0} = req.query;
+  try {
+    // console.log(country)
+    let filtered = await Artwork.findAll({
+      include: {
+        model: Profile,
+        where: { country: country },
+      },
+      limit: 12,
+      offset: from * 12,
+    });
+    // console.log(filtered)
+
+    res.status(200).json(filtered);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 router.get("/category", async (req, res) => {
-  const { category } = req.query;
+  const { category, from =0} = req.query;
   // // console.log(category)
   // try {
   //   let allArtWorks = await getArtWorks();
@@ -27,13 +47,15 @@ router.get("/category", async (req, res) => {
       where: {
         title: category,
       },
+      limit: 12,
+      offset: from * 12,
     },
   });
   res.status(200).json(filtered);
 });
-
+// -------------------------------- ORDENAMIENTOS --------------------
 router.get("/likes", async (req, res) => {
-  const { likes } = req.query;
+  const { likes,from =0} = req.query;
   // console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',likes)
   // let allArtWorks = await getArtWorks();
   // if (likes === "Asc") {
@@ -48,13 +70,17 @@ router.get("/likes", async (req, res) => {
   //Ahora como se debe
 
   if (likes === "ASC" || likes === "DESC") {
-    let ordered = await Artwork.findAll({ order: [["likes", likes]] });
+    let ordered = await Artwork.findAll({
+      order: [["likes", likes]],
+      limit: 12,
+      offset: from * 12,
+    });
     res.status(200).json(ordered);
   }
 });
 
 router.get("/price", async (req, res) => {
-  const { price } = req.query;
+  const { price,from=0 } = req.query;
   // console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',likes)
   // let allArtWorks = await getArtWorks();
   // if (price === "Asc") {
@@ -67,13 +93,18 @@ router.get("/price", async (req, res) => {
   //   });
   // }
   if (price === "ASC" || price === "DESC") {
-    let ordered = await Artwork.findAll({ order: [["price", price]] });
-    res.status(200).json(ordered);
+    let ordered = await Artwork.findAll({
+      order: [["price", price]],
+      limit: 12,
+      offset: from * 12,
+    });
+    let counter = await Artwork.count();
+    res.status(200).json({ ordered, counter });
   }
 });
 
 router.get("/antiquity", async (req, res) => {
-  const { antiquity } = req.query;
+  const { antiquity,from=0 } = req.query;
   // console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',likes)
   // let allArtWorks = await getArtWorks();
   // if (antiquity === "Recently") res.status(200).json(allArtWorks.reverse());
@@ -88,26 +119,12 @@ router.get("/antiquity", async (req, res) => {
           attributes: [],
         },
       },
+      limit: 12,
+      offset: from * 12,
     });
-    res.status(200).json(ordered);
+    let counter = await Artwork.count();
+    res.status(200).json({ ordered, counter });
   }
-});
-
-router.get("/country", async (req, res) => {
-  const { country } = req.query;
-  let filtered = await Artwork.findAll({
-    include: {
-      model: Profile,
-      attributes: ["country"],
-      through: {
-        attributes: [],
-      },
-      where: {
-        country: country,
-      },
-    },
-  });
-  res.status(200).json(filtered);
 });
 
 module.exports = router;
