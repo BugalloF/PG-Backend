@@ -8,7 +8,8 @@ router.get("/country", async (req, res) => {
     // console.log(country)
     let filtered = await Artwork.findAll({
       include: {
-        model: Profile
+        model: Profile,
+        where:{country:country}
         
       },
     });
