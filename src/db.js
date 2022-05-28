@@ -61,8 +61,8 @@ const { Artwork, Profile, Category } = sequelize.models;
 // Profile.belongsTo(User)
 Profile.hasMany(Profile);
 Profile.belongsTo(Profile, { as: "following" });
-Profile.belongsToMany(Artwork, { through: "profiles_artworks" });
-Artwork.belongsToMany(Profile, { through: "profiles_artworks" });
+Profile.hasMany(Artwork);
+Artwork.belongsTo(Profile);
 Artwork.belongsToMany(Category, { through: "artworks_categorys" });
 Category.belongsToMany(Artwork, { through: "artworks_categorys" });
 module.exports = {
