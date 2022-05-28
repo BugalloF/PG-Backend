@@ -84,7 +84,7 @@ router.get("/", async (req, res) => {
   //   },
   // });
   const {from} = req.query
-  console.log(await paginado(Artwork,from))
+  // console.log(await paginado(Artwork,from))
   res.json(await paginado(Artwork,from))
 
 });

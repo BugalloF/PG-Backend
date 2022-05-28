@@ -3,7 +3,7 @@ const router = Router();
 const { Artwork, Category, Profile } = require("../db.js");
 
 router.get("/country", async (req, res) => {
-  const { country } = req.query;
+  const { country, from } = req.query;
   try {
     // console.log(country)
     let filtered = await Artwork.findAll({
@@ -15,7 +15,7 @@ router.get("/country", async (req, res) => {
     });
     // console.log(filtered)
   
-    res.status(200).json(filtered);
+    res.status(200).json(await paginado(filtered,from));
     
   } catch (error) {
     console.log(error)
