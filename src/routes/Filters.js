@@ -6,12 +6,12 @@ router.get("/country", async (req, res) => {
   const { country, from } = req.query;
   try {
     // console.log(country)
-    let filtered = await Artwork.findAll({
+    let filtered =  Artwork.findAll({
       include: {
         model: Profile,
-        where:{country:country}
+        where:{country:country},
         
-      },
+      }, limit: registerpp, offset: query * registerpp 
     });
     // console.log(filtered)
   
