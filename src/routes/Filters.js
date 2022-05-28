@@ -3,7 +3,7 @@ const router = Router();
 const { Artwork, Category, Profile } = require("../db.js");
 
 router.get("/country", async (req, res) => {
-  const { country, from } = req.query;
+  const { country, from =0} = req.query;
   try {
     // console.log(country)
     let filtered = await Artwork.findAll({
@@ -23,7 +23,7 @@ router.get("/country", async (req, res) => {
 });
 
 router.get("/category", async (req, res) => {
-  const { category, from } = req.query;
+  const { category, from =0} = req.query;
   // // console.log(category)
   // try {
   //   let allArtWorks = await getArtWorks();
@@ -55,7 +55,7 @@ router.get("/category", async (req, res) => {
 });
 // -------------------------------- ORDENAMIENTOS --------------------
 router.get("/likes", async (req, res) => {
-  const { likes,from } = req.query;
+  const { likes,from =0} = req.query;
   // console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',likes)
   // let allArtWorks = await getArtWorks();
   // if (likes === "Asc") {
@@ -80,7 +80,7 @@ router.get("/likes", async (req, res) => {
 });
 
 router.get("/price", async (req, res) => {
-  const { price,from } = req.query;
+  const { price,from=0 } = req.query;
   // console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',likes)
   // let allArtWorks = await getArtWorks();
   // if (price === "Asc") {
@@ -104,7 +104,7 @@ router.get("/price", async (req, res) => {
 });
 
 router.get("/antiquity", async (req, res) => {
-  const { antiquity,from } = req.query;
+  const { antiquity,from=0 } = req.query;
   // console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',likes)
   // let allArtWorks = await getArtWorks();
   // if (antiquity === "Recently") res.status(200).json(allArtWorks.reverse());
