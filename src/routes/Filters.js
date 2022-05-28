@@ -11,11 +11,11 @@ router.get("/country", async (req, res) => {
         model: Profile,
         where:{country:country},
         
-      }, limit: 6, offset: from * 6 
+      }, limit: 6, offset: from * 6  
     });
     // console.log(filtered)
   
-    res.status(200).json(await paginado(filtered,from));
+    res.status(200).json(filtered);
     
   } catch (error) {
     console.log(error)
