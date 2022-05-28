@@ -1,4 +1,4 @@
-module.exports= paginado = async function (modelo,query){
+module.exports= paginado = async function (modelo,query = 0){
     const registerpp = 6;
     query = parseInt(query)
     const [obras, total] = await Promise.all([
