@@ -122,13 +122,16 @@ router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     let artWork = await Artwork.findAll({
-      include: {
+      include: [{
         model: Category,
         attributes: ["title"],
         through: {
-          attributes: [],
-        },
-      },
+          attributes: []
+        }},{
+          model: Profile,
+          attributes: ["name","img"]
+        }
+      ],
       where: { id: id },
     });
     res.status(200).json(artWork);
