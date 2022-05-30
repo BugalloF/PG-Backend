@@ -45,13 +45,16 @@ const getArtWorks = async (req, res) => {
       });
       let artWorks = await Artwork.findAll({
         where: { title: { [Op.iLike]: `%${name}%` } },
-        include: {
+        include: [{
           model: Category,
           attributes: ["title"],
           through: {
-            attributes: [],
-          },
-        },
+            attributes: []
+          }},{
+            model: Profile,
+            attributes: ["name","img"]
+          }
+        ],
         limit: 12,
         offset: from * 12,
       });
