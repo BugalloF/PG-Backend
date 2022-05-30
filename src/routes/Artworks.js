@@ -9,13 +9,16 @@ const getArtWorks = async (req, res) => {
 
     if (!name) {
       let artWorks = await Artwork.findAll({
-        include: {
+        include: [{
           model: Category,
           attributes: ["title"],
           through: {
-            attributes: [],
-          },
-        },
+            attributes: []
+          }},{
+            model: Profile,
+            attributes: ["name","img"]
+          }
+        ],
         limit: 12,
         offset: from * 12,
       });
@@ -40,19 +43,22 @@ const getArtWorks = async (req, res) => {
       let counter = await Artwork.count({
         where: { title: { [Op.iLike]: `%${name}%` } },
       });
-      let found = await Artwork.findAll({
+      let artWorks = await Artwork.findAll({
         where: { title: { [Op.iLike]: `%${name}%` } },
-        include: {
+        include: [{
           model: Category,
           attributes: ["title"],
           through: {
-            attributes: [],
-          },
-        },
+            attributes: []
+          }},{
+            model: Profile,
+            attributes: ["name","img"]
+          }
+        ],
         limit: 12,
         offset: from * 12,
       });
-      res.json({found,counter});
+      res.json({artWorks,counter});
     }
   } catch (error) {
     console.log(error);
