@@ -5,8 +5,8 @@ const { Artwork, Category, Profile } = require("../db.js");
 
 const getArtWorks = async (req, res) => {
   try {
-    const { name, from=0 } = req.query;
-     
+    const { name, from = 0 } = req.query;
+
     if (!name) {
       let artWorks = await Artwork.findAll({
         include: {
@@ -32,11 +32,14 @@ const getArtWorks = async (req, res) => {
           price: e.price,
         };
       });
-      let counter = await Artwork.count()
+      let counter = await Artwork.count();
 
-      res.status(200).json({artWorks,counter});
+      res.status(200).json({ artWorks, counter });
     } else {
       //  return artWorks.filter(e=> e.title.toLowerCase() === name.toLowerCase())
+      let counter = await Artwork.count({
+        where: { title: { [Op.iLike]: `%${name}%` } },
+      });
       let found = await Artwork.findAll({
         where: { title: { [Op.iLike]: `%${name}%` } },
         include: {
@@ -49,14 +52,14 @@ const getArtWorks = async (req, res) => {
         limit: 12,
         offset: from * 12,
       });
-      res.json(found);
+      res.json({found,counter});
     }
   } catch (error) {
     console.log(error);
   }
 };
 
-//#region 
+//#region
 
 //------- PAGINADO --------
 // function  paginado(){
@@ -106,7 +109,6 @@ const getArtWorks = async (req, res) => {
 
 // });
 //#endregion
-
 
 router.get("/", getArtWorks);
 // ruta de detalle
