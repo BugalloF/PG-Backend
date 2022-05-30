@@ -9,18 +9,19 @@ const getArtWorks = async (req, res) => {
 
     if (!name) {
       let artWorks = await Artwork.findAll({
-        include: [{
+        include: {
           model: Category,
           attributes: ["title"],
           through: {
             attributes: []
-          }},{
-            model: Profile,
-            attributes: ["name",'img'],
-            through: {
-              attributes: []
-            }}
-        ],
+          }}
+        ,
+        include:{
+          model: Profile,
+          attributes: ["name",'img'],
+          through: {
+            attributes: []
+          }},
         limit: 12,
         offset: from * 12,
       });
