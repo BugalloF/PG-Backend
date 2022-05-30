@@ -16,6 +16,7 @@ const getArtWorks = async (req, res) => {
             attributes: []
           }},{
             model: Profile,
+            attributes: ["name","img"]
           }
         ],
         limit: 12,
