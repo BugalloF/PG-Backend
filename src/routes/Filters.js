@@ -2,7 +2,7 @@ const { Router } = require("express");
 const router = Router();
 const { Artwork, Category, Profile } = require("../db.js");
 
-router.get("/country", async (req, res) => {
+router.get("/country", async (req, res,next) => {
   const { country, from =0} = req.query;
   try {
     // console.log(country)
@@ -11,18 +11,18 @@ router.get("/country", async (req, res) => {
         model: Profile,
         where: { country: country },
       },
-      limit: 12,
+      limit: 12, 
       offset: from * 12,
     });
     // console.log(filtered)
 
     res.status(200).json(filtered);
   } catch (error) {
-    console.log(error);
+    next(error)
   }
 });
 
-router.get("/category", async (req, res) => {
+router.get("/category", async (req, res,next) => {
   const { category, from =0} = req.query;
   // // console.log(category)
   // try {
@@ -37,24 +37,30 @@ router.get("/category", async (req, res) => {
   //   console.log(error);
   // }
   // Ahora lo hacemos como se tinee que hacer :
-  let filtered = await Artwork.findAll({
-    include: {
-      model: Category,
-      attributes: ["title"],
-      through: {
-        attributes: [],
+  try {
+    let Artworks = await Artwork.findAll({
+      include: {
+        model: Category,
+        attributes: ["title"],
+        through: {
+          attributes: [],
+        },
+        where: {
+          title: category,
+        },
+        limit: 12,
+        offset: from * 12,
       },
-      where: {
-        title: category,
-      },
-      limit: 12,
-      offset: from * 12,
-    },
-  });
-  res.status(200).json(filtered);
+    });
+    let counter = await Artwork.count();
+    res.status(200).json({Artworks,counter});
+    
+  } catch (error) {
+    next(error)
+  }
 });
 // -------------------------------- ORDENAMIENTOS --------------------
-router.get("/likes", async (req, res) => {
+router.get("/likes", async (req, res,next) => {
   const { likes,from =0} = req.query;
   // console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',likes)
   // let allArtWorks = await getArtWorks();
@@ -68,18 +74,23 @@ router.get("/likes", async (req, res) => {
   //   });
   // }
   //Ahora como se debe
-
+try {
   if (likes === "ASC" || likes === "DESC") {
-    let ordered = await Artwork.findAll({
+    let Artworks = await Artwork.findAll({
       order: [["likes", likes]],
       limit: 12,
       offset: from * 12,
     });
-    res.status(200).json(ordered);
+    let counter = await Artwork.count();
+    res.status(200).json({Artworks,counter});
   }
+  
+} catch (error) {
+  next(error)
+}
 });
 
-router.get("/price", async (req, res) => {
+router.get("/price", async (req, res,next) => {
   const { price,from=0 } = req.query;
   // console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',likes)
   // let allArtWorks = await getArtWorks();
@@ -92,39 +103,49 @@ router.get("/price", async (req, res) => {
   //     return a.price - b.price;
   //   });
   // }
-  if (price === "ASC" || price === "DESC") {
-    let ordered = await Artwork.findAll({
-      order: [["price", price]],
-      limit: 12,
-      offset: from * 12,
-    });
-    let counter = await Artwork.count();
-    res.status(200).json({ ordered, counter });
+  try {
+    if (price === "ASC" || price === "DESC") {
+      let Artworks = await Artwork.findAll({
+        order: [["price", price]],
+        limit: 12,
+        offset: from * 12,
+      });
+      let counter = await Artwork.count();
+      res.status(200).json({ Artworks, counter });
+    }
+    
+  } catch (error) {
+    next(error)
   }
 });
 
-router.get("/antiquity", async (req, res) => {
-  const { antiquity,from=0 } = req.query;
-  // console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',likes)
-  // let allArtWorks = await getArtWorks();
-  // if (antiquity === "Recently") res.status(200).json(allArtWorks.reverse());
-  // else res.status(200).json(allArtWorks);
-  if (antiquity === "ASC" || antiquity === "DESC") {
-    let ordered = await Artwork.findAll({
-      order: [["createdAt", antiquity]],
-      include: {
-        model: Category,
-        attributes: ["title"],
-        through: {
-          attributes: [],
+router.get("/antiquity", async (req, res,next) => {
+  try {
+    const { antiquity,from=0 } = req.query;
+    // console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',likes)
+    // let allArtWorks = await getArtWorks();
+    // if (antiquity === "Recently") res.status(200).json(allArtWorks.reverse());
+    // else res.status(200).json(allArtWorks);
+    if (antiquity === "ASC" || antiquity === "DESC") {
+      let Artoworks = await Artwork.findAll({
+        order: [["createdAt", antiquity]],
+        include: {
+          model: Category,
+          attributes: ["title"],
+          through: {
+            attributes: [],
+          },
         },
-      },
-      limit: 12,
-      offset: from * 12,
-    });
-    let counter = await Artwork.count();
-    res.status(200).json({ ordered, counter });
+        limit: 12,
+        offset: from * 12,
+      });
+      let counter = await Artwork.count();
+      res.status(200).json({ Artoworks, counter });
+    
+  } }catch (error) {
+    next(error)
   }
+  
 });
 
 module.exports = router;

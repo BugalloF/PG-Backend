@@ -2,7 +2,7 @@ const { Router } = require("express");
 const router = Router();
 const { Profile,Artwork } = require("../db.js");
 
-const getProfiles = async (req, res) => {
+const getProfiles = async (req, res,next) => {
   try {
     const { name } = req.query;
 
@@ -37,12 +37,13 @@ const getProfiles = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+    next(error)
   }
 };
 
 router.get("/", getProfiles);
 
-const postProfile = async (req, res) => {
+const postProfile = async (req, res,next) => {
   try {
     const {
       name,
@@ -75,14 +76,13 @@ const postProfile = async (req, res) => {
 
     res.status(200).json(profileCreate);
   } catch (error) {
-    console.log(error);
-    res.status(404).send("Cannot create the profile!.");
+    next(error)
   }
 };
 router.post("/", postProfile);
 
 // ------------------------------- UPDATE -------------------------------
-const putProfile = async (req, res) => {
+const putProfile = async (req, res,next) => {
   try {
     const { id } = req.params;
     const {
@@ -120,7 +120,7 @@ const putProfile = async (req, res) => {
     });
     res.status(201).json(updatedProfile);
   } catch (error) {
-    console.log(error);
+    next(error)
   }
 };
 
@@ -128,7 +128,7 @@ router.put("/:id", putProfile);
 
 
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", async (req, res,next) => {
   try {
     const { id } = req.params;
     let found = await Profile.findByPk(id, {
@@ -139,7 +139,7 @@ router.get("/:id", async (req, res) => {
               }});
     if (found) res.status(200).json(found);
   } catch (error) {
-    console.log(error);
+    next(error)
   }
 });
 module.exports = router;
