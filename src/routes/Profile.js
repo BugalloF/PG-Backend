@@ -11,7 +11,7 @@ const getProfiles = async (req, res) => {
 
       profiles.map((e) => {
         // console.log(artWorks)
-        return {
+        return { 
           id: e.id,
           name: e.name,
           lastName: e.lastName,
