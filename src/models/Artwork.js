@@ -1,8 +1,7 @@
 const { DataTypes } = require("sequelize");
-// Exportamos una funcion que define el modelo
-// Luego le injectamos la conexion a sequelize.
+const URL = `localhost:3001`
 module.exports = (sequelize) => {
-  // defino el modelo
+  
   sequelize.define(
     "artwork",
     {
@@ -26,6 +25,10 @@ module.exports = (sequelize) => {
       },
       imgCompress: {
         type: DataTypes.TEXT,
+        get() {
+          const imagecompress = this.getDataValue('imgCompress')
+          return `${URL}/${imagecompress}`
+        }
       },
       price: {
         type: DataTypes.INTEGER,

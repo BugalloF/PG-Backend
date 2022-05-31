@@ -23,6 +23,7 @@ module.exports = (sequelize) => {
       userName: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique:true
       },
       email: {
         type: DataTypes.STRING,
@@ -31,6 +32,7 @@ module.exports = (sequelize) => {
       password: {
         type: DataTypes.STRING,
         allowNull: false,
+        
       }, // obligatory fields |||||
       is_Admin: {
         type: DataTypes.BOOLEAN,
@@ -58,7 +60,7 @@ module.exports = (sequelize) => {
       country:{
           type:DataTypes.STRING,
           
-      }
+      },
     },
     { timestamps: false }
   );

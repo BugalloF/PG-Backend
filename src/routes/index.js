@@ -5,14 +5,19 @@ const artRouter = require("./Artworks.js");
 const profileRouter = require("./Profile.js");
 const filtersRouter = require("./Filters.js");
 const categoryRouter = require("./Category.js");
+const orderRouter = require('./Orders.js')
+const loginRouter = require('./auth/login')
 const router = Router();
 
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
+router.use("/login", loginRouter);
 router.use("/art", artRouter);
 router.use("/filter", filtersRouter);
+router.use("/order", orderRouter);
 router.use("/profile", profileRouter);
 router.use("/categories", categoryRouter);
+
 module.exports = router;
 
 // ------------------------------- GET UTILS -------------------------------

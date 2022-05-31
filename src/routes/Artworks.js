@@ -1,9 +1,11 @@
 const { Router } = require("express");
 const { Op } = require("sequelize");
 const router = Router();
+const upload = require("../multer/multer.js")
+const  checkAuth  = require('./auth/auth.js')
 const { Artwork, Category, Profile } = require("../db.js");
 
-const getArtWorks = async (req, res) => {
+const getArtWorks = async (req, res, next) => {
   try {
     const { name, from = 0 } = req.query;
 
@@ -12,37 +14,26 @@ const getArtWorks = async (req, res) => {
         include: [{
           model: Category,
           attributes: ["title"],
-          through: {
-            attributes: []
-          }},{
+          through: {attributes:[],}
+         },
+         {
             model: Profile,
-            attributes: ["name","img"]
+            attributes: ["userName","img"]
           }
         ],
         limit: 12,
         offset: from * 12,
       });
-      artWorks.map((e) => {
-        // console.log(artWorks)
-        return {
-          id: e.id,
-          img: e.img,
-          imgCompress: e.imgCompress,
-          title: e.title,
-          content: e.content,
-          category: e.categories[0].title,
-          likes: e.likes,
-          price: e.price,
-        };
-      });
+      
       let counter = await Artwork.count();
 
       res.status(200).json({ artWorks, counter });
     } else {
-      //  return artWorks.filter(e=> e.title.toLowerCase() === name.toLowerCase())
+
       let counter = await Artwork.count({
         where: { title: { [Op.iLike]: `%${name}%` } },
       });
+      
       let artWorks = await Artwork.findAll({
         where: { title: { [Op.iLike]: `%${name}%` } },
         include: [{
@@ -60,154 +51,122 @@ const getArtWorks = async (req, res) => {
       });
       res.json({artWorks,counter});
     }
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    next(err)
   }
 };
 
-//#region
+router.get("/",checkAuth,getArtWorks);
 
-//------- PAGINADO --------
-// function  paginado(){
 
-//   const from = Number(req.query.from) || 0;
-//   const registerpp = 5;
 
-//   const [users, total] = await Promise.all([
-//     Usuario.find({}, "title").skip(from).limit(registerpp),
-//     Usuario.countDocuments()
-//   ])
-
-//   res.json({
-//     ok: true,
-//     msg: "getArtWorks",
-//     users,
-//     page: {
-//       from,
-//       registerpp,
-//       total
-//     }
-//   })
-// }
-// router.get("/", async (req, res) => {
-//   const from = Number(req.query.from) || 0;
-//   const registerpp = 6;
-
-//   const [obras, total] = await Promise.all([
-//     Artwork.findAll({ limit: registerpp, offset: from * registerpp }),
-//     Artwork.count(),
-//   ]);
-//   // const obras = await  Artwork.findAll({limit:3,skip:0})
-//   // const total = await Artwork.count()
-
-//   res.json({
-//     ok: true,
-//     msg: "getArtWorks",
-//     obras,
-//     page: {
-//       from,
-//       registerpp,
-//       total,
-//     },
-//   });
-//   console.log(await paginado(Artwork,from))
-//   res.json(await paginado(Artwork, from));
-
-// });
-//#endregion
-
-router.get("/", getArtWorks);
 // ruta de detalle
-router.get("/:id", async (req, res) => {
+router.get("/:id", async (req,res,next) => {
   try {
     const { id } = req.params;
     let artWork = await Artwork.findAll({
       include: [{
         model: Category,
         attributes: ["title"],
-        through: {
-          attributes: []
-        }},{
+        through: {attributes:[],}
+       },{
           model: Profile,
-          attributes: ["name","img"]
+          attributes: ["id","userName","img"]
         }
       ],
       where: { id: id },
     });
     res.status(200).json(artWork);
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    next(err)
   }
 });
 // ------------------------------- POST -------------------------------
-const postArtWork = async (req, res) => {
-  const { title, content, category, price, img, imgCompress, id } = req.body;
-  if (id && category) {
+const postArtWork = async (req,res,next) => {
+  const { title, content, category, price, imgCompress, id } = req.body;
+
+  
     try {
+    
+      let categoryMatch = await Category.findOne({
+        where: { title: category },
+
+      });
+
+      let profileMatch = await Profile.findByPk(id)
+
+     if(categoryMatch && profileMatch){
       let artWorkCreate = await Artwork.create({
         title,
         content,
         price,
-        img,
-        imgCompress,
+        img: req.files.original[0].filename,
+        imgCompress: req.files.compress[0].filename,
       });
-      let categoryMatch = await Category.findAll({
-        where: { title: category },
-      });
-      // console.log(Artwork)
+
       await artWorkCreate.setCategories(categoryMatch);
-
-      let profileMatch = await Profile.findByPk(id);
-
       await profileMatch.addArtwork(artWorkCreate);
-      res.status(200).json(artWorkCreate);
-    } catch (error) {
-      console.log(error);
-      res.status(404).send("Cannot create the Artwork!.");
+
+      res.status(201).json(artWorkCreate)
+     }else{
+       !profileMatch ? res.status(404).send('not match profile') : res.status(404).send('category not exist')
+     }
+         
+    } catch (err) {
+      next(err)
+      
     }
-  } else res.status(404).send("No se puedo postear la obra!");
+  
 };
-router.post("/", postArtWork);
+
+router.post("/",upload.fields([{name:'original'},{name:'compress'}]), postArtWork);
 
 // ------------------------------- DELETE -------------------------------
-const deleteArtWork = async (req, res) => {
+const deleteArtWork = async (req, res, next) => {
   const { id } = req.params;
   try {
     const artWorkToDelete = await Artwork.findByPk(id);
     artWorkToDelete.destroy();
     res.status(200).send("Artwork deleted from DB!");
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    next(err)
   }
 };
 router.delete("/:id", deleteArtWork);
 
 // ------------------------------- UPDATE -------------------------------
-
-const putArtWork = async (req, res) => {
+const putArtWork = async (req,res,next) => {
   try {
     const { id } = req.params;
+
     const { title, content, category, price, img } = req.body;
+
     let updatedArtWork = await Artwork.findOne({
       where: {
         id: id,
       },
     });
-    await updatedArtWork.update({
-      title,
-      content,
-      price,
-      img,
-    });
-    let categoriesFromDb = await Category.findAll({
-      where: { title: category },
-    });
-    await updatedArtWork.setCategories(categoriesFromDb);
-    res.status(201).json(updatedArtWork);
-  } catch (error) {
-    res.status(400).send(error);
+
+    if(updatedArtWork){
+
+      await updatedArtWork.update({
+        title,
+        content,
+        price,
+        img,
+      });
+      let categoriesFromDb = await Category.findAll({
+        where: { title: category },
+      });
+      let updated = await updatedArtWork.setCategories(categoriesFromDb);
+      res.status(201).json(updated);
+    }else res.status(404).send('id artwork not match')
+
+  } catch (err) {
+    next(err)
   }
 };
+
 router.put("/:id", putArtWork);
 
 module.exports = router;
