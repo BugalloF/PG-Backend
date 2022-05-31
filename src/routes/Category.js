@@ -2,7 +2,7 @@ const { Router } = require("express");
 const router = Router();
 const { Category } = require("../db.js");
 
-const getCategories = async (req, res) => {
+const getCategories = async (req, res,next) => {
   try {
     let categories = await Category.findAll();
 
@@ -15,13 +15,13 @@ const getCategories = async (req, res) => {
     });
     res.status(200).json(categories);
   } catch (error) {
-    console.log(error);
+    next(error)
   }
 };
 
 router.get("/", getCategories);
 
-const postCategory = async (req, res) => {
+const postCategory = async (req, res,next) => {
   try {
     const { category } = req.body;
     let catCreate = await Category.create({
@@ -31,7 +31,7 @@ const postCategory = async (req, res) => {
     res.status(200).json(catCreate);
   } catch (error) {
     console.log(error);
-    res.status(404).send("Cannot create the category!.");
+    next(error)
   }
 };
 router.post("/", postCategory);

@@ -2,7 +2,7 @@ const { Router } = require("express");
 const router = Router();
 const { Profile,Artwork } = require("../db.js");
 
-const getProfiles = async (req, res) => {
+const getProfiles = async (req, res,next) => {
   try {
     const { name } = req.query;
 
@@ -37,6 +37,7 @@ const getProfiles = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+    next(error)
   }
 };
 
