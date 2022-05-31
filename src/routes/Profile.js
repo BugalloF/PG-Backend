@@ -135,9 +135,7 @@ router.get("/:id", async (req, res) => {
       include: 
           {
               model: Artwork,
-              through: {
-                attributes: []
-              }
+           
               }});
     if (found) res.status(200).json(found);
   } catch (error) {
