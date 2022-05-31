@@ -11,7 +11,7 @@ router.get("/country", async (req, res,next) => {
         model: Profile,
         where: { country: country },
       },
-      limit: 12,
+      limit: 12, 
       offset: from * 12,
     });
     // console.log(filtered)

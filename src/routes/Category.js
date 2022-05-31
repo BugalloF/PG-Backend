@@ -31,7 +31,7 @@ const postCategory = async (req, res,next) => {
     res.status(200).json(catCreate);
   } catch (error) {
     console.log(error);
-    next(error)
+    next(error) 
   }
 };
 router.post("/", postCategory);

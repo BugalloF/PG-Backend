@@ -169,7 +169,7 @@ const postArtWork = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}; 
 
 router.post("/", postArtWork);
 
