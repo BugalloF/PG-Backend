@@ -1,4 +1,5 @@
 const { DataTypes } = require("sequelize");
+const URL = 'https://artpage-api.herokuapp.com'
 // Exportamos una funcion que define el modelo
 // Luego le injectamos la conexion a sequelize.
 module.exports = (sequelize) => {
@@ -26,6 +27,10 @@ module.exports = (sequelize) => {
       },
       imgCompress: {
         type: DataTypes.TEXT,
+        get() {
+          const imagecompress = this.getDataValue('imgCompress')
+          return `${URL}/${imagecompress}`
+        }
       },
       price: {
         type: DataTypes.INTEGER,
