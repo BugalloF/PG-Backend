@@ -4,14 +4,13 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const routes = require('./routes/index.js');
 const path = require("path");
-
 require('./db.js');
 
 const server = express();
 
 server.name = 'API';
 
-server.use(express.static(path.join('./src/store/Compress')))
+server.use(express.static(path.join('./store/Compress')))
 server.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 server.use(bodyParser.json({ limit: '50mb' }));
 server.use(cookieParser());
