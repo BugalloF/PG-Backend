@@ -1,5 +1,5 @@
 const { DataTypes } = require("sequelize");
-const URL = 'artpage-api.herokuapp.com'
+const URL = 'https://artpage.herokuapp.com'
 // Exportamos una funcion que define el modelo
 // Luego le injectamos la conexion a sequelize.
 module.exports = (sequelize) => {
