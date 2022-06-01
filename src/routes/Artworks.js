@@ -2,7 +2,7 @@ const { Router } = require("express");
 const { Op } = require("sequelize");
 const router = Router();
 const { Artwork, Category, Profile } = require("../db.js");
-
+const upload = require('../multer/multer.js')
 const getArtWorks = async (req, res, next) => {
   try {
     const { name, from = 0 } = req.query;
