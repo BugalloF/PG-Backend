@@ -148,17 +148,17 @@ router.get("/:id", async (req, res,next) => {
     const { id } = req.params;
     const { idUser } = req.body;
 
-    let seguidores = await Follower.findAll({
+    let seguidos = await Follower.findAll({
       where: { idUser: id },
     });
     // console.log("SEGUIDORESS", seguidores)
-    let cantSeguidores = seguidores.length;
+    let cantSeguidos = seguidos.length;
     // console.log("SEGUIDORESS", cantSeguidores);
 
-    let seguidos = await Follower.findAll({
+    let seguidores = await Follower.findAll({
       where: { idFollow: id },
     });
-    let cantSeguidos = seguidos.length;
+    let cantSeguidores = seguidores.length;
     // console.log("SEGUIDOSSS", cantSeguidos);
 
     
@@ -166,7 +166,7 @@ router.get("/:id", async (req, res,next) => {
 
     if(idUser){  
       let isFollowing = false
-      Array.from(seguidores, ({dataValues}) => {if(dataValues.idFollow === idUser){
+      Array.from(seguidores, ({dataValues}) => {if(dataValues.idFollow === id){
         isFollowing=true
       }})
       res.status(200).json({found, cantSeguidores, cantSeguidos, isFollowing});
