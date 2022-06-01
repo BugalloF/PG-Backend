@@ -128,15 +128,18 @@ router.get("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
     let artWork = await Artwork.findAll({
-      include: [{
-        model: Category,
-        attributes: ["title"],
-        through: {
-          attributes: []
-        }},{
+      include: [
+        {
+          model: Category,
+          attributes: ["title"],
+          through: {
+            attributes: [],
+          },
+        },
+        {
           model: Profile,
-          attributes: ["name","img"]
-        }
+          attributes: ["name", "img"],
+        },
       ],
       where: { id: id },
     });
@@ -148,33 +151,43 @@ router.get("/:id", async (req, res, next) => {
 });
 // ------------------------------- POST -------------------------------
 const postArtWork = async (req, res, next) => {
-  const { title, content, category, price, img, imgCompress, id } = req.body;
-  try {
-    let profileMatch = await Profile.findByPk(id);
+  const { title, content, category, price, id } = req.body;
 
-    let categoryMatch = await Category.findAll({
+  try {
+    let categoryMatch = await Category.findOne({
       where: { title: category },
     });
-    // console.log(Artwork)
 
-    if (profileMatch && categoryMatch) {
+    let profileMatch = await Profile.findByPk(id);
+
+    if (categoryMatch && profileMatch) {
       let artWorkCreate = await Artwork.create({
         title,
         content,
         price,
-        img,
-        imgCompress,
+        img: req.files.original[0].filename,
+        imgCompress: req.files.compress[0].filename,
       });
+
       await artWorkCreate.setCategories(categoryMatch);
       await profileMatch.addArtwork(artWorkCreate);
-      res.status(200).json(artWorkCreate);
-    }
-  } catch (error) {
-    next(error);
-  }
-}; 
 
-router.post("/", postArtWork);
+      res.status(201).json(artWorkCreate);
+    } else {
+      !profileMatch
+        ? res.status(404).send("not match profile")
+        : res.status(404).send("category not exist");
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
+router.post(
+  "/",
+  upload.fields([{ name: "original" }, { name: "compress" }]),
+  postArtWork
+);
 
 // ------------------------------- DELETE -------------------------------
 const deleteArtWork = async (req, res, next) => {
@@ -191,7 +204,7 @@ router.delete("/:id", deleteArtWork);
 
 // ------------------------------- UPDATE -------------------------------
 
-const putArtWork = async (req, res,next) => {
+const putArtWork = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { title, content, category, price, img } = req.body;
@@ -212,7 +225,7 @@ const putArtWork = async (req, res,next) => {
     await updatedArtWork.setCategories(categoriesFromDb);
     res.status(201).json(updatedArtWork);
   } catch (error) {
-  next(error)
+    next(error);
   }
 };
 router.put("/:id", putArtWork);
