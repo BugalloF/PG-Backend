@@ -182,12 +182,7 @@ const postArtWork = async (req, res, next) => {
     next(err);
   }
 };
-
-router.post(
-  "/",
-  upload.fields([{ name: "original" }, { name: "compress" }]),
-  postArtWork
-);
+router.post("/",upload.fields([{name:'original'},{name:'compress'}]), postArtWork);
 
 // ------------------------------- DELETE -------------------------------
 const deleteArtWork = async (req, res, next) => {
