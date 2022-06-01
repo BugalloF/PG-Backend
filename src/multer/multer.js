@@ -4,8 +4,8 @@ const storage = multer.diskStorage({
     destination: function (req, file, cb) {
     
     
-        if(file.fieldname === 'compress') cb(null,  './store/compress')
-        else cb(null,  './store/original')
+        if(file.fieldname === 'compress') cb(null,  'store')
+        else cb(null,  'store')
         
     },
     filename: function (req, file, cb) {
