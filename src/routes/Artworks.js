@@ -15,11 +15,11 @@ const getArtWorks = async (req, res, next) => {
             attributes: ["title"],
             through: {
               attributes: [],
-            },
+            }, 
           },
           {
             model: Profile,
-            attributes: ["name", "img"],
+            attributes: ["name", "img", "country"],
           },
         ],
         limit: 12,
@@ -58,7 +58,7 @@ const getArtWorks = async (req, res, next) => {
           },
           {
             model: Profile,
-            attributes: ["name", "img"],
+            attributes: ["name", "img", "country"],
           },
         ],
         limit: 12,
@@ -138,7 +138,7 @@ router.get("/:id", async (req, res, next) => {
         },
         {
           model: Profile,
-          attributes: ["name", "img"],
+          attributes: ["name", "img", "country"],
         },
       ],
       where: { id: id },

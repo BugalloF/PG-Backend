@@ -77,9 +77,26 @@ router.get("/likes", async (req, res,next) => {
 try {
   if (likes === "ASC" || likes === "DESC") {
     let Artworks = await Artwork.findAll({
+
       order: [["likes", likes]],
       limit: 12,
       offset: from * 12,
+
+      
+      include: [
+        {
+          model: Category,
+          attributes: ["title"],
+          through: {
+            attributes: [],
+          }, 
+        },
+        {
+          model: Profile,
+          attributes: ["name", "img", "country"],
+        },
+      ],
+
     });
     let counter = await Artwork.count();
     res.status(200).json({Artworks,counter});
