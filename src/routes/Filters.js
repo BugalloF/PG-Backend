@@ -7,12 +7,24 @@ router.get("/country", async (req, res,next) => {
   try {
     // console.log(country)
     let filtered = await Artwork.findAll({
-      include: {
-        model: Profile,
-        where: { country: country },
-      },
+
+      include: [
+        {
+          model: Profile,
+          where: { country: country },
+        },      
+        {
+          model: Category,
+          attributes: ["title"],
+          through: {
+            attributes: [],
+          }, 
+        },
+      ],
+
       limit: 12, 
       offset: from * 12,
+
     });
     // console.log(filtered)
 
@@ -78,11 +90,6 @@ try {
   if (likes === "ASC" || likes === "DESC") {
     let Artworks = await Artwork.findAll({
 
-      order: [["likes", likes]],
-      limit: 12,
-      offset: from * 12,
-
-      
       include: [
         {
           model: Category,
@@ -96,6 +103,9 @@ try {
           attributes: ["name", "img", "country"],
         },
       ],
+      order: [["likes", likes]],
+      limit: 12,
+      offset: from * 12,
 
     });
     let counter = await Artwork.count();
@@ -123,6 +133,21 @@ router.get("/price", async (req, res,next) => {
   try {
     if (price === "ASC" || price === "DESC") {
       let Artworks = await Artwork.findAll({
+
+        include: [
+          {
+            model: Category,
+            attributes: ["title"],
+            through: {
+              attributes: [],
+            }, 
+          },
+          {
+            model: Profile,
+            attributes: ["name", "img", "country"],
+          },
+        ],
+
         order: [["price", price]],
         limit: 12,
         offset: from * 12,
@@ -146,13 +171,21 @@ router.get("/antiquity", async (req, res,next) => {
     if (antiquity === "ASC" || antiquity === "DESC") {
       let Artoworks = await Artwork.findAll({
         order: [["createdAt", antiquity]],
-        include: {
-          model: Category,
-          attributes: ["title"],
-          through: {
-            attributes: [],
+
+        include: [
+          {
+            model: Category,
+            attributes: ["title"],
+            through: {
+              attributes: [],
+            }, 
           },
-        },
+          {
+            model: Profile,
+            attributes: ["name", "img", "country"],
+          },
+        ],
+
         limit: 12,
         offset: from * 12,
       });
