@@ -4,11 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-<<<<<<< HEAD
-    "start": "node .",
-=======
+ 
     "start": "nodemon ./index.js",
->>>>>>> d68e9fef377f170665da717bd6843a0a2c144a15
+
     "test": "mocha -w ./tests/**/*.spec.js"
   },
   "author": "Eldemi",
