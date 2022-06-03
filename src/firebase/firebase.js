@@ -19,7 +19,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-console.log(analytics)
+
 console.log(firebaseConfig)
 const storage = getStorage(app)
 
