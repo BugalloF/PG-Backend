@@ -277,22 +277,41 @@ router.delete("/:id", async (req, res,next) => {
 });
 
 router.post("/follow", async (req, res,next) => {
-  const { idSeguido, idSeguidor } = req.body;
-
-  let seguidor = await Profile.findByPk(idSeguidor);
-  let seguido = await Profile.findByPk(idSeguido);
-
-  if (seguidor && seguido) {
-    try {
-      await Follower.create({
-        idUser: idSeguidor,
-        idFollow: idSeguido,
-      });
-
-      res.status(200).send("SEGUIDO!");
-    } catch (e) {
-      next(e)
+  try
+    {
+        const { idSeguido } = req.body;
+        const {authorization} = req.headers;
+        
+        if(authorization)
+        {
+            const token = authorization.split(" ").pop();
+            const tokenData = await verifyToken(token);
+            const idSeguidor = tokenData !== undefined ? tokenData.id : null;
+            let seguidor = await Profile.findByPk(idSeguidor);
+            let seguido = await Profile.findByPk(idSeguido);
+            
+            if(seguidor && seguido)
+            {
+              await Follower.create({
+                idUser: idSeguidor,
+                idFollow: idSeguido,
+              });
+              
+              res.status(200).send("SEGUIDO!");
+            }
+            else
+            {
+                res.status(409).send("Invalid token.");
+            };
+        }
+        else
+        {
+            res.status(401).send("No authorization.");
+        };
     }
-  }
+    catch(error)
+    {
+        next(error);
+    };
 });
 module.exports = router;
