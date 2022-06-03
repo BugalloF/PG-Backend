@@ -7,7 +7,7 @@ const {encrypt} = require("../controllers/bcrypt");
 
 
 router.post("/", async (req, res, next) => {
-    const {name, lastName, userName, email, password} = req.body;
+    const {name, lastName, userName, email, password, day_of_birth, gender, img, phone, public_email, description, country} = req.body;
     const foundUser = await Profile.findAll({
         where:
         {
