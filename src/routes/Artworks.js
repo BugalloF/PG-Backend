@@ -128,18 +128,20 @@ const postArtWork = async (req, res, next) => {
     path.join(__dirname, `../multer/original/${req.files.original[0].filename}`)
     );
     // console.log('ORIGINAL',readFileOriginal)
+    console.log('ccccc')
 
   const imageRefOriginal = ref(
     storage,
     `images/original/${req.files.original[0].filename}`
   );
+  console.log('bbbbb')
 
   const uploadImageCompress = await uploadBytes(
     imageRefCompress,
     readFileCompress
   );
   const urlCompress = await getDownloadURL(uploadImageCompress.ref);
-
+    console.log('aaaaaaa')
   const uploadImageOriginal = await uploadBytes(
     imageRefOriginal,
     readFileOriginal
@@ -150,7 +152,7 @@ const postArtWork = async (req, res, next) => {
     });
     console.log('URLCOMPRESS',urlCompress)
     console.log('URLORIGINALLL',urlOriginal)
-
+    
     let profileMatch = await Profile.findByPk(id);
     console.log(categoryMatch)
     console.log(profileMatch)
