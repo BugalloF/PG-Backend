@@ -130,7 +130,7 @@ const postArtWork = async (req, res, next) => {
   })
 
 
-  console.log(readFileOriginal)
+ 
 
   // const uploadImageOriginal = await uploadBytes(imageRefOriginal,readFileOriginal)
   // const urlOriginal = await getDownloadURL(uploadImageOriginal.ref)
