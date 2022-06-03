@@ -140,7 +140,7 @@ const postArtWork = async (req, res, next) => {
     imageRefCompress,
     readFileCompress
   ).then((snapshot)=>console.log('UPLOAD',snapshot));
-  // console.log(uploadImageCompress)
+  console.log(uploadImageCompress)
   // console.log('zzzzzzzzzzzz')
   const urlCompress = await getDownloadURL(uploadImageCompress.ref);
     console.log('URLCOMPRESS',urlCompress)
