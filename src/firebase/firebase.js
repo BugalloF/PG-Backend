@@ -3,16 +3,17 @@ const{ getStorage, uploadBytes, ref, getDownloadURL}= require("firebase/storage"
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
+// Your web app's Fi    rebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = { 
-  apiKey : "AIzaSyDqDRbXhnoCVAPwETw6pZVwY1gjbBgGYoY" , 
-  authDomain : "prueba-408d2.firebaseapp.com" , 
-  IDdelproyecto : "prueba-408d2" , 
-  StorageBucket : "prueba-408d2.appspot.com" , 
-  mensajeríaSenderId : "939713514095" , 
-  IDdeaplicación : "1:939713514095:web:a40987f108700af0eb9b9a" , 
-  IDdemedición : "G-6DSZ4TXS62" 
+const firebaseConfig = {
+  apiKey: "AIzaSyDqDRbXhnoCVAPwETw6pZVwY1gjbBgGYoY",
+  authDomain: "prueba-408d2.firebaseapp.com",
+  projectId: "prueba-408d2",
+  // storageBucket: "prueba-408d2.appspot.com",
+  messagingSenderId: "939713514095",
+  appId: "1:939713514095:web:a40987f108700af0eb9b9a",
+  measurementId: "G-6DSZ4TXS62",
+  storageBucket: "artpage.herokuapp.com",
 }; 
 // const firebaseConfig = {
 
