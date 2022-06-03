@@ -1,11 +1,8 @@
-const { Router } = require("express");
-const { Op } = require("sequelize");
-const router = Router();
-const { Artwork, Category, Profile } = require("../db.js");
-const {storage, uploadBytes, ref, getDownloadURL} = require('../firebase/firebase.js')
-const upload = require('../multer/multer.js')
-const fs = require('fs')
-const path = require('path')
+  const { Router } = require("express");
+  const { Op } = require("sequelize");
+  const router = Router();
+  const { Artwork, Category, Profile } = require("../db.js");
+
 
 
 // --------------------------GET-------------------------------- //
@@ -110,30 +107,8 @@ const postArtWork = async (req, res, next) => {
 
 
 
-  const {title,content,price,category,id} = req.body
+  const {title,content,price,category,id,original,compress} = req.body
 
-  const readFileCompress = fs.readFileSync(path.join(__dirname,`../multer/compress/${req.files.compress[0].filename}`))
-  const imageRefCompress = ref(storage, `images/compress/${req.files.compress[0].filename}`);
-  console.log(imageRefCompress)
-
-  // const readFileOriginal = fs.readFileSync(path.join(__dirname,`../multer/original/${req.files.original[0].filename}`))
-  
-  // const imageRefOriginal = ref(storage, `images/original/${req.files.original[0].filename}`);
-
-  uploadBytes(imageRefCompress,readFileCompress).then( r => {console.log(r)})
-  .then(r => {
-    console.log(r)
-
-  })
-  .catch((err)=>{
-    console.log(err)
-  })
-
-
- 
-
-  // const uploadImageOriginal = await uploadBytes(imageRefOriginal,readFileOriginal)
-  // const urlOriginal = await getDownloadURL(uploadImageOriginal.ref)
  
   try {
     let categoryMatch = await Category.findOne({
@@ -146,8 +121,9 @@ const postArtWork = async (req, res, next) => {
       let artWorkCreate = await Artwork.create({
         title,
         content,
-
-        imgCompress: urlCompress,
+        price,
+        img: original,
+        imgCompress: compress,
       });
 
       await artWorkCreate.setCategories(categoryMatch);
@@ -163,7 +139,7 @@ const postArtWork = async (req, res, next) => {
     next(err);
   }
 };
-router.post("/",upload.fields([{name: 'compress'},{name: 'original'}]),postArtWork);
+router.post("/",postArtWork);
 
 // ------------------------------- DELETE -------------------------------
 const deleteArtWork = async (req, res, next) => {
