@@ -136,19 +136,19 @@ const postArtWork = async (req, res, next) => {
   // console.log('IMG REF ORIGINAL',imageRefOriginal)
 
       console.log('HASTA ACA LLEGA')
- await uploadBytes(
+  const uploadImageCompress = await uploadBytes(
     imageRefCompress,
     readFileCompress
   ).catch((snapshot)=>console.log('UPLOAD',snapshot));
   console.log(uploadImageCompress)
   // console.log('zzzzzzzzzzzz')
-  // const urlCompress = await getDownloadURL(uploadImageCompress.ref);
+  const urlCompress = await getDownloadURL(uploadImageCompress.ref);
     console.log('URLCOMPRESS',urlCompress)
-   await uploadBytes(
+  const uploadImageOriginal = await uploadBytes(
     imageRefOriginal,
     readFileOriginal
   );
-  // const urlOriginal = await getDownloadURL(uploadImageOriginal.ref);
+  const urlOriginal = await getDownloadURL(uploadImageOriginal.ref);
     let categoryMatch = await Category.findOne({
       where: { title: category },
     });
