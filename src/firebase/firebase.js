@@ -15,10 +15,12 @@ const firebaseConfig = {
   appId: "1:939713514095:web:a40987f108700af0eb9b9a",
   measurementId: "G-6DSZ4TXS62"
 };
+
+
+const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 console.log(analytics)
 console.log(firebaseConfig)
-const app = initializeApp(firebaseConfig);
 const storage = getStorage(app)
 
 // Initialize Firebase
