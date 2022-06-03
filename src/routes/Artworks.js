@@ -112,9 +112,9 @@ router.get("/:id", async (req, res, next) => {
 // ------------------------------- POST ------------------------------- //
 const postArtWork = async (req, res, next) => {
   const { title, content, price, category, id } = req.body;
-  // console.log('BODYYY',req.body)
+  console.log('BODYYY',req.body)
   try {
-  // console.log('FILESSS',req.files)
+  console.log('FILESSS',req.files)
   const readFileCompress = fs.readFileSync(
     path.join(__dirname, `../multer/compress/${req.files.compress[0].filename}`)
   );
@@ -148,7 +148,8 @@ const postArtWork = async (req, res, next) => {
     });
 
     let profileMatch = await Profile.findByPk(id);
-
+    console.log(categoryMatch)
+    console.log(profileMatch)
     if (categoryMatch && profileMatch) {
       let artWorkCreate = await Artwork.create({
         title,
@@ -160,7 +161,7 @@ const postArtWork = async (req, res, next) => {
 
       await artWorkCreate.setCategories(categoryMatch);
       await profileMatch.addArtwork(artWorkCreate);
-
+      console.log('artwork!!!!',artWorkCreate)
       res.status(201).json(artWorkCreate);
     } else {
       !profileMatch
