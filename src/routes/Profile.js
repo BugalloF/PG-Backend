@@ -1,6 +1,8 @@
 const { Router } = require("express");
 const router = Router();
 const { Profile,Artwork,Follower } = require("../db.js");
+const {encrypt} = require("../controllers/bcrypt");
+
 
 const getProfiles = async (req, res,next) => {
   try {
@@ -43,43 +45,46 @@ const getProfiles = async (req, res,next) => {
 
 router.get("/", getProfiles);
 
-const postProfile = async (req, res,next) => {
-  try {
-    const {
-      name,
-      lastName,
-      userName,
-      email,
-      password,
-      day_of_birth,
-      gender,
-      img,
-      phone,
-      public_email,
-      description,
-      country,
-    } = req.body;
-    let profileCreate = await Profile.create({
-      name,
-      lastName,
-      userName,
-      email,
-      password,
-      day_of_birth,
-      gender,
-      img,
-      phone,
-      public_email,
-      description,
-      country,
-    });
+// const postProfile = async (req, res,next) => {
+//   try {
+//     const {
+//       name,
+//       lastName,
+//       userName,
+//       email,
+//       password,
+//       day_of_birth,
+//       gender,
+//       img,
+//       phone,
+//       public_email,
+//       description,
+//       country,
+//     } = req.body;
 
-    res.status(200).json(profileCreate);
-  } catch (error) {
-    next(error)
-  }
-};
-router.post("/", postProfile);
+//     const passwordHash = await encrypt(password);
+
+//     let profileCreate = await Profile.create({
+//       name,
+//       lastName,
+//       userName,
+//       email,
+//       password: passwordHash,
+//       day_of_birth,
+//       gender,
+//       img,
+//       phone,
+//       public_email,
+//       description,
+//       country,
+//     });
+
+//     res.status(200).json(profileCreate);
+//   } catch (error) {
+//     next(error)
+//   }
+// };
+// router.post("/", postProfile);
 
 // ------------------------------- UPDATE -------------------------------
 const putProfile = async (req, res,next) => {
