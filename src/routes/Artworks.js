@@ -6,6 +6,10 @@ const {storage, uploadBytes, ref, getDownloadURL} = require('../firebase/firebas
 const upload = require('../multer/multer.js')
 const fs = require('fs')
 const path = require('path')
+
+
+// --------------------------GET-------------------------------- //
+
 const getArtWorks = async (req, res, next) => {
   try {
     const { name, from = 0 } = req.query;
@@ -74,57 +78,6 @@ const getArtWorks = async (req, res, next) => {
   }
 };
 
-//#region
-
-//------- PAGINADO --------
-// function  paginado(){
-
-//   const from = Number(req.query.from) || 0;
-//   const registerpp = 5;
-
-//   const [users, total] = await Promise.all([
-//     Usuario.find({}, "title").skip(from).limit(registerpp),
-//     Usuario.countDocuments()
-//   ])
-
-//   res.json({
-//     ok: true,
-//     msg: "getArtWorks",
-//     users,
-//     page: {
-//       from,
-//       registerpp,
-//       total
-//     }
-//   })
-// }
-// router.get("/", async (req, res) => {
-//   const from = Number(req.query.from) || 0;
-//   const registerpp = 6;
-
-//   const [obras, total] = await Promise.all([
-//     Artwork.findAll({ limit: registerpp, offset: from * registerpp }),
-//     Artwork.count(),
-//   ]);
-//   // const obras = await  Artwork.findAll({limit:3,skip:0})
-//   // const total = await Artwork.count()
-
-//   res.json({
-//     ok: true,
-//     msg: "getArtWorks",
-//     obras,
-//     page: {
-//       from,
-//       registerpp,
-//       total,
-//     },
-//   });
-//   console.log(await paginado(Artwork,from))
-//   res.json(await paginado(Artwork, from));
-
-// });
-//#endregion
-
 router.get("/", getArtWorks);
 // ruta de detalle
 router.get("/:id", async (req, res, next) => {
@@ -152,23 +105,24 @@ router.get("/:id", async (req, res, next) => {
     next(error);
   }
 });
-// ------------------------------- POST -------------------------------
+// ------------------------------- POST ------------------------------- //
 const postArtWork = async (req, res, next) => {
 
-  const {title,content,price,category} = req.body
+  const {title,content,price,category,id} = req.body
 
-    const readFile = fs.readFileSync(path.join(__dirname,`../multer/compress/${req.file.filename}`))
-  const imageRef = ref(storage, `images/compress/${req.file.filename}`);
+  const readFileCompress = fs.readFileSync(path.join(__dirname,`../multer/compress/${req.files.compress[0].filename}`))
+  const imageRefCompress = ref(storage, `images/compress/${req.files.compress[0].filename}`);
 
+  const readFileOriginal = fs.readFileSync(path.join(__dirname,`../multer/original/${req.files.original[0].filename}`))
+  
+  const imageRefOriginal = ref(storage, `images/original/${req.files.original[0].filename}`);
 
+  const uploadImageCompress = await uploadBytes(imageRefCompress,readFileCompress)
+  const urlCompress = await getDownloadURL(uploadImageCompress.ref)
 
-
-  const uploadImage = await uploadBytes(imageRef,readFile)
-  const url = await getDownloadURL(uploadImage.ref)
+  const uploadImageOriginal = await uploadBytes(imageRefOriginal,readFileOriginal)
+  const urlOriginal = await getDownloadURL(uploadImageOriginal.ref)
  
-  console.log(url)
-
-
   try {
     let categoryMatch = await Category.findOne({
       where: { title: category },
@@ -181,7 +135,8 @@ const postArtWork = async (req, res, next) => {
         title,
         content,
         price,
-        imgCompress: url,
+        img: urlOriginal,
+        imgCompress: urlCompress,
       });
 
       await artWorkCreate.setCategories(categoryMatch);
@@ -197,7 +152,7 @@ const postArtWork = async (req, res, next) => {
     next(err);
   }
 };
-router.post("/",upload.single('compress'),postArtWork);
+router.post("/",upload.fields([{name: 'compress'},{name: 'original'}]),postArtWork);
 
 // ------------------------------- DELETE -------------------------------
 const deleteArtWork = async (req, res, next) => {
@@ -212,7 +167,7 @@ const deleteArtWork = async (req, res, next) => {
 };
 router.delete("/:id", deleteArtWork);
 
-// ------------------------------- UPDATE -------------------------------
+// ------------------------------- UPDATE ------------------------------- //
 
 const putArtWork = async (req, res, next) => {
   try {

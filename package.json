@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node .",
+    "start": "nodemon -L",
     "test": "mocha -w ./tests/**/*.spec.js"
   },
   "author": "Eldemi",
