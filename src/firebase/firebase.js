@@ -21,7 +21,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyCZUOmPIV7UgNPqnldUw1N0UDMEeRF_Cg4",
   authDomain: "artpage-aa77e.firebaseapp.com",
   projectId: "artpage-aa77e",
-  storageBucket: "artpage-aa77e.appspot.com",
+  storageBucket: "gs://artpage-aa77e.appspot.com",
   messagingSenderId: "209432909419",
   appId: "1:209432909419:web:8d5032f81b278fcbeb032e"
 };
