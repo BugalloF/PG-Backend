@@ -122,7 +122,7 @@ const postArtWork = async (req, res, next) => {
 
   uploadBytes(imageRefCompress,readFileCompress).then( r => {console.log(r)})
   .then(r => {
-    console.log(getDownloadURL(r))
+    console.log(r)
 
   })
   .catch((err)=>{
