@@ -27,10 +27,7 @@ module.exports = (sequelize) => {
       },
       imgCompress: {
         type: DataTypes.TEXT,
-        get() {
-          const imagecompress = this.getDataValue('imgCompress')
-          return `${URL}/${imagecompress}`
-        }
+     
       },
       price: {
         type: DataTypes.INTEGER,
