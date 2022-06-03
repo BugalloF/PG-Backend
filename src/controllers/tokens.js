@@ -19,7 +19,7 @@ async function signToken(user)
 };
 
 
-async function verifyToken(token)
+async function verifyToken(token, next)
 {
     try
     {
@@ -27,8 +27,7 @@ async function verifyToken(token)
     }
     catch(error)
     {
-        console.log(error);
-        return null;
+        return next;
     };
 };
 

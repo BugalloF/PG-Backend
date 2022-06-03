@@ -199,7 +199,7 @@ router.get("/:id", async (req, res, next) => {
       {
           const token = authorization.split(" ").pop();
           const tokenData = await verifyToken(token);
-          const idUser = tokenData.id;
+          const idUser = tokenData !== undefined ? tokenData.id : null;
           
           if(idUser)
           {
