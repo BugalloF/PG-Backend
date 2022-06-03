@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const router = Router();
 const { Profile,Artwork,Follower } = require("../db.js");
-const {encrypt} = require("../controllers/bcrypt");
+const {verifyToken} = require("../controllers/tokens");
 
 
 const getProfiles = async (req, res,next) => {
@@ -133,53 +133,121 @@ router.put("/:id", putProfile);
 
 
 
-router.get("/:id", async (req, res,next) => {
-  try {
-    const { id } = req.params;
-    let found = await Profile.findByPk(id, {
-      include: 
-          {
-              model: Artwork,
+// router.get("/:id", async (req, res,next) => {
+//   try {
+//     const { id } = req.params;
+//     let found = await Profile.findByPk(id, {
+//       include: 
+//           {
+//               model: Artwork,
            
-              }});
-    if (found) res.status(200).json(found);
-  } catch (error) {
-    next(error)
-  }
-});
+//               }});
+//     if (found) res.status(200).json(found);
+//   } catch (error) {
+//     next(error)
+//   }
+// });
 
-router.get("/:id", async (req, res,next) => {
-  try {
-    const { id } = req.params;
-    const { idUser } = req.body;
+// router.get("/:id", async (req, res,next) => {
+  
+//   try {
+//     const { id } = req.params;
+//     const { idUser } = req.body;
 
-    let seguidos = await Follower.findAll({
-      where: { idUser: id },
-    });
-    // console.log("SEGUIDORESS", seguidores)
-    let cantSeguidos = seguidos.length;
-    // console.log("SEGUIDORESS", cantSeguidores);
+//     let seguidos = await Follower.findAll({
+//       where: { idUser: id },
+//     });
+//     // console.log("SEGUIDORESS", seguidores)
+//     let cantSeguidos = seguidos.length;
+//     // console.log("SEGUIDORESS", cantSeguidores);
 
-    let seguidores = await Follower.findAll({
-      where: { idFollow: id },
-    });
-    let cantSeguidores = seguidores.length;
-    // console.log("SEGUIDOSSS", cantSeguidos);
+//     let seguidores = await Follower.findAll({
+//       where: { idFollow: id },
+//     });
+//     let cantSeguidores = seguidores.length;
+//     // console.log("SEGUIDOSSS", cantSeguidos);
 
     
-    let found = await Profile.findByPk(id);
+//     let found = await Profile.findByPk(id, {
+//       include: 
+//           {
+//               model: Artwork,
+           
+//               }});
 
-    if(idUser){  
-      let isFollowing = false
-      Array.from(seguidores, ({dataValues}) => {if(dataValues.idFollow === id){
-        isFollowing=true
-      }})
-      res.status(200).json({found, cantSeguidores, cantSeguidos, isFollowing});
+//     if(idUser){  
+//       let isFollowing = false
+//       Array.from(seguidores, ({dataValues}) => {if(dataValues.idFollow === id){
+//         isFollowing=true
+//       }})
+//       res.status(200).json({found, cantSeguidores, cantSeguidos, isFollowing});
+//   }
+//     else res.status(200).json({found, cantSeguidores, cantSeguidos});
+//   } catch (error) {
+//     next(error)
+//   }
+// });
+
+router.get("/:id", async (req, res, next) => {
+  try
+  {
+      const { id } = req.params;
+      // const { idUser } = req.body;
+      const {authorization} = req.headers;
+      
+      if(authorization)
+      {
+          const token = authorization.split(" ").pop();
+          const tokenData = await verifyToken(token);
+          const idUser = tokenData.id;
+          
+          if(idUser)
+          {
+              let seguidos = await Follower.findAll({
+                  where: { idUser: id },
+                });
+                // console.log("SEGUIDORESS", seguidores)
+                let cantSeguidos = seguidos.length;
+                // console.log("SEGUIDORESS", cantSeguidores);
+            
+                let seguidores = await Follower.findAll({
+                  where: { idFollow: id },
+                });
+                let cantSeguidores = seguidores.length;
+                // console.log("SEGUIDOSSS", cantSeguidos);
+            
+                
+                let found = await Profile.findByPk(id, {
+                  include: 
+                      {
+                          model: Artwork,
+                       
+                          }});
+            
+                if(idUser){  
+                  let isFollowing = false
+                  Array.from(seguidores, ({dataValues}) => {if(dataValues.idFollow === id){
+                    isFollowing=true
+                  }})
+                  res.status(200).json({found, cantSeguidores, cantSeguidos, isFollowing});
+              }
+                else res.status(200).json({found, cantSeguidores, cantSeguidos});
+              
+          }
+          else
+          {
+              res.status(409).send("Invalid token.");
+          };
+      }
+      else
+      {
+          res.status(401).send("No authorization.");
+      };
   }
-    else res.status(200).json({found, cantSeguidores, cantSeguidos});
-  } catch (error) {
-    next(error)
-  }
+  catch(error)
+  {
+      next(error);
+  };
 });
 
 router.delete("/:id", async (req, res,next) => {
