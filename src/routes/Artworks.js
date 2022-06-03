@@ -123,7 +123,7 @@ const postArtWork = async (req, res, next) => {
     storage,
     `images/compress/${req.files.compress[0].filename}`
   );
-  console.log(imageRefCompress)
+  // console.log(imageRefCompress)
   const readFileOriginal = fs.readFileSync(
     path.join(__dirname, `../multer/original/${req.files.original[0].filename}`)
     );
@@ -134,7 +134,7 @@ const postArtWork = async (req, res, next) => {
     storage,
     `images/original/${req.files.original[0].filename}`
   );
-  console.log(imageRefOriginal)
+  // console.log('IMG REF ORIGINAL',imageRefOriginal)
 
   const uploadImageCompress = await uploadBytes(
     imageRefCompress,
@@ -142,7 +142,7 @@ const postArtWork = async (req, res, next) => {
   );
   console.log('zzzzzzzzzzzz')
   const urlCompress = await getDownloadURL(uploadImageCompress.ref);
-    console.log('aaaaaaa')
+    console.log('URLCOMPRESS',urlCompress)
   const uploadImageOriginal = await uploadBytes(
     imageRefOriginal,
     readFileOriginal
