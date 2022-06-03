@@ -112,8 +112,9 @@ router.get("/:id", async (req, res, next) => {
 // ------------------------------- POST ------------------------------- //
 const postArtWork = async (req, res, next) => {
   const { title, content, price, category, id } = req.body;
-  console.log('BODYYY',req.body)
-  console.log('FILESSS',req.files)
+  // console.log('BODYYY',req.body)
+  try {
+  // console.log('FILESSS',req.files)
   const readFileCompress = fs.readFileSync(
     path.join(__dirname, `../multer/compress/${req.files.compress[0].filename}`)
   );
@@ -142,8 +143,6 @@ const postArtWork = async (req, res, next) => {
     readFileOriginal
   );
   const urlOriginal = await getDownloadURL(uploadImageOriginal.ref);
-
-  try {
     let categoryMatch = await Category.findOne({
       where: { title: category },
     });
