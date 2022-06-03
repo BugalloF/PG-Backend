@@ -217,3 +217,9 @@ router.post("/follow", async (req, res,next) => {
   }
 });
 module.exports = router;
+
+// {
+//   idSeguidor:96cdb5b9-8012-4e6d-93f8-a6e8b5cb53d1,
+//   idSeguido:5e3c56bb-0a44-4cce-8bd4-968c84a86ac5
+
+// }
