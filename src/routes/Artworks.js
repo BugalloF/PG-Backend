@@ -118,14 +118,16 @@ const postArtWork = async (req, res, next) => {
   const readFileCompress = fs.readFileSync(
     path.join(__dirname, `../multer/compress/${req.files.compress[0].filename}`)
   );
+  console.log('COMPRESSS',readFileCompress)
   const imageRefCompress = ref(
     storage,
     `images/compress/${req.files.compress[0].filename}`
   );
-
+  
   const readFileOriginal = fs.readFileSync(
     path.join(__dirname, `../multer/original/${req.files.original[0].filename}`)
-  );
+    );
+    console.log('ORIGINAL',readFileOriginal)
 
   const imageRefOriginal = ref(
     storage,
