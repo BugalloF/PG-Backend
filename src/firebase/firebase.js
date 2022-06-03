@@ -46,4 +46,4 @@ const storage = getStorage(app)
 
 // Initialize Firebase
 module.exports = {storage,uploadBytes,ref, getDownloadURL}
-const analytics = getAnalytics(app);
+// const analytics = getAnalytics(app);
