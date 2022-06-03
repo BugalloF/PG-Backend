@@ -112,13 +112,13 @@ router.get("/:id", async (req, res, next) => {
 // ------------------------------- POST ------------------------------- //
 const postArtWork = async (req, res, next) => {
   const { title, content, price, category, id } = req.body;
-  console.log('BODYYY',req.body)
+  // console.log('BODYYY',req.body)
   try {
-  console.log('FILESSS',req.files)
+  // console.log('FILESSS',req.files)
   const readFileCompress = fs.readFileSync(
     path.join(__dirname, `../multer/compress/${req.files.compress[0].filename}`)
   );
-  console.log('COMPRESSS',readFileCompress)
+  // console.log('COMPRESSS',readFileCompress)
   const imageRefCompress = ref(
     storage,
     `images/compress/${req.files.compress[0].filename}`
@@ -127,7 +127,7 @@ const postArtWork = async (req, res, next) => {
   const readFileOriginal = fs.readFileSync(
     path.join(__dirname, `../multer/original/${req.files.original[0].filename}`)
     );
-    console.log('ORIGINAL',readFileOriginal)
+    // console.log('ORIGINAL',readFileOriginal)
 
   const imageRefOriginal = ref(
     storage,
@@ -148,6 +148,8 @@ const postArtWork = async (req, res, next) => {
     let categoryMatch = await Category.findOne({
       where: { title: category },
     });
+    console.log('URLCOMPRESS',urlCompress)
+    console.log('URLORIGINALLL',urlOriginal)
 
     let profileMatch = await Profile.findByPk(id);
     console.log(categoryMatch)
