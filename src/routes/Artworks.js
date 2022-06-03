@@ -2,11 +2,15 @@ const { Router } = require("express");
 const { Op } = require("sequelize");
 const router = Router();
 const { Artwork, Category, Profile } = require("../db.js");
-const {storage, uploadBytes, ref, getDownloadURL} = require('../firebase/firebase.js')
-const upload = require('../multer/multer.js')
-const fs = require('fs')
-const path = require('path')
-
+const {
+  storage,
+  uploadBytes,
+  ref,
+  getDownloadURL,
+} = require("../firebase/firebase.js");
+const upload = require("../multer/multer.js");
+const fs = require("fs");
+const path = require("path");
 
 // --------------------------GET-------------------------------- //
 
@@ -22,7 +26,7 @@ const getArtWorks = async (req, res, next) => {
             attributes: ["title"],
             through: {
               attributes: [],
-            }, 
+            },
           },
           {
             model: Profile,
@@ -107,22 +111,37 @@ router.get("/:id", async (req, res, next) => {
 });
 // ------------------------------- POST ------------------------------- //
 const postArtWork = async (req, res, next) => {
+  const { title, content, price, category, id } = req.body;
 
-  const {title,content,price,category,id} = req.body
+  const readFileCompress = fs.readFileSync(
+    path.join(__dirname, `../multer/compress/${req.files.compress[0].filename}`)
+  );
+  const imageRefCompress = ref(
+    storage,
+    `images/compress/${req.files.compress[0].filename}`
+  );
 
-  const readFileCompress = fs.readFileSync(path.join(__dirname,`../multer/compress/${req.files.compress[0].filename}`))
-  const imageRefCompress = ref(storage, `images/compress/${req.files.compress[0].filename}`);
+  const readFileOriginal = fs.readFileSync(
+    path.join(__dirname, `../multer/original/${req.files.original[0].filename}`)
+  );
 
-  const readFileOriginal = fs.readFileSync(path.join(__dirname,`../multer/original/${req.files.original[0].filename}`))
-  
-  const imageRefOriginal = ref(storage, `images/original/${req.files.original[0].filename}`);
+  const imageRefOriginal = ref(
+    storage,
+    `images/original/${req.files.original[0].filename}`
+  );
 
-  const uploadImageCompress = await uploadBytes(imageRefCompress,readFileCompress)
-  const urlCompress = await getDownloadURL(uploadImageCompress.ref)
+  const uploadImageCompress = await uploadBytes(
+    imageRefCompress,
+    readFileCompress
+  );
+  const urlCompress = await getDownloadURL(uploadImageCompress.ref);
 
-  const uploadImageOriginal = await uploadBytes(imageRefOriginal,readFileOriginal)
-  const urlOriginal = await getDownloadURL(uploadImageOriginal.ref)
- 
+  const uploadImageOriginal = await uploadBytes(
+    imageRefOriginal,
+    readFileOriginal
+  );
+  const urlOriginal = await getDownloadURL(uploadImageOriginal.ref);
+
   try {
     let categoryMatch = await Category.findOne({
       where: { title: category },
@@ -152,7 +171,11 @@ const postArtWork = async (req, res, next) => {
     next(err);
   }
 };
-router.post("/",upload.fields([{name: 'compress'},{name: 'original'}]),postArtWork);
+router.post(
+  "/",
+  upload.fields([{ name: "compress" }, { name: "original" }]),
+  postArtWork
+);
 
 // ------------------------------- DELETE -------------------------------
 const deleteArtWork = async (req, res, next) => {
