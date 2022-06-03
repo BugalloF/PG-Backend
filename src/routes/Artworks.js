@@ -2,7 +2,8 @@ const { Router } = require("express");
 const { Op } = require("sequelize");
 const router = Router();
 const { Artwork, Category, Profile } = require("../db.js");
-const upload = require('../multer/multer.js')
+const storage = require('../firebase/firebase.js')
+// const upload = require('../multer/multer.js')
 const getArtWorks = async (req, res, next) => {
   try {
     const { name, from = 0 } = req.query;
@@ -151,7 +152,14 @@ router.get("/:id", async (req, res, next) => {
 });
 // ------------------------------- POST -------------------------------
 const postArtWork = async (req, res, next) => {
-  const { title, content, category, price, id } = req.body;
+  const { title, content, category, price, id, compress } = req.body;
+
+  // const imagesListRef = ref(storage, "images/compress");
+  // const imageRef = ref(storage, `images/compress${compress.filename}`);
+
+
+console.log(compress)
+
 
   try {
     let categoryMatch = await Category.findOne({
@@ -165,7 +173,6 @@ const postArtWork = async (req, res, next) => {
         title,
         content,
         price,
-        img: req.files.original[0].filename,
         imgCompress: req.files.compress[0].filename,
       });
 
