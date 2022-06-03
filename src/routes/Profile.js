@@ -223,15 +223,21 @@ router.get("/:id", async (req, res, next) => {
                           model: Artwork,
                        
                           }});
-            
-                if(idUser){  
-                  let isFollowing = false
-                  Array.from(seguidores, ({dataValues}) => {if(dataValues.idFollow === id){
-                    isFollowing=true
-                  }})
-                  res.status(200).json({found, cantSeguidores, cantSeguidos, isFollowing});
-              }
-                else res.status(200).json({found, cantSeguidores, cantSeguidos});
+                  if(found !== null)
+                  {
+                    if(idUser){  
+                      let isFollowing = false
+                      Array.from(seguidores, ({dataValues}) => {if(dataValues.idFollow === id){
+                        isFollowing=true
+                      }})
+                      res.status(200).json({found, cantSeguidores, cantSeguidos, isFollowing});
+                  }
+                  else res.status(200).json({found, cantSeguidores, cantSeguidos});
+                }
+                else
+                {
+                  res.status(416).send("User not found.");
+                };
               
           }
           else
