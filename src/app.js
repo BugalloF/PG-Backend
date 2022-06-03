@@ -7,7 +7,7 @@ const routes = require('./routes/index.js');
 require('./db.js');
 const server = express();
 server.name = 'API';
-// server.use(express.static(path.join('./src/multer/compress')))
+
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
 server.use(cookieParser());
