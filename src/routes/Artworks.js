@@ -2,8 +2,10 @@ const { Router } = require("express");
 const { Op } = require("sequelize");
 const router = Router();
 const { Artwork, Category, Profile } = require("../db.js");
-const storage = require('../firebase/firebase.js')
-// const upload = require('../multer/multer.js')
+const {storage, uploadBytes, ref, getDownloadURL} = require('../firebase/firebase.js')
+const upload = require('../multer/multer.js')
+const fs = require('fs')
+const path = require('path')
 const getArtWorks = async (req, res, next) => {
   try {
     const { name, from = 0 } = req.query;
@@ -152,13 +154,19 @@ router.get("/:id", async (req, res, next) => {
 });
 // ------------------------------- POST -------------------------------
 const postArtWork = async (req, res, next) => {
-  const { title, content, category, price, id, compress } = req.body;
 
-  // const imagesListRef = ref(storage, "images/compress");
-  // const imageRef = ref(storage, `images/compress${compress.filename}`);
+  const {title,content,price,category} = req.body
+
+    const readFile = fs.readFileSync(path.join(__dirname,`../multer/compress/${req.file.filename}`))
+  const imageRef = ref(storage, `images/compress/${req.file.filename}`);
 
 
-console.log(compress)
+
+
+  const uploadImage = await uploadBytes(imageRef,readFile)
+  const url = await getDownloadURL(uploadImage.ref)
+ 
+  console.log(url)
 
 
   try {
@@ -173,7 +181,7 @@ console.log(compress)
         title,
         content,
         price,
-        imgCompress: req.files.compress[0].filename,
+        imgCompress: url,
       });
 
       await artWorkCreate.setCategories(categoryMatch);
@@ -189,7 +197,7 @@ console.log(compress)
     next(err);
   }
 };
-router.post("/",upload.fields([{name:'original'},{name:'compress'}]), postArtWork);
+router.post("/",upload.single('compress'),postArtWork);
 
 // ------------------------------- DELETE -------------------------------
 const deleteArtWork = async (req, res, next) => {

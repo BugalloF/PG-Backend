@@ -1,5 +1,5 @@
-const initializeApp =require("firebase/app");
-const getStorage= require("firebase/storage")
+const{ initializeApp} =require("firebase/app");
+const{ getStorage, uploadBytes, ref, getDownloadURL}= require("firebase/storage")
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -14,8 +14,9 @@ const firebaseConfig = {
   appId: "1:939713514095:web:a40987f108700af0eb9b9a",
   measurementId: "G-6DSZ4TXS62"
 };
+const app = initializeApp(firebaseConfig);
 const storage = getStorage(app)
 
 // Initialize Firebase
-module.exports = storage
+module.exports = {storage,uploadBytes,ref, getDownloadURL}
 // const analytics = getAnalytics(app);
