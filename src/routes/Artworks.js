@@ -120,8 +120,16 @@ const postArtWork = async (req, res, next) => {
   
   // const imageRefOriginal = ref(storage, `images/original/${req.files.original[0].filename}`);
 
-  const uploadImageCompress = await uploadBytes(imageRefCompress,readFileCompress)
-  const urlCompress = await getDownloadURL(uploadImageCompress.ref)
+  uploadBytes(imageRefCompress,readFileCompress).then( r => {console.log(r)})
+  .then(r => {
+    console.log(getDownloadURL(r))
+
+  })
+  .catch((err)=>{
+    console.log(err)
+  })
+
+
   console.log(readFileOriginal)
 
   // const uploadImageOriginal = await uploadBytes(imageRefOriginal,readFileOriginal)
