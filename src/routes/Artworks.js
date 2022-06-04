@@ -96,7 +96,7 @@ router.get("/:id", async (req, res, next) => {
           attributes: ["userName", "img", "id"],
         },
       ],
-      attributes: {exlude:["img"]}
+      attributes: {exlude:["img"]},
       where: { id: id },
     });
     res.status(200).json(artWork);
