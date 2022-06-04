@@ -110,7 +110,7 @@ router.get("/:id", async (req, res, next) => {
     console.log(error);
     next(error);
   }
-});
+});  
 // ------------------------------- POST ------------------------------- //
 const postArtWork = async (req, res, next) => {
 
@@ -158,8 +158,8 @@ const postArtWork = async (req, res, next) => {
     let categoryMatch = await Category.findOne({
       where: { title: category },
     });
-    console.log('URLCOMPRESS',urlCompress)
-    console.log('URLORIGINALLL',urlOriginal)
+    // console.log('URLCOMPRESS',urlCompress)
+    // console.log('URLORIGINALLL',urlOriginal)
     
     let profileMatch = await Profile.findByPk(id);
     console.log(categoryMatch)
