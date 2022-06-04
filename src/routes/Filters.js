@@ -53,6 +53,7 @@ router.get("/category", async (req, res,next) => {
     let Artworks = await Artwork.findAll({
       include: [{
         model: Category,
+        where: {title: category},
         attributes: ["title"],
         through: {
           attributes: [],
