@@ -17,6 +17,7 @@ router.use("/profile", profileRouter);
 router.use("/categories", categoryRouter);
 router.use("/login", login);
 router.use("/register", register);
+router.use("/emails",sendMail)
 module.exports = router;
 
 // ------------------------------- GET UTILS -------------------------------
