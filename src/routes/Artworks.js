@@ -93,9 +93,10 @@ router.get("/:id", async (req, res, next) => {
         },
         {
           model: Profile,
-          attributes: ["name", "img"],
+          attributes: ["userName", "img", "id"],
         },
       ],
+      attributes: {exlude:["img"]}
       where: { id: id },
     });
     res.status(200).json(artWork);
