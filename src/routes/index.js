@@ -5,6 +5,7 @@ const artRouter = require("./Artworks.js");
 const profileRouter = require("./Profile.js");
 const filtersRouter = require("./Filters.js");
 const categoryRouter = require("./Category.js");
+const sendMail = require("./sendMail.js")
 const login = require("./Login");
 const register = require("./Register");
 const router = Router();
@@ -17,6 +18,7 @@ router.use("/profile", profileRouter);
 router.use("/categories", categoryRouter);
 router.use("/login", login);
 router.use("/register", register);
+router.use("/emails",sendMail)
 module.exports = router;
 
 // ------------------------------- GET UTILS -------------------------------

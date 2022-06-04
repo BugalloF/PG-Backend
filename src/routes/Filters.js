@@ -51,18 +51,17 @@ router.get("/category", async (req, res,next) => {
   // Ahora lo hacemos como se tinee que hacer :
   try {
     let Artworks = await Artwork.findAll({
-      include: {
+      include: [{
         model: Category,
+        where: {title: category},
         attributes: ["title"],
         through: {
           attributes: [],
-        },
-        where: {
-          title: category,
-        },
-        limit: 12,
-        offset: from * 12,
-      },
+        }, 
+      }],
+      limit: 12,
+      offset: from * 12,
+      attributes:['imgCompress','id','likes','price','title'],
     });
     let counter = await Artwork.count();
     res.status(200).json({Artworks,counter});
