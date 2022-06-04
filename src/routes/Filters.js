@@ -57,6 +57,9 @@ router.get("/category", async (req, res,next) => {
         through: {
           attributes: [],
         },
+        where: {
+          title: category,
+        },
         limit: 12,
         offset: from * 12,
       },
