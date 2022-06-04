@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon ./index.js",
+
+    "start": "node index.js",
+
     "test": "mocha -w ./tests/**/*.spec.js"
   },
   "author": "Eldemi",
@@ -25,6 +27,7 @@
     "ioredis": "^4.19.2",
     "jsonwebtoken": "^8.5.1",
     "mercadopago": "^1.5.12",
+    "nodemon": "^2.0.6",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "nodemon": "^2.0.16",
@@ -38,3 +41,4 @@
     "supertest-session": "^4.1.0"
   }
 }
+
