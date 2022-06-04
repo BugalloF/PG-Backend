@@ -10,8 +10,11 @@ router.post("/send-email", async (req, res) => {
 
     const {payer,surname,time,idPost} = req.body;
     const art = await Artwork.findByPk(idPost)
+    
+    const image = art.dataValues.img
+    console.log(art.img)
+    console.log(image)
     console.log(art)
-    const image = art.img
      
     const contentHtml = `
         <h1>hola Fermincin y ${payer} ${surname}!</h1>
