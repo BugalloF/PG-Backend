@@ -63,10 +63,10 @@ const getArtWorks = async (req, res, next) => {
           },
           {
             model: Profile,
-            attributes: ["name", "img"],
+            attributes: ["userName", "img","id"],
           },
         ],
-        attributes: {exclude: ['img']},
+        attributes:['imgCompress','id','likes','price'],
         limit: 12,
         offset: from * 12,
       });
