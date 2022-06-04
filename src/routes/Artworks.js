@@ -26,6 +26,7 @@ const getArtWorks = async (req, res, next) => {
             attributes: ["name", "img"],
           },
         ],
+        attributes: ["name", "img"],
         limit: 12,
         offset: from * 12,
       });
