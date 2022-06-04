@@ -12,9 +12,9 @@ router.post("/send-email", async (req, res) => {
     const art = await Artwork.findByPk(idPost)
     
     const image = art.dataValues.img
-    console.log(art.img)
-    console.log(image)
-    console.log(art)
+    console.log('a',art.img)
+    console.log('b',image)
+    console.log('c',art)
      
     const contentHtml = `
         <h1>hola Fermincin y ${payer} ${surname}!</h1>
@@ -48,7 +48,7 @@ router.post("/send-email", async (req, res) => {
             });
             const mailOptions = {
                 from: "DigitalizArte",
-                to: 'julimaschi@gmail.com',
+                to: 'demiancra@gmail.com',
                 subject: "Compra en DigitalizArte",
                 html: contentHtml,
                 attachments: [{
