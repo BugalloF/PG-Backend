@@ -19,11 +19,13 @@ const getArtWorks = async (req, res, next) => {
             attributes: ["title"],
             through: {
               attributes: [],
-            },
+            }, 
           },
           {
             model: Profile,
+
             attributes: ["userName", "img","id"],
+
           },
         ],
         attributes:['imgCompress','id','likes','price'],
@@ -63,7 +65,9 @@ const getArtWorks = async (req, res, next) => {
           },
           {
             model: Profile,
+
             attributes: ["userName", "img","id"],
+
           },
         ],
         attributes:['imgCompress','id','likes','price'],
@@ -93,7 +97,9 @@ router.get("/:id", async (req, res, next) => {
         },
         {
           model: Profile,
+
           attributes: ["userName", "img", "id"],
+
         },
       ],
       attributes: {exlude:["img"]},

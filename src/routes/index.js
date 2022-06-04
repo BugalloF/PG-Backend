@@ -5,6 +5,8 @@ const artRouter = require("./Artworks.js");
 const profileRouter = require("./Profile.js");
 const filtersRouter = require("./Filters.js");
 const categoryRouter = require("./Category.js");
+const login = require("./Login");
+const register = require("./Register");
 const router = Router();
 
 // Configurar los routers
@@ -13,6 +15,8 @@ router.use("/art", artRouter);
 router.use("/filter", filtersRouter);
 router.use("/profile", profileRouter);
 router.use("/categories", categoryRouter);
+router.use("/login", login);
+router.use("/register", register);
 module.exports = router;
 
 // ------------------------------- GET UTILS -------------------------------
