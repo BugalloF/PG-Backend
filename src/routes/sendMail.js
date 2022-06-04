@@ -6,6 +6,7 @@ const {Artwork} = require('../db')
 
 router.post("/send-email", async (req, res) => {
     console.log("enviadooooo",req.body)
+    console.log('holis')
 
     const {payer,surname,time,idPost} = req.body;
     const art = await Artwork.findByPk(idPost)
