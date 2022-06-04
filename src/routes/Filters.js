@@ -59,6 +59,8 @@ router.get("/category", async (req, res,next) => {
           attributes: [],
         }, 
       }],
+      limit: 12,
+      offset: from * 12,
       attributes:['imgCompress','id','likes','price','title'],
     });
     let counter = await Artwork.count();
