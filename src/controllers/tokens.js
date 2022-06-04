@@ -10,6 +10,7 @@ async function signToken(user)
         {
             id: user.id,
             name: user.name,
+            img: user.img,
         },
         JWT_SECRET,
         {
