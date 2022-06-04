@@ -14,21 +14,7 @@ const firebaseConfig = {
   appId: "1:939713514095:web:a40987f108700af0eb9b9a",
   measurementId: "G-6DSZ4TXS62"
 };
-// const firebaseConfig = {
 
-//   apiKey: "AIzaSyD6SlIY838LFqMVEnJkWb8ny3KxtqhzobU",
-
-//   authDomain: "upload-66659.firebaseapp.com",
-
-//   projectId: "upload-66659",
-
-//   storageBucket: "upload-66659.appspot.com",
-
-//   messagingSenderId: "782687491283",
-
-//   appId: "1:782687491283:web:9cde9bd52372d6242af026"
-
-// };
 const app = initializeApp(firebaseConfig);
 const storage = getStorage(app)
 
