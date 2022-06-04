@@ -23,7 +23,7 @@ const getArtWorks = async (req, res, next) => {
           },
           {
             model: Profile,
-            attributes: ["userName", "img"],
+            attributes: ["userName", "img","id"],
           },
         ],
         attributes:['imgCompress','id','likes','price'],
