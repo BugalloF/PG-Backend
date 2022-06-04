@@ -1,16 +1,9 @@
-const { Router } = require("express");
-const { Op } = require("sequelize");
-const router = Router();
-const { Artwork, Category, Profile } = require("../db.js");
-const {
-  storage,
-  uploadBytes,
-  ref,
-  getDownloadURL,
-} = require("../firebase/firebase.js");
-const upload = require("../multer/multer.js");
-const fs = require("fs");
-const path = require("path");
+  const { Router } = require("express");
+  const { Op } = require("sequelize");
+  const router = Router();
+  const { Artwork, Category, Profile } = require("../db.js");
+
+
 
 // --------------------------GET-------------------------------- //
 
@@ -30,9 +23,12 @@ const getArtWorks = async (req, res, next) => {
           },
           {
             model: Profile,
-            attributes: ["name", "img", "country"],
+
+            attributes: ["userName", "img","id"],
+
           },
         ],
+        attributes:['imgCompress','id','likes','price'],
         limit: 12,
         offset: from * 12,
       });
@@ -69,9 +65,12 @@ const getArtWorks = async (req, res, next) => {
           },
           {
             model: Profile,
-            attributes: ["name", "img", "country"],
+
+            attributes: ["userName", "img","id"],
+
           },
         ],
+        attributes:['imgCompress','id','likes','price'],
         limit: 12,
         offset: from * 12,
       });
@@ -98,9 +97,12 @@ router.get("/:id", async (req, res, next) => {
         },
         {
           model: Profile,
-          attributes: ["name", "img", "country"],
+
+          attributes: ["userName", "img", "id"],
+
         },
       ],
+      attributes: {exlude:["img"]},
       where: { id: id },
     });
     res.status(200).json(artWork);
@@ -111,8 +113,12 @@ router.get("/:id", async (req, res, next) => {
 });
 // ------------------------------- POST ------------------------------- //
 const postArtWork = async (req, res, next) => {
-  const { title, content, price, category, id } = req.body;
-  // console.log('BODYYY',req.body)
+
+
+
+  const {title,content,price,category,id,original,compress} = req.body
+
+ 
   try {
   // console.log('FILESSS',req.files)
   const readFileCompress = fs.readFileSync(
@@ -163,8 +169,8 @@ const postArtWork = async (req, res, next) => {
         title,
         content,
         price,
-        img: urlOriginal,
-        imgCompress: urlCompress,
+        img: original,
+        imgCompress: compress,
       });
 
       await artWorkCreate.setCategories(categoryMatch);
@@ -180,11 +186,7 @@ const postArtWork = async (req, res, next) => {
     next(err);
   }
 };
-router.post(
-  "/",
-  upload.fields([{ name: "compress" }, { name: "original" }]),
-  postArtWork
-);
+router.post("/",postArtWork);
 
 // ------------------------------- DELETE -------------------------------
 const deleteArtWork = async (req, res, next) => {
