@@ -43,7 +43,7 @@ module.exports = (sequelize) => {
       },
       img: {
         type: DataTypes.TEXT,
-        defaultValue: "https://pbs.twimg.com/media/EvAIHjfXMAUdBSZ.jpg",
+        defaultValue: "https://i.pinimg.com/564x/20/0d/72/200d72a18492cf3d7adac8a914ef3520.jpg",
       },
       phone: {
         type: DataTypes.STRING,
