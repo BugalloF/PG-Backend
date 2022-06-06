@@ -195,7 +195,7 @@ router.get("/:id", async (req, res, next) => {
       // const { idUser } = req.body;
       const {authorization} = req.headers;
       
-      if(authorization)
+      if(true)
       {
           const token = authorization.split(" ").pop();
           const tokenData = await verifyToken(token);
