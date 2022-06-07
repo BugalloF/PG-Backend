@@ -1,22 +1,35 @@
-const { Router } = require("express");
+// Dependencies
+const {Router} = require("express");
 const router = Router();
-const { Category } = require("../db.js");
+// Files
+const {Category} = require("../db.js");
+const {API_KEY} = process.env;
+
 
 const getCategories = async (req, res,next) => {
-  try {
-    let categories = await Category.findAll();
-
-    categories.map((e) => {
-      // console.log(artWorks)
-      return {
-        id: e.id,
-        title: e.title,
-      };
-    });
-    res.status(200).json(categories);
-  } catch (error) {
-    next(error)
+  const {apiKey} = process.env;
+  
+  if(apiKey === API_KEY)
+  {
+    try {
+      let categories = await Category.findAll();
+  
+      categories.map((e) => {
+        // console.log(artWorks)
+        return {
+          id: e.id,
+          title: e.title,
+        };
+      });
+      res.status(200).json(categories);
+    } catch (error) {
+      next(error)
+    }
   }
+  else
+  {
+    res.status(401).send("No authorization.");
+  };
 };
 
 router.get("/", getCategories);
