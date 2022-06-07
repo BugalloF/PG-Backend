@@ -191,4 +191,62 @@ try {
 };
 router.put("/:id", putArtWork);
 
+router.post("/likes", async (req, res,next) => {
+  try
+    {
+        const { idPost } = req.body;
+        const {authorization} = req.headers;
+        
+        if(authorization)
+        {
+            const token = authorization.split(" ").pop();
+            const tokenData = await verifyToken(token);
+            const idUser = tokenData !== undefined ? tokenData.id : null;
+            let likeador = await Profile.findByPk(idUser);
+            
+            if(likeador)
+            {
+              await Likes.create({
+                idPost: idPost,
+                idUser: idUser,
+              });
+              
+              res.status(200).send("Likeado!");
+            }
+            else
+            {
+                res.status(409).send("Invalid token.");
+            };
+        }
+        else
+        {
+            res.status(401).send("No authorization.");
+        };
+    }
+    catch(error)
+    {
+        next(error);
+    };
+});
+
+router.delete("/likes/:id", async (req, res,next) => {
+  try {
+    const { idPost } = req.params;
+    const { idUser } = req.body;
+
+    // if (id && idUser) {
+    //   var idToDestroy = await Follower.findAll({
+    //     where: [{ idUser: idUser }, { idFollow: id }],
+    //   });
+      // console.log("destruido", idToDestroy);
+    // }
+     await Likes.destroy({
+      where: [{ idUser:idUser}, { idPost:idPost }],
+    });
+    res.status(200).send('Has quitado tu like ! ')
+  } catch (error) {
+    next(error)
+  }
+});
+
 module.exports = router;
