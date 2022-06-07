@@ -7,7 +7,7 @@ const {API_KEY} = process.env;
 
 
 const getCategories = async (req, res,next) => {
-  const {apiKey} = process.env;
+  const {apiKey} = req.query;
   
   if(apiKey === API_KEY)
   {
