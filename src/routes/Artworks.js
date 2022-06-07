@@ -1,137 +1,164 @@
-const { Router } = require("express");
-const { Op } = require("sequelize");
+// Dependencies
+const {Router} = require("express");
 const router = Router();
-const { Artwork, Category, Profile, Likes } = require("../db.js");
-const { verifyToken } = require("../controllers/tokens");
+const {Op} = require("sequelize");
+// Files
+const {Artwork, Category, Profile, Likes} = require("../db.js");
+const {verifyToken} = require("../controllers/tokens");
+const {API_KEY} = process.env;
+
+
 
 // --------------------------GET-------------------------------- //
 
 const getArtWorks = async (req, res, next) => {
-  try {
-    const { name, from = 0 } = req.query;
+  const {apiKey} = req.query;
+  
+  if(apiKey === API_KEY)
+  {
+    try {
+      const { name, from = 0 } = req.query;
 
-    if (!name) {
-      let artWorks = await Artwork.findAll({
-        include: [
-          {
-            model: Category,
-            attributes: ["title"],
-            through: {
-              attributes: [],
+      if (!name) {
+        let artWorks = await Artwork.findAll({
+          include: [
+            {
+              model: Category,
+              attributes: ["title"],
+              through: {
+                attributes: [],
+              },
             },
-          },
-          {
-            model: Profile,
+            {
+              model: Profile,
 
-            attributes: ["userName", "img", "id", "country"],
-          },
-        ],
-        attributes: ["imgCompress", "id", "likes", "price", "title"],
-        limit: 12,
-        offset: from * 12,
-      });
-
-      artWorks.map((e) => {
-        // console.log(artWorks)
-        return {
-          id: e.id,
-          img: e.img,
-          imgCompress: e.imgCompress,
-          title: e.title,
-          content: e.content,
-          category: e.categories[0].title,
-          likes: e.likes,
-          price: e.price,
-        };
-      });
-      let counter = await Artwork.count();
-
-      res.status(200).json({ artWorks, counter });
-    } else {
-      //  return artWorks.filter(e=> e.title.toLowerCase() === name.toLowerCase())
-      let counter = await Artwork.count({
-        where: { title: { [Op.iLike]: `%${name}%` } },
-      });
-      let artWorks = await Artwork.findAll({
-        where: { title: { [Op.iLike]: `%${name}%` } },
-        include: [
-          {
-            model: Category,
-            attributes: ["title"],
-            through: {
-              attributes: [],
+              attributes: ["userName", "img", "id", "country"],
             },
-          },
-          {
-            model: Profile,
+          ],
+          attributes: ["imgCompress", "id", "likes", "price", "title"],
+          limit: 12,
+          offset: from * 12,
+        });
 
-            attributes: ["userName", "img", "id", "country"],
-          },
-        ],
-        attributes: ["imgCompress", "id", "likes", "price", "title"],
-        limit: 12,
-        offset: from * 12,
-      });
-      res.json({ artWorks, counter });
+        artWorks.map((e) => {
+          // console.log(artWorks)
+          return {
+            id: e.id,
+            img: e.img,
+            imgCompress: e.imgCompress,
+            title: e.title,
+            content: e.content,
+            category: e.categories[0].title,
+            likes: e.likes,
+            price: e.price,
+          };
+        });
+        let counter = await Artwork.count();
+
+        res.status(200).json({ artWorks, counter });
+      } else {
+        //  return artWorks.filter(e=> e.title.toLowerCase() === name.toLowerCase())
+        let counter = await Artwork.count({
+          where: { title: { [Op.iLike]: `%${name}%` } },
+        });
+        let artWorks = await Artwork.findAll({
+          where: { title: { [Op.iLike]: `%${name}%` } },
+          include: [
+            {
+              model: Category,
+              attributes: ["title"],
+              through: {
+                attributes: [],
+              },
+            },
+            {
+              model: Profile,
+
+              attributes: ["userName", "img", "id", "country"],
+            },
+          ],
+          attributes: ["imgCompress", "id", "likes", "price", "title"],
+          limit: 12,
+          offset: from * 12,
+        });
+        res.json({ artWorks, counter });
+      }
+    } catch (error) {
+      next(error);
     }
-  } catch (error) {
-    next(error);
   }
+  else
+  {
+    res.status(401).send("No authorization.");
+  };
 };
 
 router.get("/", getArtWorks);
 // ruta de detalle
 router.get("/:id", async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const { authorization } = req.headers;
-    let artWork = await Artwork.findAll({
-      include: [
-        {
-          model: Category,
-          attributes: ["title"],
-          through: {
-            attributes: [],
+  const {apiKey} = req.query;
+  
+  if(apiKey === API_KEY)
+  {
+    try {
+      const { id } = req.params;
+      const { authorization } = req.headers;
+      let artWork = await Artwork.findAll({
+        include: [
+          {
+            model: Category,
+            attributes: ["title"],
+            through: {
+              attributes: [],
+            },
           },
-        },
-        {
-          model: Profile,
-
-          attributes: ["userName", "img", "id"],
-        },
-      ],
-      attributes: { exlude: ["img"] },
-      where: { id: id },
-    });
-    let likes = await Likes.findAll({
-      where: { idPost: id },
-    });
-    let likesCounter = likes.length;
-    if (authorization) {
-      const token = authorization.split(" ").pop();
-      const tokenData = await verifyToken(token);
-      const idUser = tokenData !== undefined ? tokenData.id : null;
-      // console.log('aaaaaaaaaaaaaaaaaaa')
-      if (idUser) {
-        let isLiked = false;
-        Array.from(likes, ({ dataValues }) => {
-          if (dataValues.idUser === idUser) {
-            isLiked = true;
-          }
-        });
-        res.status(200).json({ artWork, likesCounter, isLiked });
+          {
+            model: Profile,
+            attributes: ["userName", "img", "id"],
+          },
+        ],
+        attributes: { exlude: ["img"] },
+        where: { id: id },
+      });
+      
+      let likes = await Likes.findAll({
+        where: { idPost: id },
+      });
+      let likesCounter = likes.length;
+      
+      if (authorization) {
+        const token = authorization.split(" ").pop();
+        const tokenData = await verifyToken(token);
+        const idUser = tokenData !== undefined ? tokenData.id : null;
+        // console.log('aaaaaaaaaaaaaaaaaaa')
+        if (idUser) {
+          let isLiked = false;
+          Array.from(likes, ({ dataValues }) => {
+            if (dataValues.idUser === idUser) {
+              isLiked = true;
+            }
+          });
+          res.status(200).json({ artWork, likesCounter, isLiked });
+        }
       }
+      else {
+        res.status(200).json({ artWork, likesCounter })
+        // console.log('bbbbbbbbbbbbbb',likesCounter)  
+      };
+    } catch (error) {
+      console.log(error);
+      next(error);
     }
-    else {
-      res.status(200).json({ artWork, likesCounter })
-      // console.log('bbbbbbbbbbbbbb',likesCounter)  
-    };
-  } catch (error) {
-    console.log(error);
-    next(error);
   }
+  else
+  {
+    res.status(401).send("No authorization.");
+  };
 });
+
+
 // ------------------------------- POST ------------------------------- //
+
 const postArtWork = async (req, res, next) => {
   const { title, content, price, category, id, original, compress } = req.body;
 
