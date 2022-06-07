@@ -207,9 +207,9 @@ const putArtWork = async (req, res, next) => {
 };
 router.put("/:id", putArtWork);
 
-router.post("/likes", async (req, res, next) => {
+router.post("/likes/:idPost", async (req, res, next) => {
   try {
-    const { idPost } = req.body;
+    const { idPost } = req.params;
     const { authorization } = req.headers;
 
     if (authorization) {
