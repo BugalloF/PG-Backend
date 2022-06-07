@@ -124,7 +124,7 @@ router.get("/:id", async (req, res, next) => {
     }
     else {
       res.status(200).json({ artWork, likesCounter })
-      console.log('bbbbbbbbbbbbbb')  
+      console.log('bbbbbbbbbbbbbb',likesCounter)  
     };
   } catch (error) {
     console.log(error);
