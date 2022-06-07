@@ -2,6 +2,7 @@ const { Router } = require("express");
 const { Op } = require("sequelize");
 const router = Router();
 const { Artwork, Category, Profile } = require("../db.js");
+const {verifyToken} = require("../controllers/tokens");
 
 
 
@@ -241,7 +242,7 @@ router.delete("/likes/:id", async (req, res,next) => {
       // console.log("destruido", idToDestroy);
     // }
      await Likes.destroy({
-      where: [{ idUser:idUser}, { idPost:idPost }],
+      where: [{ idUser:idUser}, { idPost:idPost  }],
     });
     res.status(200).send('Has quitado tu like ! ')
   } catch (error) {
