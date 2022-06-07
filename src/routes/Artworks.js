@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const { Op } = require("sequelize");
 const router = Router();
-const { Artwork, Category, Profile } = require("../db.js");
+const { Artwork, Category, Profile,Likes } = require("../db.js");
 const {verifyToken} = require("../controllers/tokens");
 
 
