@@ -33,6 +33,7 @@ try {
       limit: 12,
       offset: from * 12,
     });
+    
     artWorks.map((e) => {
       // console.log(artWorks)
       return {
@@ -106,7 +107,10 @@ try {
     attributes: {exlude:["img"]},
     where: { id: id },
   });
-  res.status(200).json(artWork);
+  let likes = await Likes.findAll({
+    where: { idPost: id },})
+  let likesCounter= likes.length
+  res.status(200).json({artWork,likesCounter});
 } catch (error) {
   console.log(error);
   next(error);
