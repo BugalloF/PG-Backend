@@ -111,7 +111,7 @@ router.get("/:id", async (req, res, next) => {
       let likes = await Likes.findAll({
         where: { idPost: id },
       });
-      let likesCounter = likes.length;
+      var likesCounter = likes.length;
       if (idUser) {
         let isLiked = false;
         Array.from(likes, ({ dataValues }) => {
