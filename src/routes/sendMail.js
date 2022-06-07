@@ -58,7 +58,7 @@ router.post("/send-email", async (req, res) => {
             });
             const mailOptions = {
                 from: '"DigitalizArte" <digitalizartecompras@gmail.com>',
-                to: 'julimaschi@gmail.com',  //falta cambiar el mail!!!
+                to: 'bugallof@gmail.com',  //falta cambiar el mail!!!
                 subject: "Compra en DigitalizArte",
                 html: contentHtml,
                 attachments: [{
