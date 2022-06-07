@@ -103,15 +103,15 @@ router.get("/:id", async (req, res, next) => {
       attributes: { exlude: ["img"] },
       where: { id: id },
     });
+    let likes = await Likes.findAll({
+      where: { idPost: id },
+    });
+    let likesCounter = likes.length;
     if (authorization) {
       const token = authorization.split(" ").pop();
       const tokenData = await verifyToken(token);
       const idUser = tokenData !== undefined ? tokenData.id : null;
       console.log('aaaaaaaaaaaaaaaaaaa')
-      let likes = await Likes.findAll({
-        where: { idPost: id },
-      });
-      var likesCounter = likes.length;
       if (idUser) {
         let isLiked = false;
         Array.from(likes, ({ dataValues }) => {
