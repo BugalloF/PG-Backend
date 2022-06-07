@@ -107,7 +107,7 @@ router.get("/:id", async (req, res, next) => {
       const token = authorization.split(" ").pop();
       const tokenData = await verifyToken(token);
       const idUser = tokenData !== undefined ? tokenData.id : null;
-
+      console.log('aaaaaaaaaaaaaaaaaaa')
       let likes = await Likes.findAll({
         where: { idPost: id },
       });
@@ -122,7 +122,10 @@ router.get("/:id", async (req, res, next) => {
         res.status(200).json({ artWork, likesCounter, isLiked });
       }
     }
-    res.status(200).json({ artWork, likesCounter });
+    else {
+      res.status(200).json({ artWork, likesCounter })
+      console.log('bbbbbbbbbbbbbb')  
+    };
   } catch (error) {
     console.log(error);
     next(error);
