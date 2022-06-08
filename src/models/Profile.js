@@ -49,16 +49,20 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
         
       },
-      public_email: {
-        type: DataTypes.STRING,
-        
-      },
       description: {
         type: DataTypes.STRING
       },
       country:{
           type:DataTypes.STRING,
-          
+      },
+      linkedIn:{
+        type:DataTypes.STRING
+      },
+      facebook:{
+        type:DataTypes.STRING
+      },
+      instagram:{
+        type:DataTypes.STRING
       }
     },
     { timestamps: false }

@@ -72,9 +72,11 @@ const putProfile = async (req, res,next) => {
       gender,
       img,
       phone,
-      public_email,
       description,
       country,
+      facebook,
+      instagram,
+      linkedIn
     } = req.body;
     let updatedProfile = await Profile.findOne({
       where: {
@@ -91,9 +93,11 @@ const putProfile = async (req, res,next) => {
       gender,
       img,
       phone,
-      public_email,
       description,
       country,
+      facebook,
+      instagram,
+      linkedIn
     });
     res.status(201).json(updatedProfile);
   } catch (error) {
