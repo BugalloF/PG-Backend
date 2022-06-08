@@ -11,6 +11,7 @@ async function signToken(user)
             id: user.id,
             name: user.name,
             img: user.img,
+            is_Admin: user.is_Admin,
         },
         JWT_SECRET,
         {
