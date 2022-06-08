@@ -10,6 +10,7 @@ async function signToken(user)
         {
             id: user.id,
             name: user.name,
+            email: user.email,
             img: user.img,
             is_Admin: user.is_Admin,
         },
@@ -34,15 +35,8 @@ async function verifyToken(token, next)
 };
 
 
-async function decodeToken(token)
-{
-
-};
-
-
 module.exports =
 {
     signToken,
     verifyToken,
-    decodeToken,
 };
