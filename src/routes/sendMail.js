@@ -5,6 +5,7 @@ const nodemailer = require('nodemailer');
 const {google} = require('googleapis');
 // Files
 const {Artwork} = require('../db');
+const {verifyToken} = require("../controllers/tokens");
 const {CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, REFRESH_TOKEN} = process.env;
 
 
