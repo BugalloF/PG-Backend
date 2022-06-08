@@ -236,7 +236,7 @@ router.put("/:id", putArtWork);
 
 router.post("/likes/:id", async (req, res, next) => {
   try {
-    const { idPost } = req.params;
+    const  idPost  = req.params.id;
     const { authorization } = req.body.headers;
     console.log('Authorization:',authorization)
     console.log('Req:',req.params)
@@ -267,7 +267,7 @@ router.post("/likes/:id", async (req, res, next) => {
 
 router.delete("/likes/:id", async (req, res, next) => {
   try {
-    const { idPost } = req.params;
+    const  idPost  = req.params.id;
     const { idUser } = req.body;
 
     // if (id && idUser) {
