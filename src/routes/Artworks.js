@@ -237,9 +237,9 @@ router.put("/:id", putArtWork);
 router.post("/likes/:id", async (req, res, next) => {
   try {
     const { idPost } = req.params;
-    const { authorization } = req.headers;
+    const { authorization } = req.body.headers;
     console.log('Authorization:',authorization)
-    console.log('Req:',req)
+    console.log('Req:',req.body)
     if (authorization) {
       const token = authorization.split(" ").pop();
       const tokenData = await verifyToken(token);
