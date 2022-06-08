@@ -180,13 +180,13 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-router.delete("/:id", async (req, res,next) => {
+router.delete("/:idSeguido", async (req, res,next) => {
   try {
-    const { id } = req.params;
-    const { idUser } = req.body;
-    
+    const { idSeguido } = req.params;
+    const { idSeguidor } = req.body;
+    console.log(req.body)
      await Follower.destroy({
-      where: [{ idUser: idUser }, { idFollow: id }],
+      where: [{ idUser: idSeguidor }, { idFollow: idSeguido }],
     });
     res.status(200).send('Has dejado de seguir')
   } catch (error) {
@@ -194,21 +194,15 @@ router.delete("/:id", async (req, res,next) => {
   }
 });
 
-router.post("/follow", async (req, res,next) => {
+router.post("/follow/:idSeguido", async (req, res,next) => {
   try
     {
-        const { idSeguido } = req.body;
-        const {authorization} = req.headers;
+        const { idSeguido } = req.params;
+        const {idSeguidor} = req.body;
+        console.log(req.body)
         
-        if(authorization)
-        {
-            const token = authorization.split(" ").pop();
-            const tokenData = await verifyToken(token);
-            const idSeguidor = tokenData !== undefined ? tokenData.id : null;
-            let seguidor = await Profile.findByPk(idSeguidor);
-            let seguido = await Profile.findByPk(idSeguido);
             
-            if(seguidor && seguido)
+            if(idSeguido && idSeguidor)
             {
               await Follower.create({
                 idUser: idSeguidor,
@@ -219,13 +213,10 @@ router.post("/follow", async (req, res,next) => {
             }
             else
             {
-                res.status(409).send("Invalid token.");
+                res.status(409).send("Invalid ID users.");
             };
-        }
-        else
-        {
-            res.status(401).send("No authorization.");
-        };
+       
+       
     }
     catch(error)
     {
