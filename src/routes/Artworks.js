@@ -146,7 +146,7 @@ router.get("/:id", async (req, res, next) => {
         // console.log('bbbbbbbbbbbbbb',likesCounter)  
       };
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       next(error);
     }
   }
@@ -238,9 +238,9 @@ router.post("/likes/:id", async (req, res, next) => {
   try {
     const  idPost  = req.params.id;
     const { authorization } = req.body.headers;
-    console.log('Authorization:',authorization)
-    console.log('Req:',req.params)
-    console.log('POSTTT',idPost)
+    // console.log('Authorization:',authorization)
+    // console.log('Req:',req.params)
+    // console.log('POSTTT',idPost)
     if (authorization) {
       const token = authorization.split(" ").pop();
       const tokenData = await verifyToken(token);
@@ -269,15 +269,7 @@ router.delete("/likes/:id", async (req, res, next) => {
   try {
     const  idPost  = req.params.id;
     const  idUser  = req.body.idUser;
-    console.log(req.body)
-    // console.log('BODYYYYYY',req)
-    // console.log('BODYYYYYY22222',req)
-    // if (id && idUser) {
-    //   var idToDestroy = await Follower.findAll({
-    //     where: [{ idUser: idUser }, { idFollow: id }],
-    //   });
-    // console.log("destruido", idToDestroy);
-    // }
+    // console.log(req.body)
     await Likes.destroy({
       where: [{ idUser: idUser }, { idPost: idPost }],
     });
