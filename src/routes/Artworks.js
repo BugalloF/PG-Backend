@@ -239,7 +239,8 @@ router.post("/likes/:id", async (req, res, next) => {
     const { idPost } = req.params;
     const { authorization } = req.body.headers;
     console.log('Authorization:',authorization)
-    console.log('Req:',req.body)
+    console.log('Req:',req.params)
+    console.log('POSTTT',idPost)
     if (authorization) {
       const token = authorization.split(" ").pop();
       const tokenData = await verifyToken(token);
