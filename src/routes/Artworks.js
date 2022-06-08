@@ -269,7 +269,8 @@ router.delete("/likes/:id", async (req, res, next) => {
   try {
     const  idPost  = req.params.id;
     const  idUser  = req.body.idUser;
-    console.log('BODYYYYYY',req)
+    console.log(req.body)
+    // console.log('BODYYYYYY',req)
     // console.log('BODYYYYYY22222',req)
     // if (id && idUser) {
     //   var idToDestroy = await Follower.findAll({
