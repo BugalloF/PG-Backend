@@ -133,11 +133,18 @@ router.get("/:id", async (req, res, next) => {
         // console.log('aaaaaaaaaaaaaaaaaaa')
         if (idUser) {
           let isLiked = false;
-          Array.from(likes, ({ dataValues }) => {
-            if (dataValues.idUser === idUser) {
-              isLiked = true;
-            }
+          // Array.from(likes, ({ dataValues }) => {
+          //   if (dataValues.idUser === idUser) {
+          //     isLiked = true;
+          //   }
+          // });
+          let search= await Likes.findAll({
+            where: [{ idUser: idUser }],
           });
+          console.log('soyyy',search)
+          console.log('soyyylengthhhh',search.length)
+          if(search.length>0) isLiked=true
+
           res.status(200).json({ artWork, likesCounter, isLiked });
         }
       }
