@@ -32,3 +32,5 @@ router.get("/", async (req, res, next) => {
     res.status(401).send("No authorization.");
   }
 });
+
+module.exports = router;
