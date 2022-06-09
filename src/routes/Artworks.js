@@ -139,7 +139,7 @@ router.get("/:id", async (req, res, next) => {
           //   }
           // });
           let search= await Likes.findAll({
-            where: [{ idUser: idUser }],
+            where: [{ idUser: idUser },{idPost:id}],
           });
           console.log('soyyy',search)
           console.log('soyyylengthhhh',search.length)
