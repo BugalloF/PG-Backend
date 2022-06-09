@@ -43,6 +43,7 @@ router.get("/", async (req, res, next) => {
                     attributes: ["userName", "img", "id"],
                   },
                 ],
+                where:{profileId:e},
                 attributes: ["imgCompress", "id", "likes", "price", "title"],
                 limit: 12,
                 offset: from * 12,
