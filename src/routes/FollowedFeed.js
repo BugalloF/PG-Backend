@@ -51,7 +51,7 @@ router.get("/", async (req, res, next) => {
             })
             )
             
-            let counter = arr.flat(Infinity)
+            let counter = arr.flat(Infinity).length
             
 
         res.status(200).json({arr,counter})
