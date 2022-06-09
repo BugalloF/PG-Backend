@@ -54,7 +54,7 @@ router.get("/", async (req, res, next) => {
             let counter = arr.flat(Infinity)
             
 
-        res.status(200).json(arr,counter)
+        res.status(200).json({arr,counter})
         }
       }
     } catch (error) {
