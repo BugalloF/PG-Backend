@@ -223,7 +223,7 @@ router.delete("/:id", deleteArtWork);
 const putArtWork = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { title, content, category, price, img } = req.body;
+    const { title, content, category, price } = req.body;
     let updatedArtWork = await Artwork.findOne({
       where: {
         id: id,
@@ -232,8 +232,7 @@ const putArtWork = async (req, res, next) => {
     await updatedArtWork.update({
       title,
       content,
-      price,
-      img,
+      price
     });
     let categoriesFromDb = await Category.findAll({
       where: { title: category },
