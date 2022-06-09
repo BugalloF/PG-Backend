@@ -23,9 +23,11 @@ router.get("/", async (req, res, next) => {
             return e.idFollow
         })
         console.log('IDS',idsFollowed)
-        let arr=  await Artwork.findAll({
-                where:{profileId:idsFollowed[0]}
-            
+        let arr=  idsFollowed.map( e=>{
+            console.log('MAP',e)
+            return await Artwork.findAll({
+                where:{profileId:e}
+            })
         })
 
     
