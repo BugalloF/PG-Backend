@@ -19,14 +19,10 @@ router.get("/", async (req, res, next) => {
           let seguidos = await Follower.findAll({
             where: { idUser: idUser },
           });
-        //   console.log("SEGUIDOSS", seguidos)
-          
-        //   let found = await Profile.findByPk(id, {
-        //     include: {
-        //       model: Artwork,
-        //     },
-        //   });
-        res.status(200).json(seguidos)
+        let idsFollowed= seguidos.map(e=>{
+            return e.idFollow
+        })
+        res.status(200).json(idsFollowed)
         }
       }
     } catch (error) {
