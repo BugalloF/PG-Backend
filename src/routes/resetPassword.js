@@ -7,7 +7,7 @@ const {encrypt} = require("../controllers/bcrypt");
 const {verifyToken} = require("../controllers/tokens");
 
 
-router.put("/reset/:id", async (req, res) => {
+router.put("/:id", async (req, res) => {
     const {id} = req.params;
     const {password} = req.body;
     const {authorization} = req.headers;

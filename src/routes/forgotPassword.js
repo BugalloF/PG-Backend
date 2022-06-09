@@ -8,7 +8,7 @@ const {signTokenForResetPassword} = require("../controllers/tokens");
 const {sendEmail} = require("../controllers/nodemailer");
 
 
-router.post("/forgot", async (req, res) => {
+router.post("/", async (req, res) => {
     const {user} = req.body;
     
     try
