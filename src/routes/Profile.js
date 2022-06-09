@@ -111,22 +111,20 @@ router.put("/:id", putProfile);
 
 router.get("/:id", async (req, res, next) => {
   const {apiKey} = req.query;
+  
   if(apiKey === API_KEY)
   {
     try
     {
-      const { id } = req.params;
-      const {authorization} = req.headers;
+        const { id } = req.params;
+        const {authorization} = req.headers;
         
-      if(authorization)
-      {
-        const token = authorization.split(" ").pop();
-        const tokenData = await verifyToken(token);
-        const idUser = tokenData !== undefined ? tokenData.id : null;
-        
-        var search= await Follower.findAll({
-          where: [{ idUser: idUser }, { idFollow: id }],
-        });
+        if(authorization)
+        {
+            const token = authorization.split(" ").pop();
+            const tokenData = await verifyToken(token);
+            const idUser = tokenData !== undefined ? tokenData.id : null;
+            
             if(idUser)
             {
                 let seguidos = await Follower.findAll({
@@ -156,9 +154,12 @@ router.get("/:id", async (req, res, next) => {
                         // Array.from(seguidores, ({dataValues}) => {if(dataValues.idFollow === id){
                         //   isFollowing=true
                         // }})
-                        
-                        console.log('soy el search',search)
-                        if(search!==[ ]) isFollowing=true
+                        let search= await Follower.findAll({
+                          where: [{ idUser: idUser }, { idFollow: id }],
+                        });
+                        console.log('soyyy',search)
+                        console.log('soyyylengthhhh',search.length)
+                        if(search.length>0) isFollowing=true
                         
                         res.status(200).json({found, cantSeguidores, cantSeguidos, isFollowing});
                     }
