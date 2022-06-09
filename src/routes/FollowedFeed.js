@@ -28,7 +28,9 @@ router.get("/", async (req, res, next) => {
         res.status(200).json(seguidos)
         }
       }
-    } catch (error) {}
+    } catch (error) {
+        next(error)
+    }
   } else {
     res.status(401).send("No authorization.");
   }
