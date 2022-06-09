@@ -9,7 +9,7 @@ const categoryRouter = require("./Category.js");
 const sendMail = require("./sendMail.js")
 const login = require("./Login");
 const register = require("./Register");
-const forgotPassword = require("./ForgotPassword");
+const forgotPassword = require("./forgotPassword");
 const resetPassword = require("./ResetPassword");
 const followedfeed=require('./FollowedFeed')
 
