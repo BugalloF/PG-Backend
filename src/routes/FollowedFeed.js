@@ -17,7 +17,7 @@ router.get("/", async (req, res, next) => {
 
         if (idUser) {
           let seguidos = await Follower.findAll({
-            where: { idUser: id },
+            where: { idUser: idUser },
           });
         //   console.log("SEGUIDOSS", seguidos)
           
