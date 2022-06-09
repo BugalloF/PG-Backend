@@ -25,7 +25,7 @@ router.get("/", async (req, res, next) => {
             return e.idFollow
         })
         console.log('IDS',idsFollowed)
-        let arr=  await Promise.all(
+        let arr1=  await Promise.all(
           idsFollowed.map(async  e=>{
             console.log('MAP',e)
             return await Artwork.findAll({
@@ -51,8 +51,9 @@ router.get("/", async (req, res, next) => {
             })
             )
             
-            let counter = arr.flat(Infinity).length
-            
+            let counter = arr1.flat(Infinity).length
+
+            let arr= arr.flat(Infinity)
 
         res.status(200).json({arr,counter})
         }
