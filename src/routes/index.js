@@ -9,7 +9,7 @@ const categoryRouter = require("./Category.js");
 const sendMail = require("./sendMail.js")
 const login = require("./Login");
 const register = require("./Register");
-
+const followedfeed=require('./FollowedFeed')
 
 // Configurar los routers
 router.use("/art", artRouter);
@@ -19,6 +19,7 @@ router.use("/categories", categoryRouter);
 router.use("/login", login);
 router.use("/register", register);
 router.use("/emails",sendMail);
+router.use('/followedfeed', followedfeed)
 
 
 module.exports = router;
