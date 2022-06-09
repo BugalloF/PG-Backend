@@ -39,7 +39,7 @@ const getArtWorks = async (req, res, next) => {
               attributes: ["userName", "img", "id", "country"],
             },
           ],
-          attributes: ["imgCompress", "id", "likes", "price", "title"],
+          attributes: ["imgCompress", "id", "likes", "price", "title","createdAt"],
           [order]: [[by, type]],
           limit: 12,
           offset: from * 12,
