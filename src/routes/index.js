@@ -11,7 +11,7 @@ const login = require("./Login");
 const register = require("./Register");
 const forgotPassword = require("./forgotPassword");
 const resetPassword = require("./resetPassword");
-const followedfeed=require('./FollowedFeed')
+const followedfeed=require('./FollowedFeed');
 
 // Configurar los routers
 router.use("/art", artRouter);
