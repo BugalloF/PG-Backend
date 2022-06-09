@@ -27,8 +27,25 @@ router.get("/", async (req, res, next) => {
             idsFollowed.map(async  e=>{
             console.log('MAP',e)
             return await Artwork.findAll({
-                where:{profileId:e}
-            })
+                include: [
+                  {
+                    model: Category,
+                    attributes: ["title"],
+                    through: {
+                      attributes: [],
+                    },
+                  },
+                  {
+                    model: Profile,
+      
+                    attributes: ["userName", "img", "id"],
+                  },
+                ],
+                attributes: ["imgCompress", "id", "likes", "price", "title"],
+                [order]: [[by, type]],
+                limit: 12,
+                offset: from * 12,
+              });
         })
         )
     
