@@ -22,7 +22,16 @@ router.get("/", async (req, res, next) => {
         let idsFollowed= seguidos.map(e=>{
             return e.idFollow
         })
-        res.status(200).json(idsFollowed)
+
+        let arr= idsFollowed.map(async e=>{
+            await Artwork.findAll({
+                where:{profileId:e}
+            })
+        })
+
+    
+
+        res.status(200).json(arr)
         }
       }
     } catch (error) {
