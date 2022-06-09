@@ -2,6 +2,7 @@ const { API_KEY } = process.env;
 const { Artwork, Category, Profile, Follower } = require("../db.js");
 const { Router } = require("express");
 const router = Router();
+const {verifyToken} = require("../controllers/tokens");
 
 router.get("/", async (req, res, next) => {
   const { apiKey } = req.query;
