@@ -111,22 +111,22 @@ router.put("/:id", putProfile);
 
 router.get("/:id", async (req, res, next) => {
   const {apiKey} = req.query;
-  var search= await Follower.findAll({
-    where: [{ idUser: idUser }, { idFollow: id }],
-  });
   if(apiKey === API_KEY)
   {
     try
     {
-        const { id } = req.params;
-        const {authorization} = req.headers;
+      const { id } = req.params;
+      const {authorization} = req.headers;
         
-        if(authorization)
-        {
-            const token = authorization.split(" ").pop();
-            const tokenData = await verifyToken(token);
-            const idUser = tokenData !== undefined ? tokenData.id : null;
-            
+      if(authorization)
+      {
+        const token = authorization.split(" ").pop();
+        const tokenData = await verifyToken(token);
+        const idUser = tokenData !== undefined ? tokenData.id : null;
+        
+        var search= await Follower.findAll({
+          where: [{ idUser: idUser }, { idFollow: id }],
+        });
             if(idUser)
             {
                 let seguidos = await Follower.findAll({
