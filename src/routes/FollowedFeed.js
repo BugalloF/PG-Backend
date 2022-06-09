@@ -26,10 +26,10 @@ router.get("/", async (req, res, next) => {
         })
         console.log('IDS',idsFollowed)
         let arr=  await Promise.all(
-            idsFollowed.map(async  e=>{
+          idsFollowed.map(async  e=>{
             console.log('MAP',e)
             return await Artwork.findAll({
-                include: [
+              include: [
                   {
                     model: Category,
                     attributes: ["title"],
@@ -39,7 +39,7 @@ router.get("/", async (req, res, next) => {
                   },
                   {
                     model: Profile,
-      
+                    
                     attributes: ["userName", "img", "id"],
                   },
                 ],
@@ -48,11 +48,13 @@ router.get("/", async (req, res, next) => {
                 limit: 12,
                 offset: from * 12,
               });
-        })
-        )
-    
+            })
+            )
+            
+            let counter = arr.flat(Infinity)
+            
 
-        res.status(200).json(arr)
+        res.status(200).json(arr,counter)
         }
       }
     } catch (error) {
