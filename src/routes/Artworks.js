@@ -12,12 +12,16 @@ const {API_KEY} = process.env;
 // --------------------------GET-------------------------------- //
 
 const getArtWorks = async (req, res, next) => {
-  const {apiKey} = req.query;
+
+  const {apiKey, name, from = 0, by, type } = req.query;
   
   if(apiKey === API_KEY)
   {
     try {
-      const { name, from = 0 } = req.query;
+ 
+  var order = null;
+
+  if(by && type) order = 'order';
 
       if (!name) {
         let artWorks = await Artwork.findAll({
@@ -36,6 +40,7 @@ const getArtWorks = async (req, res, next) => {
             },
           ],
           attributes: ["imgCompress", "id", "likes", "price", "title"],
+          [order]: [[by, type]],
           limit: 12,
           offset: from * 12,
         });
@@ -57,7 +62,7 @@ const getArtWorks = async (req, res, next) => {
 
         res.status(200).json({ artWorks, counter });
       } else {
-        //  return artWorks.filter(e=> e.title.toLowerCase() === name.toLowerCase())
+     
         let counter = await Artwork.count({
           where: { title: { [Op.iLike]: `%${name}%` } },
         });
