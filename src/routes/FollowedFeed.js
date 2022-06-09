@@ -5,10 +5,12 @@ const router = Router();
 const {verifyToken} = require("../controllers/tokens");
 
 router.get("/", async (req, res, next) => {
-  const { apiKey } = req.query;
+    const {apiKey, from = 0 } = req.query;
+;
 
   if (apiKey === API_KEY) {
     try {
+
       const { authorization } = req.headers;
       if (authorization) {
         const token = authorization.split(" ").pop();
@@ -42,7 +44,6 @@ router.get("/", async (req, res, next) => {
                   },
                 ],
                 attributes: ["imgCompress", "id", "likes", "price", "title"],
-                [order]: [[by, type]],
                 limit: 12,
                 offset: from * 12,
               });
