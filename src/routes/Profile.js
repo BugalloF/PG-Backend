@@ -32,7 +32,6 @@ const getProfiles = async (req, res,next) => {
             is_Admin: e.is_Admin,
             img: e.img,
             phone: e.phone,
-            public_email: e.public_email,
             description: e.description,
             country: e.country,
           };
@@ -72,7 +71,6 @@ const putProfile = async (req, res,next) => {
       gender,
       img,
       phone,
-      public_email,
       description,
       country,
       facebook,
