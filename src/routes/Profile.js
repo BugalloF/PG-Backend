@@ -72,6 +72,7 @@ const putProfile = async (req, res,next) => {
       gender,
       img,
       phone,
+      public_email,
       description,
       country,
       facebook,
@@ -150,9 +151,14 @@ router.get("/:id", async (req, res, next) => {
                     {
                       if(idUser){  
                         let isFollowing = false
-                        Array.from(seguidores, ({dataValues}) => {if(dataValues.idFollow === id){
-                          isFollowing=true
-                        }})
+                        // Array.from(seguidores, ({dataValues}) => {if(dataValues.idFollow === id){
+                        //   isFollowing=true
+                        // }})
+                        let search= await Follower.findAll({
+                          where: [{ idUser: idUser }, { idFollow: id }],
+                        });
+                        if(search) isFollowing=true
+                        
                         res.status(200).json({found, cantSeguidores, cantSeguidos, isFollowing});
                     }
                     else res.status(200).json({found, cantSeguidores, cantSeguidos});
