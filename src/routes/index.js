@@ -10,7 +10,7 @@ const sendMail = require("./sendMail.js")
 const login = require("./Login");
 const register = require("./Register");
 const forgotPassword = require("./forgotPassword");
-const resetPassword = require("./ResetPassword");
+const resetPassword = require("./resetPassword");
 const followedfeed=require('./FollowedFeed')
 
 // Configurar los routers
