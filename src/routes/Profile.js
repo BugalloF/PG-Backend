@@ -111,7 +111,7 @@ router.put("/:id", putProfile);
 
 router.get("/:id", async (req, res, next) => {
   const {apiKey} = req.query;
-  let search= await Follower.findAll({
+  var search= await Follower.findAll({
     where: [{ idUser: idUser }, { idFollow: id }],
   });
   if(apiKey === API_KEY)
