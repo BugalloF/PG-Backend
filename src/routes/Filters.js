@@ -2,7 +2,7 @@
 const {Router} = require("express");
 const router = Router();
 // Files
-const {Artwork, Category, Profile} = require("../db.js");
+const {Artwork, Category} = require("../db.js");
 
 
 router.get("/category", async (req, res,next) => {
@@ -13,7 +13,7 @@ router.get("/category", async (req, res,next) => {
 
   if(by && type) order = 'order';
  
-  try {
+  try { 
 
     let Artworks = await Artwork.findAll({
       include: [{
