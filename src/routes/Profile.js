@@ -157,8 +157,8 @@ router.get("/:id", async (req, res, next) => {
                         let search= await Follower.findAll({
                           where: [{ idUser: idUser }, { idFollow: id }],
                         });
-                        console.log(search)
-                        if(search!==[]) isFollowing=true
+                        console.log('soy el search',search)
+                        if(search!=[]) isFollowing=true
                         
                         res.status(200).json({found, cantSeguidores, cantSeguidos, isFollowing});
                     }
