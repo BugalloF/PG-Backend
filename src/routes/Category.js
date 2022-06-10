@@ -1,27 +1,40 @@
-const { Router } = require("express");
+// Dependencies
+const {Router} = require("express");
 const router = Router();
-const { Category } = require("../db.js");
+// Files
+const {Category} = require("../db.js");
+const {API_KEY} = process.env;
 
-const getCategories = async (req, res) => {
-  try {
-    let categories = await Category.findAll();
 
-    categories.map((e) => {
-      // console.log(artWorks)
-      return {
-        id: e.id,
-        title: e.title,
-      };
-    });
-    res.status(200).json(categories);
-  } catch (error) {
-    console.log(error);
+const getCategories = async (req, res,next) => {
+  const {apiKey} = req.query;
+  
+  if(apiKey === API_KEY)
+  {
+    try {
+      let categories = await Category.findAll();
+  
+      categories.map((e) => {
+        // console.log(artWorks)
+        return {
+          id: e.id,
+          title: e.title,
+        };
+      });
+      res.status(200).json(categories);
+    } catch (error) {
+      next(error)
+    }
   }
+  else
+  {
+    res.status(401).send("No authorization.");
+  };
 };
 
 router.get("/", getCategories);
 
-const postCategory = async (req, res) => {
+const postCategory = async (req, res,next) => {
   try {
     const { category } = req.body;
     let catCreate = await Category.create({
@@ -31,7 +44,7 @@ const postCategory = async (req, res) => {
     res.status(200).json(catCreate);
   } catch (error) {
     console.log(error);
-    res.status(404).send("Cannot create the category!.");
+    next(error) 
   }
 };
 router.post("/", postCategory);

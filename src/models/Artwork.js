@@ -26,6 +26,7 @@ module.exports = (sequelize) => {
       },
       imgCompress: {
         type: DataTypes.TEXT,
+      
       },
       price: {
         type: DataTypes.INTEGER,

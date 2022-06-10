@@ -43,12 +43,9 @@ module.exports = (sequelize) => {
       },
       img: {
         type: DataTypes.TEXT,
+        defaultValue: "https://i.pinimg.com/564x/20/0d/72/200d72a18492cf3d7adac8a914ef3520.jpg",
       },
       phone: {
-        type: DataTypes.STRING,
-        
-      },
-      public_email: {
         type: DataTypes.STRING,
         
       },
@@ -57,7 +54,15 @@ module.exports = (sequelize) => {
       },
       country:{
           type:DataTypes.STRING,
-          
+      },
+      linkedIn:{
+        type:DataTypes.STRING
+      },
+      facebook:{
+        type:DataTypes.STRING
+      },
+      instagram:{
+        type:DataTypes.STRING
       }
     },
     { timestamps: false }
