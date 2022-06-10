@@ -34,7 +34,7 @@ router.get("/category", async (req, res,next) => {
       [order]: [[by, type]],
       limit: 12,
       offset: from * 12,
-      attributes:['imgCompress','id','likes','price','title'],
+      attributes:['imgCompress','id','likes','price','title', 'createdAt'],
     });
 
     let counter = await Artwork.count({
