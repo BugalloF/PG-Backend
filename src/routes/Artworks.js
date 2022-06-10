@@ -270,7 +270,9 @@ router.post("/likes/:id", async (req, res, next) => {
 
         let likesCounter = likes.length;
 
-        const artWork = await Artwork.update({
+        const artWork = await Artwork.findByPk(idPost);
+
+        artWork.update({
           likes:likesCounter
         })
 
