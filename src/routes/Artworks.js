@@ -264,7 +264,22 @@ router.post("/likes/:id", async (req, res, next) => {
           idUser: idUser,
         });
 
-        res.status(200).send("Likeado!");
+        let likes = await Likes.findAll({
+          where: { idPost: idPost },
+        });
+
+        let likesCounter = likes.length;
+
+        const artWork = await Artwork.findByPk(idPost);
+
+        artWork.update({
+          likes:likesCounter
+        })
+
+        console.log(artWork)
+       
+
+        res.status(200).send("Likeado!")
       } else {
         res.status(409).send("Invalid token.");
       }
