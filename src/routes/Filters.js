@@ -23,7 +23,14 @@ router.get("/category", async (req, res,next) => {
         through: {
           attributes: [],
         }, 
-      }],
+        
+      },
+      {
+        model: Profile,
+
+        attributes: ["userName", "img", "id", "country"],
+      },
+    ],
       [order]: [[by, type]],
       limit: 12,
       offset: from * 12,
