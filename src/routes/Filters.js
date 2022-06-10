@@ -2,7 +2,7 @@
 const {Router} = require("express");
 const router = Router();
 // Files
-const {Artwork, Category} = require("../db.js");
+const {Artwork, Category, Profile} = require("../db.js");
 
 
 router.get("/category", async (req, res,next) => {
