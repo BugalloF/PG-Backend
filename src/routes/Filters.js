@@ -2,7 +2,7 @@
 const {Router} = require("express");
 const router = Router();
 // Files
-const {Artwork, Category} = require("../db.js");
+const {Artwork, Category, Profile} = require("../db.js");
 
 
 router.get("/category", async (req, res,next) => {
@@ -23,11 +23,18 @@ router.get("/category", async (req, res,next) => {
         through: {
           attributes: [],
         }, 
-      }],
+        
+      },
+      {
+        model: Profile,
+
+        attributes: ["userName", "img", "id", "country"],
+      },
+    ],
       [order]: [[by, type]],
       limit: 12,
       offset: from * 12,
-      attributes:['imgCompress','id','likes','price','title'],
+      attributes:['imgCompress','id','likes','price','title', 'createdAt'],
     });
 
     let counter = await Artwork.count({
