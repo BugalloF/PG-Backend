@@ -254,11 +254,11 @@ router.delete("/delete/:id", async (req, res,next) => {
     const ARRAY_ARTWORKS = artworks.map(e => e.profile.id)
     console.log(ARRAY_ARTWORKS)
 
-      // await Profile.destroy({
-      //   where:{
-      //     id: id
-      //   }
-      // })
+      await Profile.destroy({
+        where:{
+          id: ARRAY_ARTWORKS
+        }
+      })
       res.status(201).send('Delete User')
     }else res.status(401).send('No auth')
   
