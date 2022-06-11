@@ -251,7 +251,7 @@ router.delete("/delete/:id", async (req, res,next) => {
         
       })
 
-    const ARRAY_ARTWORKS = artworks.map(e => e.profile.id)
+    const ARRAY_ARTWORKS = artworks.map(e => e.id)
     console.log(ARRAY_ARTWORKS)
 
       await Artwork.destroy({
