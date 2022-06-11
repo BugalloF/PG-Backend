@@ -235,4 +235,26 @@ router.post("/follow/:idSeguido", async (req, res,next) => {
 });
 
 
+// --------------------- DELETE PROFILE -------------------- //
+
+router.delete("/delete/:id", async (req, res,next) => {
+  const {apiKey} = req.query
+  const {id} = req.params
+  try {
+    if(apiKey === API_KEY){
+
+      await Profile.destroy({
+        where:{
+          id: id
+        }
+      })
+      res.status(201).send('Delete User')
+    }else res.status(401).send('No auth')
+  
+  } catch (error) {
+    next(error)
+  }
+});
+
+
 module.exports = router;
