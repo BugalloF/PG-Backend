@@ -243,6 +243,14 @@ router.delete("/delete/:id", async (req, res,next) => {
   try {
     if(apiKey === API_KEY){
 
+      await Artwork.destroy({
+        include:{
+          model: Profile,
+          where: {id:id}
+        }
+        
+      })
+
       await Profile.destroy({
         where:{
           id: id
