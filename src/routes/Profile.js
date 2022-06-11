@@ -13,9 +13,9 @@ const getProfiles = async (req, res,next) => {
   if(apiKey === API_KEY)
   {
     try {
-      const { name } = req.query;
+      const { userName } = req.query;
   
-      if (!name) {
+      if (!userName) {
         let profiles = await Profile.findAll({include:{model:Artwork}});
   
         profiles.map((e) => {
@@ -38,7 +38,7 @@ const getProfiles = async (req, res,next) => {
         });
         res.status(200).json(profiles);
       } else {
-        let oneProfile = await Profile.findAll({ where: { name: name } });
+        let oneProfile = await Profile.findAll({ where: { userName: userName } });
         oneProfile.length
           ? res.status(200).json(oneProfile)
           : res.status(404).send("No existe ese perfil.");
