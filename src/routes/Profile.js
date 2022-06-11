@@ -243,7 +243,7 @@ router.delete("/delete/:id", async (req, res,next) => {
   try {
     if(apiKey === API_KEY){
 
-      await Artwork.destroy({
+     const artworks =  await Artwork.findAll({
         include:[{
           model: Profile,
           where: {id:id}
@@ -251,11 +251,14 @@ router.delete("/delete/:id", async (req, res,next) => {
         
       })
 
-      await Profile.destroy({
-        where:{
-          id: id
-        }
-      })
+    const ARRAY_ARTWORKS = artworks.map(e => e.profile.id)
+    console.log(ARRAY_ARTWORKS)
+
+      // await Profile.destroy({
+      //   where:{
+      //     id: id
+      //   }
+      // })
       res.status(201).send('Delete User')
     }else res.status(401).send('No auth')
   
