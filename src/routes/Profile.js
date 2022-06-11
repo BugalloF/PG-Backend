@@ -254,9 +254,15 @@ router.delete("/delete/:id", async (req, res,next) => {
     const ARRAY_ARTWORKS = artworks.map(e => e.profile.id)
     console.log(ARRAY_ARTWORKS)
 
+      await Artwork.destroy({
+        where: {
+          id: ARRAY_ARTWORKS
+        }
+      })
+
       await Profile.destroy({
         where:{
-          id: ARRAY_ARTWORKS
+          id: id
         }
       })
       res.status(201).send('Delete User')
