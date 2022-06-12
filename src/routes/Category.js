@@ -2,7 +2,7 @@
 const {Router} = require("express");
 const router = Router();
 // Files
-const {Category} = require("../db.js");
+const {Category, Artworks} = require("../db.js");
 const {API_KEY} = process.env;
 
 
@@ -47,5 +47,50 @@ const postCategory = async (req, res,next) => {
   }
 };
 router.post("/", postCategory);
+
+const deleteCategory = async (req, res,next) => {
+  try {
+    const { id } = req.params;
+    let artworks = await Artworks.findAll({
+      include:{
+        model:Category,
+        where: {id: id}
+      }
+    })
+
+    let ARTWORKS_IDS_ARRAY = artworks.map( e => e.id)
+     await Artworks.destroy({
+       where:{ id: ARTWORKS_IDS_ARRAY}
+     })
+     await Category.destroy({
+      id: id,
+    });
+
+    res.status(201).send('Success');
+  } catch (error) {
+    next(error) 
+  }
+};
+router.delete("/:id", deleteCategory);
+
+const putCategory = async (req, res,next) => {
+  try {
+    const { id } = req.params;
+    const { title } = req.body
+
+    const category = await Category.findByPk(id)
+
+     await category.update({
+      title: title
+    });
+
+    res.status(201).json(category);
+  } catch (error) {
+    next(error) 
+  }
+};
+router.put("/:id", putCategory);
+
+
 
 module.exports = router;
