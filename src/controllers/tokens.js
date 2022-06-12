@@ -16,7 +16,7 @@ async function signToken(user)
         },
         JWT_SECRET,
         {
-            expiresIn: "24h",
+            // expiresIn: "24h",
         },
     );
 };
