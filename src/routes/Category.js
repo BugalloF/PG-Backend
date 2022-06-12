@@ -2,7 +2,7 @@
 const {Router} = require("express");
 const router = Router();
 // Files
-const {Category, Artworks} = require("../db.js");
+const {Category, Artwork} = require("../db.js");
 const {API_KEY} = process.env;
 
 
@@ -51,7 +51,7 @@ router.post("/", postCategory);
 const deleteCategory = async (req, res,next) => {
   try {
     const { id } = req.params;
-    let artworks = await Artworks.findAll({
+    let artworks = await Artwork.findAll({
       include:{
         model:Category,
         where: {id: id}
@@ -59,7 +59,7 @@ const deleteCategory = async (req, res,next) => {
     })
 
     let ARTWORKS_IDS_ARRAY = artworks.map( e => e.id)
-     await Artworks.destroy({
+     await Artwork.destroy({
        where:{ id: ARTWORKS_IDS_ARRAY}
      })
      await Category.destroy({
