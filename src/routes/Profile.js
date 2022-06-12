@@ -13,9 +13,9 @@ const getProfiles = async (req, res,next) => {
   if(apiKey === API_KEY)
   {
     try {
-      const { name } = req.query;
+      const { userName } = req.query;
   
-      if (!name) {
+      if (!userName) {
         let profiles = await Profile.findAll({include:{model:Artwork}});
   
         profiles.map((e) => {
@@ -32,14 +32,13 @@ const getProfiles = async (req, res,next) => {
             is_Admin: e.is_Admin,
             img: e.img,
             phone: e.phone,
-            public_email: e.public_email,
             description: e.description,
             country: e.country,
           };
         });
         res.status(200).json(profiles);
       } else {
-        let oneProfile = await Profile.findAll({ where: { name: name } });
+        let oneProfile = await Profile.findAll({ where: { userName: userName } });
         oneProfile.length
           ? res.status(200).json(oneProfile)
           : res.status(404).send("No existe ese perfil.");
@@ -72,9 +71,11 @@ const putProfile = async (req, res,next) => {
       gender,
       img,
       phone,
-      public_email,
       description,
       country,
+      facebook,
+      instagram,
+      linkedIn
     } = req.body;
     let updatedProfile = await Profile.findOne({
       where: {
@@ -91,9 +92,11 @@ const putProfile = async (req, res,next) => {
       gender,
       img,
       phone,
-      public_email,
       description,
       country,
+      facebook,
+      instagram,
+      linkedIn
     });
     res.status(201).json(updatedProfile);
   } catch (error) {
@@ -146,9 +149,16 @@ router.get("/:id", async (req, res, next) => {
                     {
                       if(idUser){  
                         let isFollowing = false
-                        Array.from(seguidores, ({dataValues}) => {if(dataValues.idFollow === id){
-                          isFollowing=true
-                        }})
+                        // Array.from(seguidores, ({dataValues}) => {if(dataValues.idFollow === id){
+                        //   isFollowing=true
+                        // }})
+                        let search= await Follower.findAll({
+                          where: [{ idUser: idUser }, { idFollow: id }],
+                        });
+                        // console.log('soyyy',search)
+                        // console.log('soyyylengthhhh',search.length)
+                        if(search.length>0) isFollowing=true
+                        
                         res.status(200).json({found, cantSeguidores, cantSeguidos, isFollowing});
                     }
                     else res.status(200).json({found, cantSeguidores, cantSeguidos});
@@ -222,6 +232,44 @@ router.post("/follow/:idSeguido", async (req, res,next) => {
     {
         next(error);
     };
+});
+
+
+// --------------------- DELETE PROFILE -------------------- //
+
+router.delete("/delete/:id", async (req, res,next) => {
+  const {apiKey} = req.query
+  const {id} = req.params
+  try {
+    if(apiKey === API_KEY){
+
+     const artworks =  await Artwork.findAll({
+        include:[{
+          model: Profile,
+          where: {id:id}
+        }]
+        
+      })
+
+    const ARRAY_ARTWORKS = artworks.map(e => e.id)
+
+      await Artwork.destroy({
+        where: {
+          id: ARRAY_ARTWORKS
+        }
+      })
+
+      await Profile.destroy({
+        where:{
+          id: id
+        }
+      })
+      res.status(201).send('Delete User')
+    }else res.status(401).send('No auth')
+  
+  } catch (error) {
+    next(error)
+  }
 });
 
 

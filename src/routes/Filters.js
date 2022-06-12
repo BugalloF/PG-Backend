@@ -13,7 +13,7 @@ router.get("/category", async (req, res,next) => {
 
   if(by && type) order = 'order';
  
-  try {
+  try { 
 
     let Artworks = await Artwork.findAll({
       include: [{
@@ -23,11 +23,18 @@ router.get("/category", async (req, res,next) => {
         through: {
           attributes: [],
         }, 
-      }],
+        
+      },
+      {
+        model: Profile,
+
+        attributes: ["userName", "img", "id", "country"],
+      },
+    ],
       [order]: [[by, type]],
       limit: 12,
       offset: from * 12,
-      attributes:['imgCompress','id','likes','price','title'],
+      attributes:['imgCompress','id','likes','price','title', 'createdAt'],
     });
 
     let counter = await Artwork.count({

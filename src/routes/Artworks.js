@@ -138,11 +138,18 @@ router.get("/:id", async (req, res, next) => {
         // console.log('aaaaaaaaaaaaaaaaaaa')
         if (idUser) {
           let isLiked = false;
-          Array.from(likes, ({ dataValues }) => {
-            if (dataValues.idUser === idUser) {
-              isLiked = true;
-            }
+          // Array.from(likes, ({ dataValues }) => {
+          //   if (dataValues.idUser === idUser) {
+          //     isLiked = true;
+          //   }
+          // });
+          let search= await Likes.findAll({
+            where: [{ idUser: idUser },{idPost:id}],
           });
+          console.log('soyyy',search)
+          console.log('soyyylengthhhh',search.length)
+          if(search.length>0) isLiked=true
+
           res.status(200).json({ artWork, likesCounter, isLiked });
         }
       }
@@ -216,7 +223,7 @@ router.delete("/:id", deleteArtWork);
 const putArtWork = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { title, content, category, price, img } = req.body;
+    const { title, content, category, price } = req.body;
     let updatedArtWork = await Artwork.findOne({
       where: {
         id: id,
@@ -225,8 +232,7 @@ const putArtWork = async (req, res, next) => {
     await updatedArtWork.update({
       title,
       content,
-      price,
-      img,
+      price
     });
     let categoriesFromDb = await Category.findAll({
       where: { title: category },
@@ -258,7 +264,22 @@ router.post("/likes/:id", async (req, res, next) => {
           idUser: idUser,
         });
 
-        res.status(200).send("Likeado!");
+        let likes = await Likes.findAll({
+          where: { idPost: idPost },
+        });
+
+        let likesCounter = likes.length;
+
+        const artWork = await Artwork.findByPk(idPost);
+
+        artWork.update({
+          likes:likesCounter
+        })
+
+        console.log(artWork)
+       
+
+        res.status(200).send("Likeado!")
       } else {
         res.status(409).send("Invalid token.");
       }
