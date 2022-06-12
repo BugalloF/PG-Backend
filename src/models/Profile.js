@@ -63,6 +63,13 @@ module.exports = (sequelize) => {
       },
       instagram:{
         type:DataTypes.STRING
+      },is_banned:{
+        type:DataTypes.BOOLEAN,
+        defaultValue:false,
+        allowNull:false
+      },banned_time:{
+        type:DataTypes.DATEONLY
+
       }
     },
     { timestamps: false }
