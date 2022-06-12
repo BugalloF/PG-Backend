@@ -63,7 +63,7 @@ const deleteCategory = async (req, res,next) => {
        where:{ id: ARTWORKS_IDS_ARRAY}
      })
      await Category.destroy({
-      id: id,
+      where: {id: id}
     });
 
     res.status(201).send('Success');
