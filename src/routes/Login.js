@@ -31,7 +31,7 @@ router.post("/", async (req, res, next) => {
 
         if(foundUser[0].dataValues.is_banned){
             console.log('hola')
-            return res.status(401).json({is_banned:true})
+            return res.status(200).json({is_banned:true})
 
         }
 
