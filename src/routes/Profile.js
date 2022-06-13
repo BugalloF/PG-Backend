@@ -24,7 +24,11 @@ router.get('/count',countProfiles)
 
 
 const profiles =async(req,res,next) => {
-  const {from = 0, name} = req.query
+  const {from = 0, name, by, type} = req.query
+
+  var order = null;
+
+  if(by && type) order = 'order';
   try{
 
     if(name){
@@ -48,6 +52,7 @@ const profiles =async(req,res,next) => {
     }else{
       
           const profiles = await Profile.findAll({
+            [order]: [[by,type]],
             limit: 12,
             offset: from * 12,
           })
