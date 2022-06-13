@@ -29,15 +29,14 @@ router.post("/", async (req, res, next) => {
         if(foundUser[0].dataValues.is_banned){
 
             function sumarDias(){
-                let fechita= new Date()
-                fechita = fechita.getDate();
+                let fechita= new Date().toISOString().split('T')[0];
                 return fechita;
               }
 
               console.log(sumarDias(),'sumardias')
               console.log(foundUser[0].dataValues.banned_time)
 
-              if(sumarDias() === foundUser[0].dataValues.banned_time){
+              if(sumarDias() == foundUser[0].dataValues.banned_time){
 
                 
 
