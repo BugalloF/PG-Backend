@@ -13,6 +13,7 @@ async function signToken(user)
             email: user.email,
             img: user.img,
             is_Admin: user.is_Admin,
+            is_banned:user.is_banned,
         },
         JWT_SECRET,
         {
