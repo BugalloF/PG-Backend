@@ -157,7 +157,7 @@ const getBannedProfiles = async (req, res,next) => {
   }
   else
   {
-    res.status(401).send("No authorization!!!.");
+    res.status(401).send("No authorization!!!. CRUCE DE RUTAS CON BANNED USERS");
   };
 };
 
