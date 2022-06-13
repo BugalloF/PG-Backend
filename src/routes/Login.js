@@ -24,16 +24,34 @@ router.post("/", async (req, res, next) => {
                         {email: user},
                     ],
                 },
-            }); 
-
-
-            
-
+            });
+        
         if(foundUser[0].dataValues.is_banned){
-            console.log('hola')
-            return res.status(200).json({is_banned:foundUser[0].dataValues.is_banned,banned_time:foundUser[0].dataValues.banned_time})
+
+            function sumarDias(){
+                let fechita= new Date()
+                fechita = fechita.setDate(fechita.getDate());
+                return fechita;
+              }
+
+              if(sumarDias() === foundUser[0].dataValues.banned_time){
+
+                foundUser.update({
+                    is_banned:false,
+                    banned_time:null
+                })
+              }else{
+               
+                   
+                    return res.status(200).json({is_banned:foundUser[0].dataValues.is_banned,banned_time:foundUser[0].dataValues.banned_time})
+        
+                
+              }
 
         }
+
+
+
 
             
             if(foundUser.length)
