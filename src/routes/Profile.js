@@ -21,6 +21,25 @@ const countProfiles =async (req,res,next) => {
 
 router.get('/count',countProfiles)
 
+
+const profiles =async(req,res,next) => {
+  const {from = 0} = req.query
+  try{
+
+    const profiles = await Profile.findAll({
+      limit: 12,
+      offset: from * 12,
+    })
+
+    res.status(200).json(profiles)
+    
+  }catch(error){
+    next(error)
+  }
+}
+
+router.get('/profiles', profiles)
+
 const getProfiles = async (req, res,next) => {
   const {apiKey} = req.query;
   
@@ -292,23 +311,7 @@ router.delete("/delete/:id", async (req, res,next) => {
 });
 
 
-const profiles =async(req,res,next) => {
-  const {from = 0} = req.query
-  try{
 
-    const profiles = await Profile.findAll({
-      limit: 12,
-      offset: from * 12,
-    })
-
-    res.status(200).json(profiles)
-    
-  }catch(error){
-    next(error)
-  }
-}
-
-router.get('/profiles', profiles)
 
 
 
