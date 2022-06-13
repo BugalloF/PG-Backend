@@ -277,4 +277,37 @@ router.delete("/delete/:id", async (req, res,next) => {
 });
 
 
+const profiles = (req,res,next) => {
+  const {from = 0} = req.query
+  try{
+
+    const profiles = await Profile.findAll({
+      limit: 12,
+      offset: from * 12,
+    })
+
+    res.status(200).json(profiles)
+    
+  }catch(error){
+    next(error)
+  }
+}
+
+router.get('/profiles', profiles)
+
+const countProfiles = (req,res,next) => {
+  try{
+
+    const count = await Profile.count()
+
+    res.status(200).json(count)
+
+  }catch(error){
+    next(error)
+  }
+}
+
+router.get('/count',countProfiles)
+
+
 module.exports = router;

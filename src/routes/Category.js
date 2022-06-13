@@ -93,6 +93,19 @@ const putCategory = async (req, res,next) => {
 };
 router.put("/:id", putCategory);
 
+const countCategory = async (req,res,next) => {
+  try{
+    const count = await Category.count()
+
+    res.status(200).json(count)
+
+  }catch(error){
+    next(error)
+  }
+}
+
+router.get("/count", countCategory)
+
 
 
 module.exports = router;
