@@ -4,8 +4,71 @@ const router = Router();
 // Files
 const {Profile, Artwork, Follower} = require("../db.js");
 const {verifyToken} = require("../controllers/tokens");
+const { Op } = require("sequelize");
 const {API_KEY} = process.env;
 
+
+const countProfiles =async (req,res,next) => {
+  try{
+
+    const count = await Profile.count()
+
+    res.status(200).json(count)
+
+  }catch(error){
+    next(error)
+  }
+}
+
+router.get('/count',countProfiles)
+
+
+const profiles =async(req,res,next) => {
+  const {from = 0, name, by, type} = req.query
+
+  var order = null;
+
+  if(by && type) order = 'order';
+  try{
+
+    if(name){
+      const profiles = await Profile.findAll({
+        where: {name :{ [Op.iLike]: `%${name}%` } },
+        limit: 12,
+        offset: from * 12,
+
+      })
+
+      const counter = await Profile.count({
+        where: {name :{ [Op.iLike]: `%${name}%` } },
+      })
+
+
+
+
+
+      res.status(200).json({profiles,counter})
+
+    }else{
+      
+          const profiles = await Profile.findAll({
+            [order]: [[by,type]],
+            limit: 12,
+            offset: from * 12,
+          })
+      
+          const counter = await Profile.count()
+      
+          res.status(200).json({profiles,counter})
+
+    }
+    
+  }catch(error){
+    next(error)
+  }
+}
+
+router.get('/profiles', profiles)
 
 const getProfiles = async (req, res,next) => {
   const {apiKey} = req.query;
@@ -276,6 +339,11 @@ router.delete("/delete/:id", async (req, res,next) => {
     next(error)
   }
 });
+
+
+
+
+
 
 
 module.exports = router;

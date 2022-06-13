@@ -8,6 +8,20 @@ const {verifyToken} = require("../controllers/tokens");
 const {API_KEY} = process.env;
 
 
+const countArtworks = async (req,res,next) =>{
+  try{
+    const count = await Artwork.count();
+
+    res.status(200).json(count)
+
+  }catch(error){
+    next(error)
+  }
+}
+
+router.get('/count',countArtworks)
+
+
 
 // --------------------------GET-------------------------------- //
 
@@ -304,5 +318,6 @@ router.delete("/likes/:id", async (req, res, next) => {
     next(error);
   }
 });
+
 
 module.exports = router;
