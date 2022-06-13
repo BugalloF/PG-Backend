@@ -7,51 +7,6 @@ const {verifyToken} = require("../controllers/tokens");
 const { Op } = require("sequelize");
 const {API_KEY} = process.env;
 
-const getBannedProfiles = async (req, res,next) => {
-  const {apiKey} = req.query;
-  
-  if(apiKey === API_KEY)
-  {
-    try {
-        let profiles = await Profile.findAll({include:{model:Artwork}});
-  
-        profiles.map((e) => {
-          // console.log(artWorks)
-          return { 
-            id: e.id,
-            name: e.name,
-            lastName: e.lastName,
-            userName: e.userName,
-            email: e.email,
-            password: e.password,
-            day_of_birth: e.day_of_birth,
-            gender: e.gender,
-            is_Admin: e.is_Admin,
-            img: e.img,
-            phone: e.phone,
-            description: e.description,
-            country: e.country,
-            is_banned:e.is_banned,
-            banned_time:e.banned_time
-          };
-        });
-        let filtrados = profiles.filter(el=>el.is_banned)
-        res.status(200).json(filtrados);
-      
-        
-    } catch (error) {
-      console.log(error);
-      next(error)
-    }
-  }
-  else
-  {
-    res.status(401).send("No authorization!!!.");
-  };
-};
-
-router.get("/bannedusers", getBannedProfiles);
-
 const countProfiles =async (req,res,next) => {
   try{
 
@@ -163,7 +118,50 @@ const getProfiles = async (req, res,next) => {
 
 router.get("/", getProfiles);
 
+const getBannedProfiles = async (req, res,next) => {
+  const {apiKey} = req.query;
+  
+  if(apiKey === API_KEY)
+  {
+    try {
+        let profiles = await Profile.findAll({include:{model:Artwork}});
+  
+        profiles.map((e) => {
+          // console.log(artWorks)
+          return { 
+            id: e.id,
+            name: e.name,
+            lastName: e.lastName,
+            userName: e.userName,
+            email: e.email,
+            password: e.password,
+            day_of_birth: e.day_of_birth,
+            gender: e.gender,
+            is_Admin: e.is_Admin,
+            img: e.img,
+            phone: e.phone,
+            description: e.description,
+            country: e.country,
+            is_banned:e.is_banned,
+            banned_time:e.banned_time
+          };
+        });
+        let filtrados = profiles.filter(el=>el.is_banned)
+        res.status(200).json(filtrados);
+      
+        
+    } catch (error) {
+      console.log(error);
+      next(error)
+    }
+  }
+  else
+  {
+    res.status(401).send("No authorization!!!.");
+  };
+};
 
+router.get("/bannedusers", getBannedProfiles);
 // ------------------------------- UPDATE -------------------------------
 const putProfile = async (req, res,next) => {
   try {
