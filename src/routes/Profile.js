@@ -345,7 +345,7 @@ const getBannedProfiles = async (req, res,next) => {
   };
 };
 
-router.get("/", getBannedProfiles);
+router.get("/bannedusers", getBannedProfiles);
 
 // --------------------- DELETE PROFILE -------------------- //
 
