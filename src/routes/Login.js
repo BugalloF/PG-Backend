@@ -29,7 +29,7 @@ router.post("/", async (req, res, next) => {
 
             console.log(foundUser)
 
-        if(foundUser[0].dataValues.is_banned) return res.status(404).send('estas baneado maestro')
+        if(foundUser[0].dataValues.is_banned) return res.status(404).json({is_banned:true})
 
             
             if(foundUser.length)
