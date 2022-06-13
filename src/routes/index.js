@@ -3,6 +3,7 @@ const {Router} = require("express");
 const router = Router();
 // Files
 const artRouter = require("./Artworks.js");
+const transRouter = require("./Transactions.js");
 const profileRouter = require("./Profile.js");
 const filtersRouter = require("./Filters.js");
 const categoryRouter = require("./Category.js");
@@ -24,6 +25,7 @@ router.use('/forgot', forgotPassword)
 router.use('/reset', resetPassword)
 router.use("/emails",sendMail);
 router.use('/followedfeed', followedfeed)
+router.use('/transactions', transRouter)
 
 
 module.exports = router;
