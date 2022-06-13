@@ -7,6 +7,20 @@ const {verifyToken} = require("../controllers/tokens");
 const {API_KEY} = process.env;
 
 
+const countProfiles =async (req,res,next) => {
+  try{
+
+    const count = await Profile.count()
+
+    res.status(200).json(count)
+
+  }catch(error){
+    next(error)
+  }
+}
+
+router.get('/count',countProfiles)
+
 const getProfiles = async (req, res,next) => {
   const {apiKey} = req.query;
   
@@ -296,19 +310,7 @@ const profiles =async(req,res,next) => {
 
 router.get('/profiles', profiles)
 
-const countProfiles =async (req,res,next) => {
-  try{
 
-    const count = await Profile.count()
-
-    res.status(200).json(count)
-
-  }catch(error){
-    next(error)
-  }
-}
-
-router.get('/count',countProfiles)
 
 
 module.exports = router;
