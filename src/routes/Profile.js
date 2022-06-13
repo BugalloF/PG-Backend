@@ -77,7 +77,7 @@ const putProfile = async (req, res,next) => {
       instagram,
       linkedIn,
       is_banned,
-      bannedTime
+      banned_time
     } = req.body;
     let updatedProfile = await Profile.findOne({
       where: {
@@ -100,8 +100,9 @@ const putProfile = async (req, res,next) => {
       instagram,
       linkedIn,
       is_banned,
-      bannedTime
+      banned_time
     });
+    console.log(updatedProfile)
     res.status(201).json(updatedProfile);
   } catch (error) {
     next(error)
