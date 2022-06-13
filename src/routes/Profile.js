@@ -240,4 +240,42 @@ router.post("/follow/:idSeguido", async (req, res,next) => {
 });
 
 
+// --------------------- DELETE PROFILE -------------------- //
+
+router.delete("/delete/:id", async (req, res,next) => {
+  const {apiKey} = req.query
+  const {id} = req.params
+  try {
+    if(apiKey === API_KEY){
+
+     const artworks =  await Artwork.findAll({
+        include:[{
+          model: Profile,
+          where: {id:id}
+        }]
+        
+      })
+
+    const ARRAY_ARTWORKS = artworks.map(e => e.id)
+
+      await Artwork.destroy({
+        where: {
+          id: ARRAY_ARTWORKS
+        }
+      })
+
+      await Profile.destroy({
+        where:{
+          id: id
+        }
+      })
+      res.status(201).send('Delete User')
+    }else res.status(401).send('No auth')
+  
+  } catch (error) {
+    next(error)
+  }
+});
+
+
 module.exports = router;
