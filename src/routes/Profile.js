@@ -345,6 +345,7 @@ const getBannedProfiles = async (req, res,next) => {
   };
 };
 
+router.get("/", getBannedProfiles);
 
 // --------------------- DELETE PROFILE -------------------- //
 
@@ -390,6 +391,5 @@ router.delete("/delete/:id", async (req, res,next) => {
 
 
 
-router.get("/", getProfiles);
 
 module.exports = router;
