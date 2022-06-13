@@ -34,9 +34,12 @@ router.post("/", async (req, res, next) => {
                 return fechita;
               }
 
+              console.log(sumarDias(),'sumardias')
+              console.log(foundUser[0].dataValues.banned_time)
+
               if(sumarDias() === foundUser[0].dataValues.banned_time){
 
-                console.log('holis')
+                
 
                 await foundUser.update({
                     is_banned:false,
