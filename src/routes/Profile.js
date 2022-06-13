@@ -102,6 +102,7 @@ const putProfile = async (req, res,next) => {
       is_banned,
       banned_time
     });
+    console.log(updatedProfile)
     res.status(201).json(updatedProfile);
   } catch (error) {
     next(error)
