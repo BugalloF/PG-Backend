@@ -57,11 +57,13 @@ const deleteCategory = async (req, res,next) => {
         where: {id: id}
       }
     })
+    if(artworks){
 
-    let ARTWORKS_IDS_ARRAY = artworks.map( e => e.id)
-     await Artwork.destroy({
-       where:{ id: ARTWORKS_IDS_ARRAY}
-     })
+      let ARTWORKS_IDS_ARRAY = artworks.map( e => e.id)
+      await Artwork.destroy({
+        where:{ id: ARTWORKS_IDS_ARRAY}
+      })
+    }
      await Category.destroy({
       where: {id: id}
     });
