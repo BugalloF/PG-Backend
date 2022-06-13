@@ -26,14 +26,11 @@
 // ⣿⣿⣿⣿⠀⠘⠌⣸⣿⣿⣯⠼⠀⢿⣿⡏⠉⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣯⣿⣿⣿⣿⣿⣿⣿⡰⣟⠀⠀⣏⣻⣷⡁⠑⠀⠦⠀
 // ⣿⣿⣿⡿⡑⣢⢴⡏⢹⢻⣿⣿⡀⢨⡏⠴⡀⠌⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠛⣽⢿⣿⣿⣿⣿⣯⣧⣿⢢⠀⡌⣿⣿⣾
 const server = require('./src/app.js');
-const {Category} = require('../PG-Backend/src/db.js')
 const { conn } = require('./src/db.js');
 const{ PORT} = process.env
 // Syncing all the models at once.
 conn.sync({force:false}).then(() => {
-  Category.destroy({
-    where: {title:""}
-  })
+
   server.listen(PORT/*3001*/, () => {
     console.log(`Listening on port 3001`);
   });
