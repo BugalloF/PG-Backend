@@ -30,7 +30,7 @@ router.post("/", async (req, res, next) => {
 
             function sumarDias(){
                 let fechita= new Date()
-                fechita = fechita.setDate(fechita.getDate());
+                fechita = fechita.getDate();
                 return fechita;
               }
 
