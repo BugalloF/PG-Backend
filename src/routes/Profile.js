@@ -4,6 +4,7 @@ const router = Router();
 // Files
 const {Profile, Artwork, Follower} = require("../db.js");
 const {verifyToken} = require("../controllers/tokens");
+const { Op } = require("sequelize");
 const {API_KEY} = process.env;
 
 
@@ -23,17 +24,39 @@ router.get('/count',countProfiles)
 
 
 const profiles =async(req,res,next) => {
-  const {from = 0} = req.query
+  const {from = 0, name} = req.query
   try{
 
-    const profiles = await Profile.findAll({
-      limit: 12,
-      offset: from * 12,
-    })
+    if(name){
+      const profiles = await Profile.findAll({
+        where: {name :{ [Op.iLike]: `%${name}%` } },
+        limit: 12,
+        offset: from * 12,
 
-    const counter = await Profile.count()
+      })
 
-    res.status(200).json({profiles,counter})
+      const counter = await Profile.count({
+        where: {name :{ [Op.iLike]: `%${name}%` } },
+      })
+
+
+
+
+
+      res.status(200).json({profiles,counter})
+
+    }else{
+      
+          const profiles = await Profile.findAll({
+            limit: 12,
+            offset: from * 12,
+          })
+      
+          const counter = await Profile.count()
+      
+          res.status(200).json({profiles,counter})
+
+    }
     
   }catch(error){
     next(error)
