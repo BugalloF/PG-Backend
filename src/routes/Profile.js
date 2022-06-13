@@ -31,7 +31,9 @@ const profiles =async(req,res,next) => {
       offset: from * 12,
     })
 
-    res.status(200).json(profiles)
+    const counter = await Profile.count()
+
+    res.status(200).json({profiles,counter})
     
   }catch(error){
     next(error)
