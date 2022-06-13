@@ -14,7 +14,7 @@ router.post("/", async (req, res, next) => {
     {
         if(user && password)
         {
-            const foundUser = await Profile.findAll({
+            const foundUser = await Profile.findOne({
                 where:
                 {
                     // Para iniciar sesion con usuario o mail
@@ -26,7 +26,7 @@ router.post("/", async (req, res, next) => {
                 },
             });
         
-        if(foundUser[0].dataValues.is_banned){
+        if(foundUser.dataValues.is_banned){
 
             function sumarDias(){
                 let fechita= new Date().toISOString().split('T')[0];
@@ -34,9 +34,11 @@ router.post("/", async (req, res, next) => {
               }
 
               console.log(sumarDias(),'sumardias')
-              console.log(foundUser[0].dataValues.banned_time)
+              console.log(foundUser.dataValues.banned_time)
 
-              if(sumarDias() == foundUser[0].dataValues.banned_time){
+              if(sumarDias() == foundUser.dataValues.banned_time){
+
+                
 
                 
 
@@ -54,9 +56,9 @@ router.post("/", async (req, res, next) => {
            
             if(foundUser.length)
             {
-                const foundPassword = foundUser[0].dataValues.password;
+                const foundPassword = foundUser.dataValues.password;
                 const checkPassword = await compare(password, foundPassword);
-                const token = await signToken(foundUser[0].dataValues);
+                const token = await signToken(foundUser.dataValues);
                 
                 if(checkPassword)
                 {
