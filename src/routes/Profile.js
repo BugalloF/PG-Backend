@@ -302,6 +302,49 @@ router.post("/follow/:idSeguido", async (req, res,next) => {
     };
 });
 
+const getBannedProfiles = async (req, res,next) => {
+  const {apiKey} = req.query;
+  
+  if(apiKey === API_KEY)
+  {
+    try {
+        let profiles = await Profile.findAll({include:{model:Artwork}});
+  
+        profiles.map((e) => {
+          // console.log(artWorks)
+          return { 
+            id: e.id,
+            name: e.name,
+            lastName: e.lastName,
+            userName: e.userName,
+            email: e.email,
+            password: e.password,
+            day_of_birth: e.day_of_birth,
+            gender: e.gender,
+            is_Admin: e.is_Admin,
+            img: e.img,
+            phone: e.phone,
+            description: e.description,
+            country: e.country,
+            is_banned:e.is_banned,
+            banned_time:e.banned_time
+          };
+        });
+        profiles.filter(el=>el.is_banned)
+        res.status(200).json(profiles);
+      
+        
+    } catch (error) {
+      console.log(error);
+      next(error)
+    }
+  }
+  else
+  {
+    res.status(401).send("No authorization.");
+  };
+};
+
 
 // --------------------- DELETE PROFILE -------------------- //
 
@@ -345,5 +388,8 @@ router.delete("/delete/:id", async (req, res,next) => {
 
 
 
+
+
+router.get("/", getProfiles);
 
 module.exports = router;
