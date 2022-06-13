@@ -1,7 +1,7 @@
 const {Router} = require("express");
 const router = Router();
-const {Transactions,Artwork,Profile,conn} = require("../db.js");
-const Profile = require("../models/Profile.js");
+const {Transactions} = require("../db.js");
+
 
 
 
