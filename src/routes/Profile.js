@@ -278,7 +278,7 @@ router.delete("/delete/:id", async (req, res,next) => {
 });
 
 
-const profiles = (req,res,next) => {
+const profiles =async(req,res,next) => {
   const {from = 0} = req.query
   try{
 
@@ -296,7 +296,7 @@ const profiles = (req,res,next) => {
 
 router.get('/profiles', profiles)
 
-const countProfiles = (req,res,next) => {
+const countProfiles =async (req,res,next) => {
   try{
 
     const count = await Profile.count()
