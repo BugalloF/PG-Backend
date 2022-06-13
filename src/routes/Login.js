@@ -24,9 +24,12 @@ router.post("/", async (req, res, next) => {
                         {email: user},
                     ],
                 },
-            });
+            }); 
 
-            if(foundUser.is_banned) return res.status(404).send('estas baneado maestro')
+
+            console.log(foundUser)
+
+        if(foundUser[0].dataValues.is_banned) return res.status(404).send('estas baneado maestro')
 
             
             if(foundUser.length)
