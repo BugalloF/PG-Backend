@@ -36,24 +36,18 @@ router.post("/", async (req, res, next) => {
 
               if(sumarDias() === foundUser[0].dataValues.banned_time){
 
-                foundUser.update({
+                await foundUser.update({
                     is_banned:false,
                     banned_time:null
                 })
               }else{
-               
-                   
+                                
                     return res.status(200).json({is_banned:foundUser[0].dataValues.is_banned,banned_time:foundUser[0].dataValues.banned_time})
         
-                
               }
 
         }
-
-
-
-
-            
+           
             if(foundUser.length)
             {
                 const foundPassword = foundUser[0].dataValues.password;
