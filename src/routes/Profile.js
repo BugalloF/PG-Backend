@@ -35,8 +35,8 @@ const getBannedProfiles = async (req, res,next) => {
             banned_time:e.banned_time
           };
         });
-        profiles.filter(el=>el.is_banned)
-        res.status(200).json(profiles);
+        let filtrados = profiles.filter(el=>el.is_banned)
+        res.status(200).json(filtrados);
       
         
     } catch (error) {
