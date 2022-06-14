@@ -98,7 +98,7 @@ router.post("/send-email", async (req, res) => {
                         }],
                     };
                     
-                    const result = await transporter.sendMailPayer(mailOptions);
+                    const result = await transporter.sendMail(mailOptions);
                     return result;
                 }
                 catch(err)
@@ -128,7 +128,7 @@ router.post("/send-email", async (req, res) => {
                         html: contentHtmlSeller
                     };
                     
-                    const result = await transporter.sendMailSeller(mailOptions);
+                    const result = await transporter.sendMail(mailOptions);
                     return result;
                 }
                 catch(err)
