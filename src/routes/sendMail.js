@@ -128,7 +128,7 @@ router.post("/send-email", async (req, res) => {
                         html: contentHtmlSeller
                     };
                     
-                    const result = await transporter. sendMailSeller(mailOptions);
+                    const result = await transporter.sendMailSeller(mailOptions);
                     return result;
                 }
                 catch(err)
