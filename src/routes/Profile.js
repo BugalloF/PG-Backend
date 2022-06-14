@@ -3,7 +3,7 @@ const {Router} = require("express");
 const router = Router();
 // Files
 const {Profile, Artwork, Follower} = require("../db.js");
-const {verifyToken} = require("../controllers/tokens");
+const {signToken, verifyToken} = require("../controllers/tokens");
 const { Op } = require("sequelize");
 const {API_KEY} = process.env;
 
@@ -164,31 +164,17 @@ const getBannedProfiles = async (req, res,next) => {
 router.get("/bannedusers", getBannedProfiles);
 // ------------------------------- UPDATE -------------------------------
 const putProfile = async (req, res,next) => {
-  try {
-    const { id } = req.params;
-    const {
-      name,
-      lastName,
-      userName,
-      email,
-      password,
-      day_of_birth,
-      gender,
-      img,
-      phone,
-      description,
-      country,
-      facebook,
-      instagram,
-      linkedIn,
-      is_banned,
-      banned_time
-    } = req.body;
+  try
+  {
+    const {id} = req.params;
+    const {name, lastName, userName, email, password, day_of_birth, gender, img, phone, description, country, facebook, instagram, linkedIn, is_banned, banned_time} = req.body;
+    
     let updatedProfile = await Profile.findOne({
       where: {
         id: id,
       },
     });
+    
     await updatedProfile.update({
       name,
       lastName,
@@ -205,13 +191,17 @@ const putProfile = async (req, res,next) => {
       instagram,
       linkedIn,
       is_banned,
-      banned_time
+      banned_time,
     });
-    console.log(updatedProfile)
-    res.status(201).json(updatedProfile);
-  } catch (error) {
-    next(error)
+    
+    const token = await signToken(updatedProfile);
+    
+    res.status(201).json({updatedProfile, token});
   }
+  catch(error)
+  {
+    next(error);
+  };
 };
 
 router.put("/:id", putProfile);

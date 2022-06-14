@@ -25,35 +25,29 @@ router.post("/", async (req, res, next) => {
                     ],
                 },
             });
-        
-        if(foundUser[0].dataValues.is_banned){
-
-            function sumarDias(){
-                let fechita= new Date().toISOString().split('T')[0];
-
-                
-                return fechita;
-              }
-
-              console.log(sumarDias(),'sumardias')
-              console.log(foundUser[0].dataValues.banned_time)
-
-              if(sumarDias() == foundUser[0].dataValues.banned_time){
-
-                
-
-                await foundUser[0].update({
-                    is_banned:false,
-                    banned_time:null
-                })
-              }else{
-                                
-                    return res.status(200).json({is_banned:foundUser[0].dataValues.is_banned,banned_time:foundUser[0].dataValues.banned_time})
-        
-              }
-
-        }
-           
+            
+            if(foundUser[0].dataValues.is_banned)
+            {
+                function sumarDias()
+                {
+                    let fechita= new Date().toISOString().split('T')[0];
+                    return fechita;
+                };
+                // console.log(sumarDias(),'sumardias');
+                // console.log(foundUser[0].dataValues.banned_time);
+                if(sumarDias() == foundUser[0].dataValues.banned_time)
+                {
+                    await foundUser[0].update({
+                        is_banned:false,
+                        banned_time:null,
+                    });
+                }
+                else
+                {
+                    return res.status(200).json({is_banned:foundUser[0].dataValues.is_banned,banned_time:foundUser[0].dataValues.banned_time});
+                };
+            };
+            
             if(foundUser.length)
             {
                 const foundPassword = foundUser[0].dataValues.password;
@@ -72,7 +66,7 @@ router.post("/", async (req, res, next) => {
             else
             {
                 res.status(404).send("Incorrect user or password.");
-            }
+            };
         }
         else
         {
