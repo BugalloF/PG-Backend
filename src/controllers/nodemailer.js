@@ -30,8 +30,8 @@ async function sendEmail(email, id)
         {
             from: '"DigitalizArte" <digitalizartecompras@gmail.com>',
             to: email,
-            subject: "Reset your password.",
-            html: `For reset your password, follow this ${link}. <br/> The link will be able for five minutes.`,
+            subject: "Restablezca su contraseña.",
+            html: `Para restablecer su contraseña, siga este ${link}. <br/> El link será válido durante cinco minutos.`,
         };
         
         await transporter.sendMail(message);
