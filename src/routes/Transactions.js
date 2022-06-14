@@ -38,8 +38,8 @@ router.get('/',async (req,res,next)=>{
             const result = await Transactions.findAll({
                 where:{
                     [Op.or]:[
-                        {userSeller: name},
-                        {userPayer: name}
+                        {userSeller:  { [Op.iLike]: `%${name}%` }},
+                        {userPayer:  { [Op.iLike]: `%${name}%` }}
                     ]
                 },
                 limit: 12,
