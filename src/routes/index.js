@@ -12,6 +12,7 @@ const login = require("./Login");
 const register = require("./Register");
 const forgotPassword = require("./forgotPassword");
 const resetPassword = require("./resetPassword");
+const changePassword = require("./changePassword");
 const followedfeed=require('./FollowedFeed');
 
 // Configurar los routers
@@ -23,6 +24,7 @@ router.use("/login", login);
 router.use("/register", register);
 router.use('/forgot', forgotPassword)
 router.use('/reset', resetPassword)
+router.use('/changepassword', changePassword)
 router.use("/emails",sendMail);
 router.use('/followedfeed', followedfeed)
 router.use('/transactions', transRouter)
