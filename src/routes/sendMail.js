@@ -63,7 +63,7 @@ router.post("/send-email", async (req, res) => {
                 <h5>Información de venta: </h5>
                 <p>Obra vendida: ${title}</p>
                 <p>Hora de pago: ${time}</p>
-                <p>Precio: ${price}</p>
+                <p>Precio: $${price} USD</p>
                 <br></br>
                 <h5>Gracias por utilizar DigitalizArte! en las próximas horas se acreditará el dinero en tu cuenta.</h5>
                 </body>
