@@ -195,7 +195,7 @@ const putProfile = async (req, res,next) => {
     });
     
     const token = await signToken(updatedProfile);
-    
+    console.log(token);
     res.status(201).json({updatedProfile, token});
   }
   catch(error)
