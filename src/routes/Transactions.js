@@ -3,7 +3,16 @@ const router = Router();
 const {Transactions} = require("../db.js");
 const { Op } = require("sequelize")
 
+router.get('/count',async (req,res,next)=>{
+    try{
+        const count = await Transactions.count()
 
+        res.status(200).json(count)
+
+    }catch(error){
+        next(error)
+    }
+})
 
 router.post('/',async (req,res,next)=>{
     try{
@@ -79,6 +88,25 @@ router.get('/',async (req,res,next)=>{
         next(error)
     }
 })
+
+
+router.put('/:id',async (req,res,next)=>{
+    try{
+
+        const {id} = req.params
+        const transaction = await Transactions.findByPk(id)
+
+        transaction.update({
+            isPayed: true
+        })
+
+        res.status(200).json({isPayed:true})
+
+    }catch(error){
+        next(error)
+    }
+})
+
 
 
 
