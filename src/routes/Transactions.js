@@ -50,8 +50,8 @@ router.get('/',async (req,res,next)=>{
             const counter = await Transactions.count({
                 where:{
                     [Op.or]:[
-                        {userSeller: name},
-                        {userPayer: name}
+                        {userSeller: { [Op.iLike]: `%${name}%` }},
+                        {userPayer:  { [Op.iLike]: `%${name}%` }}
                     ]
                 }
 
