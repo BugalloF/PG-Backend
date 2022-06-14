@@ -138,8 +138,6 @@ router.post("/send-email", async (req, res) => {
             };
             
             sendMailPayer()
-                .then(result => res.status(200).send("ENVIADOO"))
-                .catch((error)=>console.log(error.message));
             sendMailSeller()
                 .then(result => res.status(200).send("ENVIADOO 2"))
                 .catch((error)=>console.log(error.message));
