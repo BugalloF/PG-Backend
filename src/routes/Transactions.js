@@ -30,7 +30,32 @@ router.post('/',async (req,res,next)=>{
 router.get('/',async (req,res,next)=>{
     try{
 
-        const result = await Transactions.findAll()
+        const {name, from = 0, by, type} = req.query
+        var order = null;
+        if(by && type) order = 'order'
+
+        if(name){
+            const result = await Transactions.findAll({
+                where:{
+                    [Op.or]:[
+                        {userSeller: name},
+                        {userPayer: name}
+                    ]
+                },
+                limit: 12,
+                offset: 12 * from
+    
+            })
+
+            return res.status(201).json(result)
+        }
+
+        const result = await Transactions.findAll({
+            [order] :[[by,type]],
+            limit: 12,
+            offset: 12 * from
+
+        })
 
         
 
