@@ -22,6 +22,7 @@ router.post("/send-email", async (req, res) => {
         {
             // const {payer,surname,time,idPost} = req.body;
             const {payer,surname,time,idPost,userSeller,userPayer,email} = req.body;
+            console.log('bdyyyyyy', req.body)
             const art = await Artwork.findByPk(idPost)
             
             const image = art.dataValues.img
