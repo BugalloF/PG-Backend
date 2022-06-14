@@ -47,7 +47,17 @@ router.get('/',async (req,res,next)=>{
     
             })
 
-            return res.status(201).json(result)
+            const counter = await Transactions.count({
+                where:{
+                    [Op.or]:[
+                        {userSeller: name},
+                        {userPayer: name}
+                    ]
+                }
+
+            })
+
+            return res.status(201).json({result,counter})
         }
 
         const result = await Transactions.findAll({
@@ -57,11 +67,13 @@ router.get('/',async (req,res,next)=>{
 
         })
 
-        
+        const counter = await Transactions.count()
 
         
 
-        res.status(201).json(result)
+        
+
+        res.status(201).json({result,counter})
         
     }catch(error){
         next(error)
