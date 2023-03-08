@@ -32,6 +32,6 @@ conn.sync({force:false}).then(async() => {
 
 
   server.listen(PORT/*3001*/, () => {
-    console.log(`Listening on port 3001`);
+    console.log(`Listening on port ${PORT}`);
   });
 });
