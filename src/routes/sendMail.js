@@ -12,6 +12,7 @@ const {CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, REFRESH_TOKEN} = process.env;
 router.post("/send-email", async (req, res) => {
     const {authorization} = req.headers;
     console.log('NOO O O O O O O Oauthh');
+    
     if(authorization)
     {
         console.log('authhh');
